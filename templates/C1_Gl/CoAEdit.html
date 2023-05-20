@@ -1,0 +1,252 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+
+
+<div style="border:2px solid gray; width:400px; margin:30px; padding:0 20px 20px 40px">
+    <h4 style="margin:20px 0px;"> Select P&L and B/S Level  </h4>
+    <h6 style="margin:10px 0 0 0;">Account Number</h6>
+    <input id="accNo" name="accNo" type="text" placeholder="Account No"  style="max-width: 120px"; disabled>  </input>
+    <h6 style="margin:10px 0 0 0;">Account Number</h6>
+    <input id="accDes" name="accDes" type="text" placeholder="Account Description" >  </input>
+</div>
+
+<div style="border:2px solid gray; width:400px; margin: 30px;">
+    <h4 style="margin:20px 50px;"> Select P&L and B/S Level  </h4>
+
+  <!--⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ HTML Table ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐//start-->
+    <div style="margin:20px 50px;">
+        <form id="formA">
+            <div class="dd1"  onmouseleave="sH('.dd1')" >
+                <h6 style="margin:10px 0 -5px 0;">Level 1</h6>
+                <input id="ddInput" name="Company" type="text" placeholder="Level 1"  onclick="showList('.dd1');" onkeyup="filterA1('.dd1')">  </input>
+                <div class="listDiv" onmouseleave="sH('.dd1')">
+                    <table id="myTable">
+                        <tr class="topLine">  <th>Level 1</th>  </tr>
+                        <tbody id="myTableBody">  </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="dd2"  onmouseleave="sH('.dd2')" >
+                <h6 style="margin:10px 0 -5px 0;">Level 2</h6>
+                <input id="ddInput" name="Model" type="text" placeholder="Level 2" onclick="showList('.dd2');" onkeyup="filterA1('.dd2')">  </input>
+                <div class="listDiv" onmouseleave="sH('.dd2')">
+                    <table id="myTable">
+                        <tr class="topLine">  <th>Level 2</th>  </tr>
+                        <tbody id="myTableBody" > </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="dd3"  onmouseleave="sH('.dd3')" >
+                <h6 style="margin:10px 0 -5px 0;">Level 3</h6>
+                <input id="ddInput" name="sku" type="text" placeholder="Level 3" onclick="showList('.dd3');" onkeyup="filterA1('.dd3')">  </input>
+                <div class="listDiv" onmouseleave="sH('.dd3')" >
+                    <table id="myTable">
+                        <tr class="topLine">  <th>Level 3</th>  </tr>
+                        <tbody id="myTableBody"> </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="dd4"  onmouseleave="sH('.dd4')" >
+                <h6 style="margin:10px 0 -5px 0px;">Level 4</h6>
+                <input id="ddInput" name="litter" type="text" placeholder="Level 4" onclick="showList('.dd4');" onkeyup="filterA1('.dd4')">  </input>
+                <div class="listDiv" onmouseleave="sH('.dd4')" >
+                    <table id="myTable">
+                        <tr class="topLine">  <th>Level 4</th>  </tr>
+                        <tbody id="myTableBody"> </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div><button type="submit" style="background:orange; padding:5px 15px; margin-top:15px; font-size:18px; border-radius:5px; color:white">Submit</button></div>
+        </form>
+
+    </div>
+
+</div>
+  <!--⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ HTML Table ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐// End -->
+
+
+
+  <!--⭐⭐⭐⭐⭐⭐⭐⭐ DropDown Menu Filter Data ⭐⭐⭐⭐⭐⭐⭐⭐⭐//start-->
+    <script>
+        myData = {{Data|safe}}
+        DataA = {{DataA|safe}}
+        console.log(DataA)
+
+
+        document.querySelector('#accNo').value = DataA.code;
+        document.querySelector('#accDes').value = DataA.head;
+
+        document.querySelector('.dd1 #ddInput').value = DataA.level1;
+        document.querySelector('.dd2 #ddInput').value = DataA.level2;
+        document.querySelector('.dd3 #ddInput').value = DataA.level3;
+        document.querySelector('.dd4 #ddInput').value = DataA.level4;
+
+
+        //(ind) Initail DropDown (Common)--------------------------------------------
+        let arr = [];
+        makeDropDown(myData, 0, 1) // need to run this function after getting data from Fetch APi
+
+        //(ind) Creat DropDown (Common)----------------------------------------------
+        function makeDropDown(myData, levelFilter, valee){
+            const filteredArray = filterArray()
+            const uniqueList = getUniqueValues(filteredArray,  valee-1)
+            let val = valee
+            let dd = `.dd${val}`
+            inputDropDown (val, dd, uniqueList)
+        }
+
+        //(ind) Return Filter Data Based on Array ----------------------------------
+        function filterArray(){return myData.filter(r => arr.every((item, i) => item == r[i])); }
+
+        //(ind) Get Unique Value of the Array (Common)-------------------------------
+        function getUniqueValues(data, index){
+            const uniqueOptions = new Set();
+            data.forEach(r => uniqueOptions.add(r[index]));
+            return [... uniqueOptions];
+        }
+
+        //(ind) Populate data in Table and get vlaue from input---------------------
+        function inputDropDown (val, dd, uniqueList){
+            //Populate in Table uniqueList =========================================
+            tBody = `${dd} #myTableBody`
+            
+            document.querySelector(tBody).innerHTML="";  //to make table empty....
+            let Data = uniqueList;
+            let table = document.querySelector(tBody)
+
+            for (let i = 0; i < Data.length; i++){
+                let row = `<tr> <td class="dropList">${Data[i]}</td> </tr>`
+                table.innerHTML += row    
+            }
+                //(ind)--Get Table Value on Click ---------------------------------
+                let cells = document.querySelectorAll(`${tBody} td`);
+                for (let j = 0; j < cells.length; j++) {
+                    let cell_A1 = cells[j];
+                    cell_A1.onclick = function () {
+                        let rowId = this.parentNode.rowIndex-1;
+                        let rowSelected = document.querySelectorAll(`.dd${val} #myTableBody tr`)[rowId];
+                        clickVal = rowSelected.cells[0].innerHTML;
+                        //------Insert data in Input Box -----------------------
+                        arr = arr.slice(0,val-1) //selected array before this selection
+                        if (!arr.includes(clickVal)) {arr.push(clickVal)} //add selected Value in array
+                        document.querySelector(`${dd} #ddInput`).value = clickVal; //show selected category on input box
+                        applyDropDown(val, `${dd} #ddInput`) // apply selection for next level
+                        let dropdown = document.querySelector( `${dd} .listDiv`).classList.toggle('hideShow');
+                    }
+                } 
+        }
+
+        //(ind) Add Else if statement with additional new level, Apply Drop Down Menu--
+        function applyDropDown(val, input){
+            const selectLevelValue = document.querySelector(input).value;            
+             if(val == 0) {val=val+1; makeDropDown(myData, selectLevelValue, val)
+            }else if(val == 1) {val=val+1; reset(val); makeDropDown(myData, selectLevelValue, val)
+            }else if (val == 2){val=val+1; reset(val); makeDropDown(myData, selectLevelValue, val)
+            }else if (val == 3){val=val+1; reset(val); makeDropDown(myData, selectLevelValue, val)
+            }else {  }
+        }
+
+        //reset input on previous selection ------------------------
+        function reset(val){
+            if(val==2) {document.querySelector(`.dd2 #ddInput`).value = "Level 2";
+                        document.querySelector(`.dd3 #ddInput`).value = "Level 3";
+                        document.querySelector(`.dd4 #ddInput`).value = "Level 4";}
+            if(val==3) {document.querySelector(`.dd3 #ddInput`).value = "Level 3";
+                        document.querySelector(`.dd4 #ddInput`).value = "Level 4";}
+            if(val==4) {document.querySelector(`.dd4 #ddInput`).value = "Level 4";}
+        }
+
+
+        //(ind) Process to Filter Table Data ----------------------------------
+        function filterA1(input){tableInside(`${input} #ddInput`, `${input} #myTableBody`)}
+        function tableInside(input, tBody){
+            //console.log(input, tBody)
+            let filter = document.querySelector(input).value.toUpperCase();
+            let myTable = document.querySelector(tBody);
+            let tr = myTable.getElementsByTagName('tr');
+            for(let i=0; i<tr.length; i++){
+                let td = tr[i].getElementsByTagName('td')[0];
+                if(td){
+                        let textValue = td.textContent || td.innerHTML;
+                        if(textValue.toUpperCase().indexOf(filter) > -1){
+                            tr[i].style.display = "";
+                        }else{
+                            tr[i].style.display = "none";
+                        }
+                }
+            } 
+        }
+    </script>
+
+    <style>
+        .dropList{ padding: 0 10px; }
+    </style>
+  <!--⭐⭐⭐⭐⭐⭐⭐⭐ DropDown Menu Filter Data ⭐⭐⭐⭐⭐⭐⭐⭐⭐// End -->
+
+
+  <!--⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ DropDown Menu ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐//start-->
+    <script>
+        function showList(showList){ //Run function on click input box---------------------- 
+            let dropdown = document.querySelector( `${showList} .listDiv`); //target click input cell
+            const element = document.getElementsByClassName('listDiv');   //target all div with class='listDiv'
+            for (let i = 0; i < element.length; i++) { //loop through all the div class="listDiv"
+                if (element[i].classList.contains('hideShow')) {
+                    if (dropdown.classList.contains('hideShow')) {  //if already have toggle class="hideShow" remove clas="hide" but will not remove toggle class="hideShow" so that on click again toggle class will apply.
+                        dropdown.classList.remove("hide")  //remove class="hide" from selected input cell to show the div
+                    } else {
+                        element[i].classList.remove('hideShow') // remove class="hideShow from all div"
+                    }
+                } else {
+                    element[i].classList.add("hide") // add class="hide" to all div
+                }
+            } 
+            dropdown.classList.toggle('hideShow')  //add toggle class="hideShow" to selected input
+        }
+    
+        function sH(showList){ //Run function oon Mouse Out Event------------------------ 
+            let dropdown = document.querySelector( `${showList} .listDiv`);
+            dropdown.classList.remove("hideShow")
+        }
+    </script>
+    
+    <style>
+        #myTableBody {background:#f3f2f5; }
+        .topLine{background-image:linear-gradient(0deg,#1d6eb8,#3461bf 1%,#5eb4d6); color:white;}
+        .topLine th:nth-child(1){padding: 0 10px; min-width:300px; max-width:500px;background-image:linear-gradient(0deg,#1d6eb8,#3461bf 1%,#5eb4d6); color:white;}
+    
+        .inputLable {margin:25px 0 0 0;}
+        .listDiv {display:none; position:absolute; z-index:1; max-width:500px; min-width:300px; background:white; border: 1px solid gray;}
+        .listDiv tr:hover { background-color: #c5e0fa; }
+        .hide {display:none;}
+        .hideShow{display:block;}
+
+
+        label > span{
+            width: 180px;
+            font-weight: bold;
+            float: left;
+            padding-top: 8px;
+            padding-right: 5px;
+            color: rgb(115, 114, 114);
+        }
+        input {
+            font-size: 13px;
+            width: 270px;
+            padding: 3px 10px;
+            margin: 4px 0;
+            box-sizing: border-box;
+            border: solid 1px rgb(210, 207, 207);
+            box-shadow: 1px 1px 4px #EBEBEB;
+        }
+    </style>
+  <!--⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ DropDown Menu ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐// End -->
+
+
+  {% endblock body %}

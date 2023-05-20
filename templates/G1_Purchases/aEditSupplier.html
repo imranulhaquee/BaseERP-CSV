@@ -1,0 +1,726 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+
+
+<!--════ Top Section ═══════════════════════════════════════ //Start-->
+    <section id="tMenu">
+        <div class='BoxA' >
+            <div> <img src=" {% static 'Java/Images/Logo/clientLogo.png' %}" style="width:100px; margin-top:5px" alt=""> </div>
+            <!-- <span class='p1'>〄</span> <span class="basCo" ></span>  -->
+        </div>
+        <div class='BoxB'>
+            <img src="{% static 'JAVA/Images/Icon/clock.png'%}" alt="" class='img1'>
+            <img src="{% static 'JAVA/Images/Icon/folder.png'%}" alt="" class='img1'>
+            <img src="{% static '../media/iuh.jpg'%}" alt="" class='img2'> 
+        </div>
+    </section>
+<!--════ Top Section ═══════════════════════════════════════ // End -->
+
+
+
+<form id="supForm" enctype="multipart/form-data" style="position:relative;">
+   
+  <!--════ Supplier Basic Information Section ════════════════ //Start-->
+    <section id="supBasic">
+        <!-- <h2>Edit Supplier Master Data <img class="word"</h2> -->
+        <div><img class="word" src="{% static 'JAVA/Images/Word/supEdit.png' %}" alt=""  ></div>
+
+        <div style="display:none;">
+            <input type="text" id="supID" name="supID" placeholder="supID">  </input>
+        </div>
+
+        <div>
+            <label>  <span>Edit Supplier Data </span> </label>
+            <input class="cEdit" type="checkbox" id="myCheckbox"> 
+        </div>
+        <div>
+            <label class="Lab1" for="fname"> <span>Supplier Code <span class="required">*</span></span> 
+            <input disabled type="text" id="supCode" name="supCode" placeholder="Code"> </label>
+        </div>
+        <div>
+            <label class="Lab1" for="fname"> <span>Supplier Name <span class="required">*</span></span> 
+            <input disabled type="text" id="supName" name="supName" onkeyup="nameDisable()" class="cName"> </label>
+        </div>
+
+    </section>
+  <!--════ Supplier Basic Information Section ════════════════ // End -->
+
+
+  <!--════ Supplier Additional Information Section ═══════════ //Start-->
+
+    <!--==== < Tab > ==========================================//Start-->
+        <div class="tabs">
+            <!-- Tab Heading ========================-->
+            <div class="tabsHead">
+                <div class="tabsToggle isActive">
+                    <span class="tabsName">Status</span>
+                </div>
+                <div class="tabsToggle">
+                    <span class="tabsName">Address</span>
+                </div>
+                <div class="tabsToggle">
+                    <span class="tabsName">Payment</span>
+                </div>
+                <div class="tabsToggle">
+                    <span class="tabsName">Tax</span>
+                </div>
+                <div class="tabsToggle">
+                    <span class="tabsName">Others</span>
+                </div>
+            </div>
+    
+            <div class="tabsBody">
+                <!--Status =========================================================-->
+                <div class="tabsContent isActive">
+                    <h3 class="tabsTitle">Supplier Status</h3>
+                    <div class="supTab">
+                        <div>
+                            <label for="fname"> <span>Opening Balance </span> 
+                            <input type="number" id="opeBal" name="opeBal" value=0> </label>
+                        </div>
+          
+                        <div>
+                            <label for="fname"> <span>Supplier Status </span> 
+                                <select type="text" class="selectfield" id="supActive" name="supActive">
+                                    <option value="Yes">Active</option>
+                                    <option value="No">In active</option>
+                                </select> 
+                            </label>
+                        </div>
+
+                        <div style="display:flex">
+                            <label><span>Logo: </span> </label> 
+                            <input type="file" name="image" onchange="preAddImg(event)" class="imgLogo" id="imageRS" accept=".jpg, .jpeg, .png">  <!-- onchange="preAddImg(event)" -->
+                        </div>
+                        <img id="logoPic" src="{% static '../media/images/supLogo/blankLogo.png' %}">
+                        <img id='addImgOutput' />
+                    </div>
+                </div>
+                
+                <!--Additional Information===========================================-->
+                <div class="tabsContent">
+                    <h3 class="tabsTitle">Address and Email</h3>
+    
+                    <div class="supTab">           
+                        <div>
+                            <label> <span>Phone </span> 
+                            <input type="text" id="supPhone" name="supPhone" value=""> </label>
+                        </div>
+                        <div>
+                            <label> <span>Email </span> 
+                            <input type="text" id="supEmail" name="supEmail"> </label>
+                        </div>
+                        <div>
+                            <label> <span>Web Site </span> 
+                            <input type="text" id="supWeb" name="supWeb"> </label>
+                        </div>
+    
+                    </div>
+    
+                    <div class="supTab3">
+                        <div>
+                            <label> <span>Invoice / Bill From </span> 
+                                <textarea type="text" id="supBillFrom" name="supBillFrom" class="tabA" id="addBill" rows="3"></textarea> </label>
+                        </div>
+                        
+                        <div>
+                            <label> <span>Ship From </span> 
+                                <textarea type="text" id="supShipFrom" name="supShipFrom" class="tabA" id="addShip" rows="3"></textarea> </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!--Payment Settings================================================-->
+                <div class="tabsContent">
+                    <h3 class="tabsTitle">Payment Details</h3>
+                    <div class="supTab">
+                        <div>
+                            <label> <span>Account Number </span> 
+                            <input type="text" id="supAcNum" name="supAcNum"> </label>
+                        </div>
+                        <div>
+                            <label> <span>Credit Limit </span> 
+                            <input type="number" id="supCrLim" name="supCrLim" value=0> </label>
+                        </div>
+                        <div>
+                            <label> <span>Payment Termt </span> 
+                            <input type="text" id="supPytTerm" name="supPytTerm"> </label>
+                        </div>
+
+                        <div>
+                            <label> <span>Bank Detail </span> 
+                                <textarea type="text" id="supBank" name="supBank" class="tabA" id="addBill" rows="3"></textarea> </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--Tax Settings====================================================-->
+                <div class="tabsContent">
+                    <h3 class="tabsTitle">Tax Information</h3>
+                    <div class="supTab">
+                        <div>
+                            <label> <span>Legal Name </span> 
+                            <input type="text" id="supLegName" name="supLegName"> </label>
+                        </div>
+                        <div>
+                            <label> <span>TRN Number </span> 
+                            <input type="text" id="supTRN" name="supTRN"> </label>
+                        </div>
+                    
+                    </div>        
+                </div>
+    
+                <!--Other Information===============================================-->
+                <div class="tabsContent">
+                    <h3 class="tabsTitle">Other Details</h3>
+                    <div class="supTab">
+                        <div>
+                            <label> <span>Suptomer Type </span> 
+                            <input type="text" id="supTP" name="supTP" > </label>
+                        </div>
+                        <div>
+                            <label> <span>Type of Job </span> 
+                            <input type="text" id="supTOJ" name="supTOJ" > </label>
+                        </div>
+                        <div>
+                            <label> <span>Contact Person </span> 
+                            <input type="text" id="supCP" name="supCP"> </label>
+                        </div>
+                        <div>
+                            <label> <span>Contact Person Number </span> 
+                            <input type="text" id="supCPN" name="supCPN"> </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            //==== Tab Menu =========================================== //Start-->
+            let tabs = document.querySelectorAll('.tabsToggle'),
+                contents = document.querySelectorAll('.tabsContent');
+    
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    contents.forEach((content) => {
+                        content.classList.remove('isActive');
+                    });
+                    tabs.forEach((tab) => {
+                        tab.classList.remove('isActive');
+                    });
+                    contents[index].classList.add('isActive');
+                    tabs[index].classList.add('isActive');
+                });
+            });
+            //==== Tab Menu =========================================== // End -->
+        </script>
+  
+        <style>
+            .tabs {
+                display: flex;
+                flex-direction: column;
+                min-width: 600px;
+                margin: 25px 0px 0px 0px;
+                padding: 0px 20px 0px 20px;
+                font-size: 13px;
+            }
+            .tabsHead {
+                display: flex;
+                padding: 0px 5px 0 0px;
+                border-bottom: 1px solid rgb(176, 172, 172);
+                background-image: linear-gradient(to bottom, #d8d4d4, #b7b2b2, #bab5b5, #e0d6d6);
+                /* background: #cccaca; */
+                cursor: pointer;
+            }
+            .tabsToggle {
+                margin: 0 0px;
+                padding: 7px 25px;
+                border-right:1px solid #9b9999;
+                /* background: #cccaca; */
+                background-image: linear-gradient(to bottom, #d8d4d4, #b7b2b2, #bab5b5, #e0d6d6);
+                border-radius: 0 15px 0 0;
+                transition: .5s;
+            }
+            .tabsName {
+                font-weight: 600;
+                font-size: 16px;
+                color:#181919;
+
+            }
+            .tabsBody {
+                border-top: none;
+                padding: 0px 10px 0px 25px;
+                min-height:280px;
+                background: #f4f3f3;
+            }
+            .tabsTitle {
+                font-weight: 500;
+                font-size: 18px;
+                color: #2b9fd6;
+                margin: 10px 10px 25px 0px;
+                text-align: left;
+            }
+            .tabsText {
+                font-size: 13px;
+                line-height: 1.2;
+                color: #484848;
+            }
+            .tabsContent {
+                position:relative;
+                display: none;
+            }
+            .tabsToggle.isActive {
+                background-image: linear-gradient(to bottom, #aba9a9, #4D4D4D, #4D4D4D, #aba9a9);
+                /* background: #4D4D4D; */
+                color: #c4c1c1;
+                font-size: 13px;
+                font-weight: 100;
+                text-align: left;
+            }
+            .tabsToggle.isActive .tabsName {
+                color: #d8d3d3;
+                font-weight:bold;
+            }
+            .tabsContent.isActive {
+                display: block;
+            }
+        </style>
+  
+    <!--===== < Tab > ==========================================// End -->
+
+  <!--════ Supplier Additional Information Section ═══════════ // End -->
+  
+
+  <!--════ Save Section ══════════════════════════════════════ //Start-->
+    <section id="savSec">
+        <div><button  onclick="event.preventDefault()" class="hBtn" type="submit"> ⚠ HELP</button></div>
+        <div><button id="cancelA" class="cBtn" type="submit"> ✂ CANCEL</button></div>
+        <div><button id="addRec"  class="addRec sBtn" type="submit" disabled=true>✚ Save</button></div>
+    </section>
+  <!--════ Save Section ══════════════════════════════════════ // End -->
+
+</from>
+
+
+<script>
+
+    //.... Get Data from Context Process and stored in Variable ...............
+        let basInfo = {{basInfo|safe}}
+        //const myCom = document.querySelector(".basCo").innerHTML = basInfo.Company[0]
+    //.... Get Data from Context Process and stored in Variable ...............
+    
+    
+    //.... resize Image .......................................................
+        let abc  
+        let num = 1
+        function uploadImg(e){abc = e} //resize Image
+    //.... resize Image .......................................................
+ 
+
+    //==== <Filling of Form Data > ================================= //Start-->
+        let supBasData = {{DataA|safe}}
+        let supExtData = {{DataB|safe}}
+        //console.log(supExtData)
+    
+        document.querySelector('#supCode').value = supBasData.supCode;
+        document.querySelector('#supName').value = supBasData.supName;
+        document.querySelector('#opeBal').value = supBasData.opeBal;
+        //document.querySelector('#cloBal').value = supBasData.cloBal;
+        document.querySelector('#supActive').value = supBasData.supActive;
+        
+        //---- while loading the page show the image ------------
+        const logoPic = document.getElementById('logoPic');
+        if (supExtData.supLogo == '/media/abc') {console.log(supExtData.supLogo)} 
+        else if (supExtData.supLogo == '') {console.log(supExtData.supLogo)}
+        else {logoPic.src = supExtData.supLogo;}  //i.e `{% static '../media/images/File.jpg' %}`;
+        
+        document.querySelector('#supPhone').value = supExtData.supPhone;
+        document.querySelector('#supEmail').value = supExtData.supEmail;
+        document.querySelector('#supWeb').value = supExtData.supWeb;	
+        document.querySelector('#supBillFrom').value = supExtData.supBillFrom;	
+        document.querySelector('#supShipFrom').value = supExtData.supShipFrom;	
+        document.querySelector('#supAcNum').value = supExtData.supAcNum;	
+        document.querySelector('#supCrLim').value = supExtData.supCrLim;	
+        document.querySelector('#supPytTerm').value = supExtData.supPytTerm;
+        document.querySelector('#supBank').value = supExtData.supBank;
+        document.querySelector('#supLegName').value = supExtData.supLegName;
+        document.querySelector('#supTRN').value = supExtData.supTRN;
+        document.querySelector('#supTP').value = supExtData.supTP;
+        document.querySelector('#supTOJ').value = supExtData.supTOJ;
+        document.querySelector('#supTOJ').value = supExtData.supTOJ;
+        document.querySelector('#supCP').value = supExtData.supCP;
+        document.querySelector('#supCPN').value = supExtData.supCPN;
+    //==== <Filling of Form Data > ================================= // End -->
+
+
+    //==== <Edit Record >=========================================== //Start-->
+        const form = document.getElementById('supForm');
+
+        form.addEventListener('submit', async function(e) {e.preventDefault();
+            const formData =  await new FormData(form);
+            
+            SupId = document.getElementById('supCode').value; 
+            SupCode = document.querySelector('#supCode').value;
+            SupName = document.querySelector('#supName').value;
+    
+            formData.append('supLogo', 'abc') //avoid error incase of no logo selected
+            if(abc !== "" && abc !==undefined){
+                formData.append('supLogo', abc)}
+            else{ 
+                SupLogo = supExtData.supLogo
+                SupLogo = SupLogo.replace('/media/', '');  //to remove error '/media/'
+                formData.append('supLogo', SupLogo)
+            }  
+            
+            formData.append('id', SupId)
+            formData.append('supCode', SupId)
+            formData.append('supName', SupName)
+            //console.log([...formData])
+    
+            fetch(`${basInfo.IP[0]}/editSup`, {
+              method: 'POST',
+              body: formData,
+            })
+            .then(res => res.json())
+            .then(data => {
+                afterSave()
+            })
+        })
+
+        function afterSave(){
+            form.reset()  //reset the form after Adding Record
+            salDisable('Yes')
+            document.getElementById('addImgOutput').classList.add("hide")
+            document.getElementById('logoPic').classList.add("hide")
+            alert('Supplier Edited Successfully...')
+        }
+    //==== <Edit Record >=========================================== // End -->
+
+
+    //==== <Handel Show Image on Add Record Form >================== //Start-->
+        function preAddImg(event){
+            document.getElementById('logoPic').classList.add("hide")
+            document.getElementById('addImgOutput').classList.add("showAddImg") 
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('addImgOutput');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);  //console.log(event.target.files[0])
+        };
+    //==== <Handel Show Image on Add Record Form >================== // End -->
+    
+ 
+    //--==== Form Validation ======================================= //Start-->
+        let checkbox = document.getElementById('myCheckbox');
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {salDisable('No')} 
+                else {salDisable('Yes')}
+        });
+
+        function salDisable (elem) {
+            const subBtn = document.querySelector(".addRec");
+            if (elem == 'Yes'){
+                subBtn.disabled = true;
+                subBtn.classList.remove('addColor')
+            }else{
+                subBtn.disabled = false;
+                subBtn.classList.add('addColor')
+            }
+        } 
+    //--==== Form Validation ======================================= // End -->
+
+
+    //--==== Resize Image ===========================================//Start-->
+        const WIDTH =250
+        let input = document.getElementById("imageRS")  //target the input field with id="imageRS" there must me accept=".jpg, .jpeg, .png"
+        input.addEventListener("change", (event) => {duplicate() })
+        
+        function duplicate(){
+            let image_file = event.target.files[0]  //return the image file
+            let reader = new FileReader   // read the file and read as url
+            reader.readAsDataURL(image_file)  //i.e. url
+
+            reader.onload = (event) => {
+                let image_url = event.target.result
+                let image = document.createElement("img") //create img tag on dom
+                image.src = image_url  //we have to give img tag a source ie. src
+                //document.getElementById("test").appendChild(image)   //to show image on page through id
+                
+                image.onload = (e) => {
+                    let canvas = document.createElement("canvas")
+                    let ratio = WIDTH / e.target.width
+                    canvas.width = WIDTH
+                    canvas.height = width = e.target.height * ratio
+
+                    const context = canvas.getContext ("2d")
+                    context.drawImage(image, 0, 0, canvas.width, canvas.height)
+                    //console.log(context)
+                    
+                    let new_image_url = context.canvas.toDataURL("image/jpeg", 90)  //define the type and quality ("image/jpeg", 90) it can be ()
+                    //--- just to show image on Dom
+                    //new_image = document.createElement("img") //create img tag on dom
+                    //new_image.src = new_image_url  //we have to give img tag a source ie. src
+                    //document.getElementById("test").appendChild(new_image)   //to show image on page through id
+                    let image_file = urlToFile(new_image_url)
+                    //console.log(image_file)
+                    uploadImg (image_file) //will show image on web page
+                }
+            
+                let urlToFile = (url) => {
+                    let arr = url.split(",")
+                    let mime = arr[0].match(/:(.*?);/)[1]
+                    let data = arr[1]
+                    let dataStr = atob(data)
+                    let n = dataStr.length
+                    let dataArr = new Uint8Array(n)
+
+                    while(n--)
+                    {dataArr[n] = dataStr.charCodeAt(n)}
+                    let file = new File([dataArr], 'File.jpg', {type: mime})
+
+                    return file
+                }
+            }
+        }
+    //--==== Resize Image ===========================================// End -->
+
+
+    //==== <Cancel Record > ======================================== //Start-->
+        const myButton = document.getElementById("cancelA");
+        function showMessage(event) {
+            event.preventDefault(); // prevents the default action (form submission, etc.)
+            
+            if (confirm('Want to Cancel!')) {
+                form.reset()  //reset the form after Adding Record
+                salDisable('Yes') //disable the Save Button
+                document.getElementById('addImgOutput').classList.add("hide") //hide image
+            }
+        }
+        myButton.addEventListener("click", showMessage);
+    //==== <Cancel Record > ======================================== //Start-->
+
+</script>
+
+
+<style>
+    
+    /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        #tMenu {
+            position: relative;
+            display:grid; 
+            padding:0 25px;
+            box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.34);
+            border-bottom:#181919;
+            grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));  
+            align-items: center; 
+            background:#f2f5f8; 
+            height:35px;
+            background-image: linear-gradient(to right, #2e2436, #474053, #615e72, #7e7e92, #9b9fb3);
+        }
+        #tMenu .BoxA {
+            color:#fcf6c4; 
+            font-weight:600; 
+            font-size:20px;
+        }
+        #tMenu .BoxA .p1{
+        color:#fcbce9; 
+        font-weight:bold;
+        } 
+        #tMenu .BoxB {
+            justify-self:end;
+        }
+        #tMenu .BoxB .img1{
+            position:relative; 
+            top:-2px; 
+            width:20px; 
+            height:20px; 
+            margin-right: .5rem;
+        }
+        #tMenu .BoxB .img2{
+            position:relative; 
+            top:2px;
+            border-radius:50%; 
+            width: 30px; 
+            height: 30px;
+        }       
+    /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Form Style  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .cEdit{
+            width: 100px;
+        }
+        .check-box {
+            transform: scale(2);
+        }
+        input[type="checkbox"] {
+            position: relative;
+            appearance: none;
+            width: 50px;
+            height: 20px;
+            background: #ccc;
+            border-radius: 50px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: 0.4s;
+        }
+        input:checked[type="checkbox"] {
+            background: #2CBBBB;
+        }
+        input[type="checkbox"]::after {
+            position: absolute;
+            content: "";
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            transform: scale(1.1);
+            transition: 0.4s;
+        }
+        input:checked[type="checkbox"]::after {
+            left: 60%;
+        }
+
+        label > span{
+            width: 180px;
+            font-weight: bold;
+            float: left;
+            padding-top: 8px;
+            padding-right: 5px;
+            color: rgb(115, 114, 114);
+        }
+        input[type="text"],[type="number"] ,[type="number"] ,[type="file"]{
+            font-size: 13px;
+            min-width: 250px;
+            padding: 3px 10px;
+            margin: 4px 0;
+            box-sizing: border-box;
+            border: solid 1px rgb(210, 207, 207);
+            box-shadow: 1px 1px 4px #EBEBEB;
+        }
+        .cName{
+            width: 400px;
+        }
+
+
+        .selectfield{
+            width: 180px;	
+            font-size: 13px;
+            min-width: 5rem;;
+            padding: 3px 10px;
+            margin: 4px 0;
+            box-sizing: border-box;
+            border: solid 1px rgb(183, 182, 182);
+            border-radius: 3px;
+        }
+        .imgLogo{
+            border: none;
+            padding: 0px;
+        }
+        textarea {
+            width: 250px;	
+            font-size: 13px;
+            min-width: 5rem;;
+            padding: 3px 10px;
+            margin: 4px 0;
+            box-sizing: border-box;
+            border: solid 1px rgb(183, 182, 182);
+            border-radius: 3px;
+        }
+        #addImgOutput, #logoPic {
+            position: relative;
+            width: 100px;
+            width: 100px;
+            left: 180px;
+            top: 0px;
+            border-radius: 5%;
+        }
+        .hide{
+          display:none;
+        }
+    /* ⚊⚊⚊⚊ Form Style  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+
+    /* ⚊⚊⚊⚊ Supplier Basic Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        
+        #supBasic {
+            font-size: 13px;
+            min-width:100%;
+            padding: 15px 15px 10px 40px;
+        }
+        #supBasic h2{
+            text-transform: uppercase;
+            font-family: 'Open Sans Condensed', sans-serif;
+            color: #2b9fd6;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 5px 0px;
+            margin: 5px 0px 15px 0px;
+        }
+        #supBasic .word{
+            width: min(max(150px, 15vw), 230px);
+            margin: 20px 5px 5px -5px;
+        }
+        #supBasic .Lab1{
+            min-width: 200px;
+        }
+        #supBasic span.required{
+            color:red;
+        }
+    /* ⚊⚊⚊⚊ Supplier Basic Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        #savSec {
+            display: flex;
+            justify-content:flex-end;
+            flex-wrap: wrap;
+            padding: 5px 15px 0px 40px;
+        }
+
+        .sBtn, .hBtn, .cBtn{
+            /* box-shadow: inset 0px 1px 0px 0px #45D6D6;
+               border: 1px solid #27A0A0;
+               background-color: #2CBBBB; */
+            box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+            background-color: #AAAAAA;
+            display: inline-block;
+            cursor: pointer;
+            color: #FFFFFF;
+            font-family: 'Open Sans Condensed', sans-serif;
+            font-size: 14px;
+            padding: 4px 18px;
+            margin: 5px 5px;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .cBtn{
+            background-color: #1DA1F2;
+        }
+        .hBtn{
+            background-color: #3B5998;
+        }
+        .addColor{
+            background-color: #2CBBBB;
+        }
+        .supTab3 {
+            display: flex;
+            justify-content:space-between;
+            flex-wrap: wrap;
+        }
+
+    /* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+</style>
+
+
+{% endblock body %}

@@ -1,0 +1,35 @@
+id,itmCode,    itmName,    traDat,    qtyPU,    costPU,    qtyTOT,    costTOT,    WAC,desc
+,10001000,Microneedling RF,1/1/2023,1,22475,10,22475,22475,Opening Balance
+,10001001,Microneedling RF - HandPiece,1/1/2023,1,3375,40,13500,3375,Opening Balance
+,10002000,Diode Laser Hair Removal Device,1/1/2023,1,36700,20,73400,36700,Opening Balance
+,10003000,Portable Diode Laser Hair Removal Equipment,1/1/2023,1,33700,20,67400,33700,Opening Balance
+,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,1/1/2023,1,4500,10,4500,4500,Opening Balance
+,10004000,RF Fractional CO2 Laser,1/1/2023,1,58500,20,117000,58500,Opening Balance
+,10004001,RF Fractional CO2 Laser - Handpiece,1/1/2023,1,5500,50,27500,5500,Opening Balance
+,10004002,RF Fractional CO2 Laser - Accessories,1/1/2023,1,1000,100,10000,1000,Opening Balance
+,10005000,Bruun Mci,1/1/2023,1,62000,10,62000,62000,Opening Balance
+,10006000,Caviation Laser,1/1/2023,1,17500,20,35000,17500,Opening Balance
+,10007000,Crio Lipo,1/1/2023,1,26000,20,52000,26000,Opening Balance
+,10008001,DeodLeaser Hand Piece,1/1/2023,1,1500,100,15000,1500,Opening Balance
+,10008000,DeodLeaser,1/1/2023,1,11000,30,33000,11000,Opening Balance
+,10009001,G5 Slimming Applicators,1/1/2023,1,2000,120,24000,2000,Opening Balance
+,10009000,G5 Slimming,1/1/2023,1,37000,30,111000,37000,Opening Balance
+,10010000,Hiemt A,1/1/2023,1,61000,10,61000,61000,Opening Balance
+,10011000,Hydra Fresh,1/1/2023,1,53000,20,106000,53000,Opening Balance
+,10012000,Hydra-new,1/1/2023,1,12000,150,180000,12000,Opening Balance
+,10013000,Jumia,1/1/2023,1,18000,60,108000,18000,Opening Balance
+,10014000,Konmision,1/1/2023,1,28000,40,112000,28000,Opening Balance
+,10015000,Mickcara,1/1/2023,1,31000,30,93000,31000,Opening Balance
+,10016000,My Ultrasonic,1/1/2023,1,7000,100,70000,7000,Opening Balance
+,10017000,SPA Slim,1/1/2023,1,6000,150,90000,6000,Opening Balance
+,10018001,SVTA Radio Hand Pice 1,1/1/2023,1,1200,190,22800,1200,Opening Balance
+,10018002,SVTA Radio Hand Pice 2,1/1/2023,1,1500,220,33000,1500,Opening Balance
+,10018003,SVTA Radio Hand Pice 3,1/1/2023,1,1400,210,29400,1400,Opening Balance
+,10018004,SVTA Radio Hand Pice 4,1/1/2023,1,1300,200,26000,1300,Opening Balance
+,10018005,SVTA Radio Hand Pice 5,1/1/2023,1,1600,190,30400,1600,Opening Balance
+,10018006,SVTA Radio Hand Pice 6,1/1/2023,1,1700,180,30600,1700,Opening Balance
+,10018007,SVTA Radio Hand Pice 7,1/1/2023,1,1800,170,30600,1800,Opening Balance
+,10018008,SVTA Radio Hand Pice 8,1/1/2023,1,1000,160,16000,1000,Opening Balance
+,10018000,SVTA Radio,1/1/2023,1,18000,100,180000,18000,Opening Balance
+,10019000,VCA Laser,1/1/2023,1,28000,50,140000,28000,Opening Balance
+,10019001,VCA Leaser Hand Piece,1/1/2023,1,31000,40,124000,31000,Opening Balance

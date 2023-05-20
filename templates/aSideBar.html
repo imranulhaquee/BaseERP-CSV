@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+{% load static%}
+
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="shortcut icon" href="static/images/Logo1.png" />
+        <title>{% block title %}   {% endblock title %} | BaseFR</title>
+
+        <div id="loadOverlay" style="background:#373637 url('static/images/preLoader5.gif'); position:absolute; top:0px; left:0px; width:100vw; height:100vh; z-index:2000; background-repeat: no-repeat; background-size: 35%; background-position: center;"></div>
+
+    </head>
+
+   
+
+
+  <body>
+    <div class="sidebar close">
+        <div class="logo-details">
+            <img src='/static/JAVA/Images/Logo/Logo1.png' class="bx-menu logo_logo">
+            <span class="logo_name" ><a href="/" style="color:white;text-decoration:none;">BaseFR </a></span>
+        </div>
+        <ul class="nav-links">
+
+            <li>
+                <a href="/aHome">
+                    <img src="{% static 'JAVA/Images/Icon/menu1.png' %}" class="sideIcon" alt="">
+                    <!-- <i class='bx bx-grid-alt' ></i> -->
+                    <span class="link_name">Reports</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="/aHome">Reports</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="iocn-link">
+                    <a href="#">
+                        <img src="{% static 'JAVA/Images/Icon/report1.png' %}" class="sideIcon2" alt="">
+                        <!-- <i class='bx bx-collection' ></i> -->
+                        <span class="link_name">DashBoard</span>
+                    </a>
+                    <img src="{% static 'JAVA/Images/Icon/arrow1.png' %}" class="sideIcon3  arrow" alt="">
+                    <!-- <i class='bx bxs-chevron-down arrow' ></i> -->
+                </div>
+                <ul class="sub-menu">
+                        <li><a class="link_name" href="#">DashBoard</a></li>
+                        <li><a href="/DB1">» DashBoard 01</a></li>
+                        <li><a href="/DB2">» DashBoard 02</a></li>
+                        <li><a href="/DB3">» DashBoard 03 ChartJs</a></li>
+                        <li><a href="/DB4">» DashBoard 04 </a></li>
+                </ul>
+            </li>
+
+            
+            <li>
+                <div class="iocn-link">
+                    <a href="#">
+                        <img src="{% static 'JAVA/Images/Icon/chart1.png' %}" class="sideIcon2" alt="">
+                        <!-- <i class='bx bx-collection' ></i> -->
+                        <span class="link_name">Analysis</span>
+                    </a>
+                    <img src="{% static 'JAVA/Images/Icon/arrow1.png' %}" class="sideIcon3  arrow" alt="">
+                    <!-- <i class='bx bxs-chevron-down arrow' ></i> -->
+                </div>
+                <ul class="sub-menu">
+                        <li><a class="link_name" href="#">» Analysis</a></li>
+                        <li><a href="/cEquipStatus/0/">» Equipment Status</a></li>
+                        <li><a href="/cCustStatus/0/">» Customer Status</a></li>
+                        <li><a href="/cEquipAvail/0/">» Equipment Availability</a></li>
+                        <li><a href="/cEmpTimeSheet/0/">» Employee TimeSheet</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <div class="iocn-link">
+                    <a href="#">
+                    <img src="{% static 'JAVA/Images/Icon/update1.png' %}" class="sideIcon2" alt="">
+                    <!-- <i class='bx bx-plug' ></i> -->
+                    <span class="link_name">Updation</span>
+                    </a>
+                    <img src="{% static 'JAVA/Images/Icon/arrow1.png' %}" class="sideIcon3  arrow" alt="">
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Updation</a></li>
+                    <li><a href="/updateDaily">» Update by Day</a></li>
+                    <li><a href="/updateCustomer/1/">» Update by Customer</a></li>
+                    <li><a href="/updateByPO">» Update By PO</a></li>
+                    <li><a href="/updateByEqpt/1/">» Update by Equipment</a></li>
+                    <li><a href="/eContractUpdate/1/">» Update Contract</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="iocn-link">
+                    <a href="#">
+                    <img src="{% static 'JAVA/Images/Icon/register1.png' %}" class="sideIcon2" alt="">
+                    <!-- <i class='bx bx-book-alt' ></i> -->
+                    <span class="link_name">Master File</span>
+                    </a>
+                    <img src="{% static 'JAVA/Images/Icon/arrow1.png' %}" class="sideIcon3  arrow" alt="">
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Master File</a></li>
+                    <li><a href="/Assets">» Equipment</a></li>
+                    <li><a href="/eContract">» Contract</a></li>
+                    <li><a href="/Employee">» Employee</a></li>
+                    <li><a href="/Options">» Options</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="iocn-link">
+                    <a href="#">
+                    <img src="{% static 'JAVA/Images/Icon/upload1.png' %}" class="sideIcon2" alt="">
+                    <!-- <i class='bx bx-compass' ></i> -->
+                    <span class="link_name">Uploads</span>
+                    </a>
+                    <img src="{% static 'JAVA/Images/Icon/arrow1.png' %}" class="sideIcon3  arrow" alt="">
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Uploads</a></li>
+                    <li><a href="/UploadDailyData/1/">» Monthly Revenue Data</a></li>
+                    <li><a href="/UploadAssetsData">» Upload Asset Data</a></li>
+                    <li><a href="/UploadEmpData">» pload Employee Data</a></li>
+                    <li><a href="/UploadOptionsData">» Upload Options Data</a></li>
+                    <li><a href="/UploadRevContract">» Upload Revenue Contract</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{% static 'JAVA/Images/Icon/graph1.png' %}" class="sideIcon2" alt="">
+                    <!--<i class='bx bx-line-chart' ></i>-->
+                    <span class="link_name">Graphs</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Graphs</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#">
+                    <img src="{% static 'JAVA/Images/Icon/history1.png' %}" class="sideIcon2" alt="">
+                    <!-- <i class='bx bx-history'></i> -->
+                    <span class="link_name">History</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">History</a></li>
+                </ul>
+            </li>
+
+
+            <li>
+                <div class="iocn-link">
+                    <a href="#">
+                        <img src="{% static 'JAVA/Images/Icon/setup1.png' %}" class="sideIcon2" alt="">
+                        <!-- <i class='bx bx-collection' ></i> -->
+                        <span class="link_name">Setting</span>
+                    </a>
+                    <img src="{% static 'JAVA/Images/Icon/arrow1.png' %}" class="sideIcon3  arrow" alt="">
+                    <!-- <i class='bx bxs-chevron-down arrow' ></i> -->
+                </div>
+                <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Reports</a></li>
+                        
+                        <li><a href="/dManageByContract/1/">» Manage by Revenue Cont</a></li>
+                        <li><a href="/dUpdateByEqpCon/1/">» Update by Equipment by Cont</a></li>
+                        <li><a href="#">» Monthly Revenu</a></li>
+                </ul>
+            </li>
+
+
+            <li>
+                <div class="profile-details">
+                    <div class="profile-content">
+                    <!--<img src="image/profile.jpg" alt="profileImg">-->
+                    </div>
+                    
+                    <div class="name-job">
+                        <div class="profile_name">Imran Ul Haque</div>
+                        <div class="job">System Developer</div>
+                    </div>
+                    <img src="{% static 'JAVA/Images/Icon/slide1.png' %}" class="sideIcon2 bx bx-log-out" alt="">
+                     <!-- <i class='bx bx-log-out' ></i> -->
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <section class="home-section">
+      <div class="home-content">
+        {% block body %}   {% endblock body %}
+        <!-- <span class="text">Drop Down Sidebar</span> -->
+      </div>
+    </section>
+
+</body>
+
+
+    <script>
+        let arrow = document.querySelectorAll(".arrow");
+        for (var i = 0; i < arrow.length; i++) {
+                arrow[i].addEventListener("click", (e)=>{
+                let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
+                arrowParent.classList.toggle("showMenu");
+            });
+        }
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".bx-menu");
+
+        sidebarBtn.addEventListener("click", ()=>{
+            sidebar.classList.toggle("close");
+        });
+
+        let sidebarBtn2 = document.querySelector(".bx-log-out");
+
+        sidebarBtn2.addEventListener("click", ()=>{
+            sidebar.classList.toggle("close");
+        });
+    </script>
+
+
+    <style>
+
+      /* ------------ General ----------------*/
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #d8d5f2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgb(29, 21, 59);
+        }
+        ::selection{
+            background: rgb(31, 36, 64,0.3);
+            
+        }
+
+
+        .sidebar{
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 260px;
+            background: linear-gradient(90deg, rgb(22, 22, 34), rgba(38, 27, 44, 0.8)), #3c3e4b;
+            /*background: #11101d;*/
+            box-shadow: 4px 0px 6px #5f416d;
+            z-index: 100;
+            transition: all 0.5s ease;
+        }
+        .sidebar.close{
+            width: 45px;
+            
+        }
+        .sidebar .logo-details{
+            height: 50px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background: #1d1b31;
+            
+        }
+        .sidebar .logo_logo {
+            width:25px; 
+            margin:0 10px; 
+            cursor: pointer;
+        }
+        .sidebar .logo-details .logo_name{
+            font-size: 25px;
+            color: #fff;
+            letter-spacing: 5px;
+            font-weight: 100;
+            transition: 0.3s ease;
+            transition-delay: 0.1s;
+        }
+        .sidebar.close .logo-details .logo_name {
+            font-size: 0px;
+            transition-delay: 0s;
+            /*opacity: 0;*/
+            pointer-events: none;
+        }
+        .sidebar .nav-links{
+            height: 100%;
+            padding: 30px 0 150px 0;
+            overflow: auto;
+        }
+        .sidebar.close .nav-links{
+            overflow: visible;
+        }
+        .sidebar .nav-links::-webkit-scrollbar{
+            display: auto;
+        }
+        .sidebar .nav-links li{
+            position: relative;
+            list-style: none;
+            transition: all 0.4s ease;
+        }
+        .sidebar .nav-links li:hover{
+            background: #1d1b31;
+        }
+        .sidebar .nav-links li .iocn-link{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .sidebar.close .nav-links li .iocn-link{
+            display: block
+        }
+        .sidebar .nav-links li i{      /* --- Side Menu Icon  --- */
+            height: 50px;
+            min-width: 45px;
+            text-align: center;
+            line-height: 50px;
+            color: #fff;
+            font-size: 23px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .sidebar .nav-links li.showMenu i.arrow{
+            transform: rotate(-180deg);
+        }
+        .sidebar.close .nav-links i.arrow{
+            display: none;
+        }
+        .sidebar.close .nav-links .arrow{
+            display: none;
+        }
+        .sidebar .nav-links li a{
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .sidebar .nav-links li a .link_name{    /* --- Menu Name  */
+            font-size: 18px;
+            margin-left: 0px;
+            font-weight: 400;
+            color: #fff;
+            transition: all 0.4s ease;
+            display:block;
+        }
+        .sidebar.close .nav-links li a .link_name{
+            margin-left: -50px;
+            font-size: 10px;
+            display:none;
+            /*opacity: 0;             because of opacity transaction delay will happen*/
+            pointer-events: none;
+        }
+        .sidebar .nav-links li .sub-menu{        /* --- Sub Menu padding  */
+            padding: 6px 6px 14px 80px;
+            margin-top: -10px;
+            background: #1d1b31;
+            display: none;
+        }
+        .sidebar .nav-links li.showMenu .sub-menu{
+            display: block;
+        }
+        .sidebar .nav-links li .sub-menu a{   /* --- Sub Menu Name  */
+            color: #fff;
+            font-size: 15px;
+            padding: 5px 0;
+            white-space: nowrap;
+            margin-left: -20px;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+        .sidebar .nav-links li .sub-menu a:hover{
+            opacity: 1;
+            margin-left: -10px;
+        }
+        .sidebar.close .nav-links li .sub-menu{  /* --- Sub Menu while close  */
+            position: absolute;
+            left: 100%;
+            top: -10px;
+            margin-top: 0;
+            padding: 10px 20px;
+            border-radius: 0 6px 6px 0;
+            opacity: 0;
+            display: block;
+            pointer-events: none;
+            transition: 0s;
+        }
+        .sidebar.close .nav-links li:hover .sub-menu{
+            top: 0;
+            opacity: 1;
+            pointer-events: auto;
+            transition: all 0.4s ease;
+        }
+        .sidebar .nav-links li .sub-menu .link_name{
+            display: none;
+        }
+        .sidebar.close .nav-links li .sub-menu .link_name{
+            font-size: 18px;
+            opacity: 1;
+            display: block;
+        }
+        .sidebar .nav-links li .sub-menu.blank{
+            opacity: 1;
+            pointer-events: auto;
+            padding: 3px 20px 6px 16px;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .sidebar .nav-links li:hover .sub-menu.blank{
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .sidebar .profile-details{
+            position: fixed;
+            bottom: 0;
+            width: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #1d1b31;
+            padding: 1px 0;
+            transition: all 0.6s ease;
+            opacity: 1;
+        }
+        .sidebar.close .profile-details{
+            background: none;
+            opacity: 0;
+        }
+        .sidebar.close .profile-details{
+            width: 78px;
+        }
+        .sidebar .profile-details .profile-content{
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar.close .profile-details i,
+        .sidebar .profile-details .profile_name,
+        .sidebar .profile-details .job{
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: 1.0s ease;
+            transition-delay: 1s;
+        }
+        .sidebar.close .profile-details i,
+        .sidebar.close .profile-details .profile_name,
+        .sidebar.close .profile-details .job{
+            display: none;
+            font-size: 0px; 
+        }
+        .sidebar .profile-details .job{
+            font-size: 12px;
+        }
+        .sideIcon{ width:20px; margin:10px 12px; }
+        .sideIcon2{width:26px; margin:10px 12px; }
+        .sideIcon3{width:20px; margin:10px 12px; }
+        .sidebar .nav-links li img{
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .sidebar .nav-links li.showMenu .arrow{
+            transform: rotate(-180deg);
+        }
+
+        .home-section{    /* Home Section where the contnets will come -------*/
+            margin-left: 45px;
+            width: calc(100% - 45px);
+        }
+        .home-section .home-content{
+            height: 60px;
+        }
+        .home-section .home-content .bx-menu,
+        .home-section .home-content .text{
+            color: #11101d;
+            font-size: 35px;
+        }
+        .home-section .home-content .bx-menu{
+        margin: 0 10px;
+        cursor: pointer;
+        }
+        .home-section .home-content .text{
+        font-size: 26px;
+        font-weight: 600;
+        }
+        
+        #loadOverlay{display: none;}
+    </style>
+
+
+
+</html>

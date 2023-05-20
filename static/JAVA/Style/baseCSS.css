@@ -1,0 +1,46 @@
+
+
+label { 
+    font-size:18px; 
+    font-weight: 500; 
+    margin: -5px 0px; 
+    color:#5869a8; 
+    position:relative; top: 3px; 
+}
+
+
+  /*-------Button ------------------------------------------------*/
+  .cusTab2 {
+    display:flex;
+    min-width:1200px;
+    flex-wrap: wrap;
+    padding: 0 20px;
+    margin: 0 10px;
+    justify-content: right;
+  }
+  .btnS {
+    min-width:100px;
+    padding:3px 10px; 
+    margin:0px 5px;
+    font-size:15px; 
+    border-radius:5px; 
+    color:white;
+    cursor:pointer;
+  }
+  .btnOk {
+    background:#57c8bd;
+    border: 1px solid #57c8bd;
+  }
+  .btnCancel {
+    background:#519de9;
+    border: 1px solid #519de9;
+  }
+  .btnHelp {
+    background:#ffda47;
+    color:black;
+    border: 1px solid #ffda47;
+  }
+  .btnCopy {
+    background:#f3f8fc;
+    border: 1px solid #f3f8fc;
+  }

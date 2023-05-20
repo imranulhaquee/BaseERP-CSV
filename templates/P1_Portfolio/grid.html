@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+{% load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Browser Image and Heading -->
+    <link rel="shortcut icon" href="static/JAVA/Images/Icon/favicon.png" />
+    <title>IUH</title>
+</head>
+<body>
+
+    <p>{{ basCompany }}</p>
+
+
+    <div class="container">
+        <div class="item i01; ">One - First Box One </div>
+        <div class="item i02; ">Two - Second Box </div>
+        <div class="item i03; ">Three - Third Box </div>
+        <div class="item i04; ">Four - Forth Box </div>
+        <div class="item i05; ">Five - Fifth Box </div>
+        <div class="item i06; ">Six - Sixth Box </div>
+        <div class="item i07; ">Seven - Seventh Box </div>
+        <div class="item i08; ">Eight - Eight Box  </div>
+      
+    </div>
+
+
+
+<style>
+    *{
+        font-family: 'Roboto', sans-serif;
+        margin:0; padding:0;
+        box-sizing: border-box;
+        outline: none; border:none;
+        text-decoration: none;
+    }
+    
+    html{
+        font-size: 62.5%;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+    }
+
+
+    .container{
+        font-size: 2.5rem;
+        width: 100vw;
+        height: 80vh;
+        margin: 50px auto;
+        background-color: whitesmoke;
+
+        display: flex;
+        flex-wrap: wrap;
+
+        /*
+        justify-content: center;
+         
+        align-items:center;
+        align-content: start;
+        */
+
+    }
+
+    .item{
+        background:#b8c389;
+        border: 1px solid;
+        border-radius: 5px;
+        padding: 1rem;
+        margin: 1rem;
+    }
+    .item:nth-child(even) {
+        background:#ddd;
+    }
+
+    .container.i02{
+        flex-basis: 30rem;
+    }
+    
+
+</style>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+<!-- 
+
+
+    .wrapper{
+        font-size: 2.5rem;
+        min-height:90vh; 
+        background:lightgray;
+        display:grid;
+        grid-template-columns: repeat(3, 1fr); 
+ 
+        grid-gap: 1em;
+        justify-content: center;
+        align-content:center;
+        }
+
+    .wrapper div {background:#eee; padding: 1em; }
+
+    .wrapper div:nth-child(odd) {background:#ddd;}
+    
+
+    .box{
+        border: 1px solid;
+        align-self:start;
+
+    }
+
+    h1{
+        font-size: 3.5rem;
+    }
+
+
+-->

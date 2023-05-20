@@ -1,0 +1,688 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+<div class="conA">
+
+    <!--════ Heading Section ══════════════════════════════════════ //Start-->
+        <div class="heading"> 
+            <div> <img src=" {% static 'Java/Images/Logo/clientLogo.png' %}" style="width:175px;" alt=""> </div>
+            <h2><span class="span1">┃</span><span class="span2">Client Meeting Notes</span> </h2>
+        </div>
+    <!--════ Heading Section ══════════════════════════════════════ //Start-->
+
+
+
+
+    <!--════ Top Section ══════════════════════════════════════════ //Start-->
+        <div class="Top"> 
+
+            <div>
+                <label for="fname"> <span>Meeting Reference<span class="required">*</span></span> 
+                <input disabled type="text" id="metRef" name="metRef" placeholder="Meeting Refernce"> </label>
+            </div>
+            <div>
+                <label for="fname"> <span>Meeting Date <span class="required">*</span></span> 
+                <input type="date" id="metDat" name="metDat"> </label>
+            </div>
+
+            <div>
+                <label> <span>Customer ID </span> </label>
+                <div style="position:relative;" >
+                    <span onclick="sCountryDD()"> <input disabled type="text" id="cusCode" name="cusCode" onclick="sCountryDD()"> </span>
+
+                    <!--==== Customer Search Table ====================================== -->
+                    <!--================================================================= -->
+                    <div style="position:absolute;" id="conCol" class="fooCount" onmouseleave="hideOpt()">
+                        <div class="serDiv"> 
+                            <span class="Search">
+                                <img class="Icon iA" src="{% static '/JAVA/Images/Icon/search.png' %}" alt="" width="15px" >
+                                <span class="Icon iB">🞃 |</span>
+                                <input id="filterA" onkeyup="filterA()" type="text" placeholder="Search Customer">
+                            </span>
+                            <span class="btnCash" onclick="cashCustomer()"> Cash Customer</span>
+                            <a href="/addCustomer" target="_blank"> <span class="btnCash" onclick="genItem()"> +New Customer</span>  </a>
+                            <span onclick="custHide()" style="position:absolute; right:5px; top:5px; font-size:11px; cursor:pointer;"> ❌ </span>
+                        </div>
+
+                        <table id="cusTable">
+                            <tr class="cusHead"> <th style="width:80px">Customer #</th>  <th>Customer Name</th>  </tr>
+                            <tbody id="cusBody"> </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label> <span>Customer Name </span> 
+                <input type="text" id="cusName" name="cusName" disabled> </label>
+            </div>
+
+            <div>
+                <label> <span>Location of Meeting </span> 
+                <input type="text" id="areaName" name="areaName"> </label>
+                <p1 onclick="showPop_A()" style="position:relative; left:-2px; bottom:2px; color:orange; font-weight:bold; cursor:pointer;" >☰</p1>
+            </div>
+            <!--━━━━ Delivery Notes (Search Table Pop) ━━━━━━━━━━━━━━━━━━━━━-->
+                <div  id="Pop_A"  onmouseleave="hidePop_A()" > 
+                    <div onclick="hidePop_A()" class="closeBtn"> X </div>
+                    <div id="map"></div> 
+                     <button style="float:right" onclick="getLocation()"> <h1 style="cursor:pointer"> Get Location </h1> </button> 
+                </div>
+            <!--━━━━ Sales Quotation (Search Table Pop_A) ━━━━━━━━━━━━━━━━━━━-->
+
+
+
+
+        </div>
+        <br><br>
+    <!--════ Top Section ══════════════════════════════════════════ //Start-->
+
+
+
+
+    <!--════ Bottom Section ═══════════════════════════════════════ //Start-->
+
+            <div>
+                <label> <span>Private Note </span> 
+                <textarea type="text" id="priNote" name="priNote" class="tabA" rows="5"></textarea> </label>
+            </div>
+            <div>
+                <label> <span>Public Notes </span> 
+                <textarea  type="text" id="pubNote" name="pubNote" class="tabA" rows="5"></textarea> </label>
+            </div>
+
+    <!--════ Bottom Section ═══════════════════════════════════════ //Start-->
+
+
+    <!--════ Sales Section ═══════════════════════════════════════ //Start-->
+
+            <div>
+                <label> <span>Other Details </span> 
+                <textarea type="text" id="othNote" name="othNote" class="tabA" rows="3"></textarea> </label>
+            </div>
+            <br><br>
+            <div>
+                <label> <span>Sales Person </span> 
+                <input type="text" id="salPer" name="salPer"> </label>
+            </div>
+
+    <!--════ Sales Section ═══════════════════════════════════════ //Start-->
+
+
+    <!--════ Save Section ══════════════════════════════════════ //Start-->
+        <section id="savSec">
+            <div><button  onclick="event.preventDefault()" class="hBtn" type="submit"> ⚠ HELP</button></div>
+            <div><button onclick="canRecord()" id="cancelA" class="cBtn" type="submit"> ✂ CANCEL</button></div>
+            <div><button onclick="addRecord()" id="addRec"  class="addRec sBtn" type="submit" disabled=true>✚ Save</button></div>
+        </section>
+    <!--════ Save Section ══════════════════════════════════════ // End -->
+
+</div>
+
+
+<script>
+    Data = {{Data|safe}}
+    //console.log(Data[0].areaName)
+
+    document.querySelector('#metRef').value = Data[0].metRef;
+    document.querySelector('#metDat').value = Data[0].metDat;
+
+    document.getElementById('cusCode').value = Data[0].cusCode;
+    document.getElementById('cusName').value = Data[0].cusName;
+    document.getElementById('priNote').value = Data[0].priNote;
+    document.getElementById('pubNote').value = Data[0].pubNote;
+    document.getElementById('othNote').value = Data[0].othNote;
+    document.getElementById('salPer').value = Data[0].salPer;
+    document.getElementById('areaName').value = Data[0].areaName;
+    
+
+    let currDate = ''
+    let nextNumber
+    //.... Get Data from Context Process and stored in Variable ...............
+        let basInfo = {{basInfo|safe}}
+    //.... Get Data from Context Process and stored in Variable ...............
+    
+    
+
+  //⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ Add Record ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
+
+    //■■■■■ GET JAVASCRIPT ARRAY OF OBJECTS - BY CALLING  'tableToJson()'■■■■■■■■■■ 
+    function addRecord() {
+        var addData = tableToJson(); // Get table  
+          add_Record (addData)
+    }
+      
+    //■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    function tableToJson() {
+        //----  Get Input field to gererate Basic Data Object ----------------------
+            MetRef = document.getElementById('metRef').value;
+            MetDat = document.getElementById('metDat').value;
+            CusCode = document.getElementById('cusCode').value;
+            CusName = document.getElementById('cusName').value;
+            PriNote = document.getElementById('priNote').value;
+            PubNote = document.getElementById('pubNote').value;
+            OthNote = document.getElementById('othNote').value;
+            SalPer = document.getElementById('salPer').value;
+            const basicData = { metRef:MetRef, metDat:MetDat, cusCode:CusCode, cusName:CusName,
+                                priNote:PriNote, pubNote:PubNote, othNote:OthNote,
+                                areaLat:areaLat, areaLon:areaLon, areaName:areaName,
+                                salPer:SalPer };
+              var allData = basicData
+        //----  Get Input field to gererate Basic Data Object ----------------------  
+        return allData;
+    }
+      
+    const add_Record = async (data) => {
+        try {
+        //console.log(data)
+        const response = await fetch(`${basInfo.IP[0]}/meetNotes`, {
+            method: 'POST',
+            body: JSON.stringify(data), 
+            headers: {"Content-type":"application/json; charset=UTF-8"},
+        })
+        const post = await response.json();
+            alert("Note Saved Successfully...")
+            addRefresh()
+        } catch (e) {  
+            alert(e)
+        }
+    }
+  
+    //■■■■■ Refresh Quotation Form ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    function addRefresh(){
+        ref = document.getElementById('metRef').value 
+        let num = parseInt(ref); // convert string to number
+        num += 1; // add 1 to the number
+        ref = String(num);
+        document.getElementById('metRef').value = ref
+        document.getElementById('metDat').value = newMetDat
+        document.getElementById('cusCode').value = ""
+        document.getElementById('cusName').value = ""
+        document.getElementById('priNote').value = ""
+        document.getElementById('pubNote').value = ""
+        document.getElementById('othNote').value = ""
+        document.getElementById('salPer').value = ""
+    
+        savDisable('Yes')  //to Disable Save option..............
+    }
+
+
+    //■■■■■ CANCEL RECORD ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    function canRecord(){
+        document.getElementById('qotRef').value = newQotNum
+        document.getElementById('qotDat').value = newQotDat
+        document.getElementById('cusCode').value = ""
+        document.getElementById('cusName').value = ""
+        document.getElementById('shipTo').value = ""
+        document.getElementById('billTo').value = ""
+        document.getElementById('comm').value = ""
+        document.getElementById('salPer').value = ""
+
+        savDisable('Yes')  //to Disable Save option..............
+    }
+
+
+    //■■■■■ Form Validation ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    function savDisable (elem) {
+        const subBtn = document.querySelector(".addRec");
+        if (elem == 'Yes'){
+            subBtn.disabled = true;
+            subBtn.classList.remove('addColor')
+        }else{
+            subBtn.disabled = false;
+            subBtn.classList.add('addColor')
+        }
+    }
+
+</script>
+
+
+<style>
+
+    /* ⚊⚊⚊⚊ Container ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .conA { 
+            width: 95%;
+            min-width: 700px;
+            margin:3%; 
+            padding: 3%; 
+            background-color: #fff;  
+            border-radius: 5px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15); 
+            background:  url('/static/JAVA/Images/BackPng/backPng5.png') no-repeat;
+            background-size: 100%; /* Adjust the value as per your preference */
+            background-position: right top;
+        }
+
+    /* ⚊⚊⚊⚊ Container ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Input Fields ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        label > span{
+            width: 190px;
+            font-size: 14px;
+            font-weight: 600;
+            float: left;
+            padding-top: 8px;
+            padding-right: 5px;
+
+        }
+        input {
+            border: none;
+            box-sizing: border-box;
+            border-bottom: 1px solid rgb(0, 21, 255);
+            box-shadow: 1px 1px 4px #EBEBEB;
+            font-size: 13px;
+            margin: 3px 0;
+            padding: 2px 0;
+        }
+        input:focus { 
+            outline: none; 
+            background-color:#faf6f6;
+        }
+        .required{
+            color:red;
+        }
+
+    /* ⚊⚊⚊⚊ Input Fields ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+    
+    /* ⚊⚊⚊⚊ Heading Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .heading {
+            position:relative;
+            display:flex; 
+            flex-wrap:wrap; 
+            justify-content: space-between; 
+            width:100%; 
+            margin-bottom: 20px;
+
+        } 
+        .heading .span1 {
+            color:orange;
+        }
+        .heading .span2 {
+            font-weight:300;
+        }
+    /* ⚊⚊⚊⚊ Heading Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+    
+    /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .Top {
+            margin: 0px 0px 20px 0px;
+        }
+
+        #qotRef { min-width:180px; }   
+        #qotDat { min-width:180px; }
+        #cusCode { min-width:180px; }
+        #cusName { min-width:400px; }
+        #areaName { min-width:400px; }
+    /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+
+    /* ⚊⚊⚊⚊ Bottom Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .Bottom {
+            display:flex; 
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width:100%; 
+            margin-bottom: 30px;
+        }
+        .Bottom label{
+            width: 340px;
+            font-size: 14px;
+            font-weight: 400;
+            float: right;
+            padding-top: 8px;
+            padding-right: 5px;
+            color: rgb(115, 114, 114);
+        }
+        textarea {
+            width: 90%;	
+            font-size: 13px;
+            min-width: 90%;
+            max-width: 90%;
+            padding: 3px 10px;
+            margin: 4px 0;
+            box-sizing: border-box;
+            border: solid 1px rgb(183, 182, 182);
+            border-radius: 3px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15); 
+        }
+    /* ⚊⚊⚊⚊ Bottom Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Sales Person Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .salPerson {
+            margin-bottom: 30px;
+        }
+        .salPerson label > span{
+            width: 120px;
+            float: left;
+        }
+        .salPerson #cusCode{
+            min-width: 210px;
+        }
+    /* ⚊⚊⚊⚊ Sales Person Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        #savSec {
+            display: flex;
+            justify-content:flex-end;
+            flex-wrap: wrap;
+            padding: 5px 0px 0px 40px;
+            
+        }
+        .sBtn, .hBtn, .cBtn{
+            /* box-shadow: inset 0px 1px 0px 0px #45D6D6;
+               border: 1px solid #27A0A0;
+               background-color: #2CBBBB; */
+            box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+            background-color: #AAAAAA;
+            display: inline-block;
+            cursor: pointer;
+            color: #FFFFFF;
+            font-family: 'Open Sans Condensed', sans-serif;
+            font-size: 14px;
+            padding: 4px 18px;
+            margin: 5px 10px;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .cBtn{
+            background-color: #1DA1F2;
+        }
+        .hBtn{
+            background-color: #3B5998;
+        }
+        .addColor{
+            background-color: #2CBBBB;
+        }
+        .cusTab3 {
+            display: flex;
+            justify-content:space-between;
+            flex-wrap: wrap;
+        }
+    /* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+</style>
+
+
+
+<!--........................................................................-->
+<!--==== Customer Detail  Popup Window ==============================//Start-->
+<!--........................................................................-->
+
+  <script>
+
+    //-------- Show the Detail on Dom ------------------------------------------
+
+    //-------- Get the Latitude and Longitude of a location --------------------
+    function getLocation(){
+        navigator.geolocation.getCurrentPosition(position => {
+            const latitude =  (Data[0].areaLat)
+            const longitude = (Data[0].areaLon)
+            map.innerHTML = `<iframe width="700" height="300" src="https://maps.google.com/maps?q=`+latitude+`,`+longitude+`&amp;z=15&amp;output=embed"></iframe>`;
+        })
+    }
+
+
+
+    //----Appear and Hide Customer List Div------------------------- //Start-->
+        //On Click Country input - Option Dropdown will appear .....
+        function sCountryDD(){
+            var abbc = document.getElementById("conCol");
+            abbc.style.display = "block";
+            abbc.classList.toggle("hide");
+        } 
+
+        function hideOpt(){  
+            var abbc = document.getElementById("conCol");
+            abbc.style.display = "none";
+        }
+    //----Appear and Hide Customer List Div------------------------- //Start-->
+
+  </script>
+
+
+  <style>
+    
+    /* Display Option ------------------------------------------------------- */
+    #conCol {
+        width:500px; 
+        min-height:150px;
+        max-height:300px; 
+        background:#fcffff; 
+        border: 1px solid #3B5998;
+        box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+        overflow-y: auto;
+    }
+
+    .fooCount, .fooReg {
+        display: none;
+        position:absolute;
+        left:190px;
+        z-index: 100;
+        background:lightgray;  
+    }
+    .fooCount {
+        display: none;
+    }
+
+    .show{ display: block; }
+    .hide{ display: none; }
+
+    /* Search --------------------------------------------------------------- */
+    .serDiv{ 
+        background:#ffffff;
+        position:sticky;
+        top:0;
+        padding-bottom: 10px;
+        z-index: 100;
+
+    }
+    .Search {
+        position:relative;
+        margin-left: 8px;
+
+    }
+    .Search .Icon {
+        position:absolute; 
+        color:gray;
+    }
+    .Search .Icon.iA{
+        left:7px;
+        top: 4px;
+    }
+    .Search .Icon.iB{
+        font-size: 10px;
+        top: 2px;
+        left:25px;
+    }
+    .Search input{
+        border-radius: 25px;
+        min-width: 50%;
+        height: 25px;
+        margin-left: 5px;
+        padding-left: 43px;
+        font-size: 11px;
+        border: 1px solid rgb(209, 207, 207);  
+    }
+    .btnCash{
+        background:lightgray;
+        padding: 5px 10px;
+        font-size: 12px;
+        border-radius: 25px;
+        cursor:pointer;
+    }
+    .btnCash:hover{
+        background:rgb(185, 199, 219);
+        box-shadow: 4px 6px 2px -4px rgba(0,0,0,0.4);
+        font-size: 12.5px;
+    }
+    /* Cutomer Table ---------------------------------------------------------*/
+    #cusTable {
+        margin:0 2.5% 2.5% 2.5%;
+        font-size: 11px;        
+        border-collapse: collapse;
+        width: 95%;
+    }
+    #cusTable .cusHead {
+        background: lightgray;
+        position:sticky;
+        border: 1px solid #30569c;
+        box-shadow: 0px 6px 2px -4px rgba(0,0,0,0.4);
+        top:40px;
+        z-index: 100;
+    }
+    #cusTable td, th {
+        text-align: left;
+        padding: 3px 8px;
+        background: none;
+    }
+
+    .addColor{
+        background-color: #2CBBBB;
+    }
+  </style>
+
+<!--==== Customer Detail  Popup Window ==============================// End -->
+
+
+
+
+
+
+
+<!--.........................................................................-->
+<!--==== Sales Order  Deatil Popup Window ===============================//Start-->
+<!--.........................................................................-->
+<script>
+    //--==== Fetch Item Data to Select ================================= //Start-->
+        let list_A=[]; // Declare a global variable to store the data
+        
+        async function fetchPop_A(){
+            const response = await fetch(`${basInfo.IP[0]}/openSalDlURL`)
+            const data = await response.json()
+            list_A = data  //when call showRecord() function data will save in finalData
+            Table_A(list_A)
+            //console.log(list_A)
+        }
+    //--==== Fetch Item Data to Select ================================= // End -->
+
+
+    //------ Render Item Table ----------------------------------------- //Start-->
+        function Table_A(dataList){
+            //console.log(dataList)
+            var table = document.getElementById('popBody_A').innerHTML=` ${dataList.map(temList).join('')}`
+            function temList (e){
+                return`<tr">
+                        <td style="color:#0464d1">${e.soRef}</td>
+                        <td>${e.soDat}</td>
+                        <td>${e.opnClo}</td>
+                        <td style="display:none"> ${e.cusCode}</td>
+                        <td>${e.cusName}</td>
+                    </tr>`
+            }
+            //-- on click select the row -------------------------
+            var cells = document.querySelectorAll(`#popBody_A td`);
+            for (var j = 0; j < cells.length; j++) {
+                var cell_A1 = cells[j];
+                cell_A1.onclick =  async function () {
+                    var rowId = this.parentNode.rowIndex-1;
+                    var rowSelected = document.querySelectorAll(`#popBody_A tr`)[rowId];
+                    clickVal1 = rowSelected.cells[0].innerHTML;
+                    savDisable('No')
+                    fetchQotDetail(clickVal1)
+                }
+            }
+        }
+    //------ Render Item Table ----------------------------------------- // End -->
+
+
+    //------ Filter Records-------------------------------------------- //Start-->
+        function filter_A(input){tableInside_A()}
+        function tableInside_A(){
+            let filter = document.querySelector('#filter_A').value.toUpperCase(); //capturing input value
+
+            if (filter.length >= 3) {
+                let abc = list_A.filter(x => x.cusName.toLowerCase().includes(filter.toLowerCase()))
+                Table_A(abc)
+            }else if (filter == '*'){
+                Table_A(list_A)
+            }
+            else {
+                Table_A(list_A)
+            }
+        }
+
+        function remEmpAfterSave(){
+            const filteredData = list_A.filter((employee) => employee.cusCode !== cuslCode);
+            list_A = filteredData
+            Table_A(list_A)
+        }
+    //------ Filter Records --------------------------------------------// End -->
+
+
+    //-------Run function On Click to "show the list Div"........... //Start-->
+        function showPop_A(){ 
+            var abbc = document.getElementById("Pop_A");
+            abbc.classList.toggle("hide"); 
+            abbc.style.display = "block";
+        }
+
+        function hidePop_A(){
+            var abbc = document.getElementById("Pop_A");
+            abbc.style.display = "none"; 
+        }
+
+        function custHide(){
+            var abbc = document.getElementById("conCol");
+            abbc.style.display = "none"; 
+        }
+    //-------Run function On Click to "show the list Div"........... // End -->
+
+</script>
+
+
+<style>
+    /* Customer Search Table ------------------------------------------------- */
+        #Pop_A {
+            position:absolute;
+            margin: 0px 0 0 127px;
+            display:none;
+            width:700px; 
+            min-height:250px;
+            max-height:300px; 
+            background:#fcffff; 
+            border: 1px solid #3B5998;
+            box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+            border-radius: 10px;
+            overflow-y: auto;
+            z-index:10; 
+            left:0;
+        }
+
+        .sDiv .closeBtn{
+            position:absolute; 
+            right:2px; top:2px; 
+            color:red; 
+            background:lightgray; 
+            border-radius:50%; 
+            width:20px; height:20px; 
+            text-align:center;
+            cursor:pointer;"
+        }
+
+</style>
+
+<!--==== Quotation Deatil Popup Window ===============================// End -->
+
+
+
+
+
+
+{% endblock body %}

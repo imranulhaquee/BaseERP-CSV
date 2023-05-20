@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+{% load static%}
+<!-- Coding by CodingLab | www.codinglabweb.com-->
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--<title> Responsive Login and Signup Form </title>-->
+
+        <!-- ICon -->
+        <link rel="shortcut icon" href="static/JAVA/Images/Icon/favicon.png" />         
+            
+        
+        <!-- Email JS -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"> </script>
+        <!-- imranulhaquee@gmail.com
+        <script type="text/javascript"> (function(){emailjs.init("d6Wp665DEftNsvkyq");})(); </script>
+         -->
+        <!-- ikbase247@gmail.com -->
+        <script type="text/javascript"> (function(){emailjs.init("i9TUrS0aWwRgMcaVC");})(); </script>
+        
+
+    </head>
+
+
+    <body>
+        <section class="container forms ">
+            <div class="form login">
+                <div class="form-content">
+                    <header>
+                        <span style="cursor: pointer;"> <a href="/"><img src="{% static 'JAVA/Images/Logo/logoNameWhite.png' %}" style="position:relative; top:10px; left:-10px; width:90px;" alt=""> </a> </span>Login </header>
+                    <form action="{% url 'login' %}" method="POST">
+                        {% csrf_token %}
+
+                        <div class="field input-field">
+                            <input type="email" placeholder="Email" class="input" name="email">
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="password" placeholder="Password" class="password" name="password" >
+                            <i class='eye-icon'>👁</i>
+                        </div>
+
+                        <div class="form-link">
+                            <a href="forgotPassword" class="forgot-pass">Forgot password?</a>
+                        </div>
+
+                        <div class="field button-field">
+                            <button>Login</button>
+                        </div>
+                    </form>
+
+                    <div class="form-link">
+                        <span>Don't have an account? <a href="#" class="link signup-link">Signup</a></span>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+
+                <div class="media-options">
+                    <a href="#" class="field google">
+                        <img src="{% static 'JAVA/Images/Icon/web.png' %}" alt="" class="google-img">
+                        <span>Login with Google</span>
+                    </a>
+                </div>
+
+                <div class="media-options">
+                    <a href="#" class="field google">
+                        <img src="{% static 'JAVA/Images/Icon/web.png' %}" alt="" class="google-img">
+                        <span>Login with Google</span>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- ☰☰☰☰☰☰☰☰☰ Signup Form ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰ -->
+
+            <div class="form signup" >
+                <div class="form-content">
+                    <header><span style="cursor: pointer;"> <a href="/"><img src="{% static 'JAVA/Images/Logo/logoNameWhite.png' %}" style="position:relative; top:10px; left:-10px; width:90px;" alt=""> </a>  Signup 
+                    </header>
+                    <form action="#" id="signUpForm">
+                        <div id="comp">
+                            <select id="Company">
+                                <option>BaseFR</option>	
+                                <option>Medica</option>
+                                <option>BaseERP</option>
+                                <option>ikCircle</option>
+                            </select>
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="email" placeholder="Email" class="input" id="email">
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="password" placeholder="Create password" class="password" id="password">
+                        </div>
+
+                        <div class="field input-field">
+                            <input type="password" placeholder="Confirm password" class="password" id="cPassword">
+                            <i class='eye-icon'>👁</i>
+                        </div>
+                      
+                        <div class="field button-field">
+                            <button onclick="addRecord()" > Signup</button>
+                        </div>
+                    </form>
+
+                    <div class="form-link">
+                        <span>Already have an account ? <a href="#" class="link login-link">Login</a></span>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+
+                <div >
+                    <div class="media-options">
+                        <a href="#" class="field facebook">
+                            <img src="{% static 'JAVA/Images/Icon/web.png' %}" alt="" class="google-img">
+                            <span>Login with Facebook</span>
+                        </a>
+                    </div>
+
+                    <div class="media-options">
+                        <a href="#" class="field google">
+                            <img src="{% static 'JAVA/Images/Icon/web.png' %}" alt="" class="google-img">
+                            <span>Login with Google</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- JavaScript -->
+        <!--<script src="js/script.js"></script>-->
+    </body>
+
+
+<script>
+    
+    document.getElementById("signUpForm").addEventListener("click", function(event){event.preventDefault()})
+
+    async function addRecord() {
+        email = document.getElementById('email').value;
+        pass = document.getElementById('password').value;
+        cPass = document.getElementById('cPassword').value;
+        sCom = document.getElementById('Company').value;
+
+        const formUp = document.getElementById('signUpForm');
+        const form_data =  await new FormData(formUp);
+        form_data.append("email", email);
+        form_data.append("password", pass);
+        form_data.append("access", sCom);
+
+        fetch("http://127.0.0.1:8090/signUp", {
+            method: 'POST',
+            body: form_data,
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            signUpForm.reset()
+            console.log(data)
+            alert("Sign-Up Successfully, Please don't refresh the page, An activation mail will send to your email")
+            sendEmail(data)
+        })
+    }
+
+    function sendEmail(list) {
+        site = `http://${(list[3])}/activate/${(list[4])}/${(list[5])}`  //will send email with the link
+
+        var params = {
+                name: list[6],
+                email: list[0],
+                site: site,
+            }
+
+        //----imranulhaquee@gmail.com----------
+        //const serviceID = "service_hguttlr"
+        //const templateID = "template_zyngv68"
+
+        //----ikbase247@gmail.com--------------
+        const serviceID = "service_udscd5r"
+        const templateID = "template_rsppczk"
+          
+        emailjs.send(serviceID, templateID, params)
+        .then((res) => {
+            alert("Please confirm the activation link send to your email");
+            window.location.assign("http://127.0.0.1:8090/login");
+        })
+        .catch((err)=> console.log(err));
+
+    }
+
+
+    //---------- Show and Hide Password functionality ---------------------//Start>
+        const forms = document.querySelector(".forms"),
+        pwShowHide = document.querySelectorAll(".eye-icon"),
+        links = document.querySelectorAll(".link");
+
+            pwShowHide.forEach(eyeIcon => {
+                eyeIcon.addEventListener("click", () => {
+                    let pwFields = eyeIcon.parentElement.parentElement.querySelectorAll(".password");
+                    
+                    pwFields.forEach(password => {
+                        if(password.type === "password"){
+                            password.type = "text";
+                            eyeIcon.classList.replace("bx-hide", "bx-show");
+                            return;
+                        }
+                        password.type = "password";
+                        eyeIcon.classList.replace("bx-show", "bx-hide");
+                    })
+                    
+                })
+            })      
+
+            links.forEach(link => {
+                link.addEventListener("click", e => {
+                e.preventDefault(); //preventing form submit
+                forms.classList.toggle("show-signup");
+                })
+            })
+
+            function comp(){
+                alert();
+            }
+    //----------  Show and Hide Password functionality -------------------//Start>
+
+</script>
+
+
+
+<style>
+    /* Google Fonts - Poppins */
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    .container{
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: linear-gradient(rgba(43, 63, 70, 0.2), rgba(43, 40, 65, 0.5)), #040c31 url('/static/JAVA/ABC.jpg'); /* Chrome 10-25, Safari 5.1-6 */
+
+        background-size: cover;
+
+        /*background-color: #4070f4;
+            background: #310404 url('/static/JAVA/ABC.jpg') no-repeat center center fixed; 
+        */
+        column-gap: 30px;
+    }
+
+    .form{
+        position: absolute;
+        max-width: 430px;
+        width: 100%;
+        padding: 30px;
+        border-left:1px solid rgb(100, 99, 99);
+        border-top:1px solid rgb(106, 104, 104);
+        border-right:1px solid rgb(182, 178, 178);
+        border-bottom:1px solid rgb(182, 178, 178);
+        border-radius: 6px;
+        background: rgba(40, 39, 48, 0.7);
+    }
+    .form.signup{
+        opacity: 0;
+        pointer-events: none;
+    }
+    .forms.show-signup .form.signup{
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .forms.show-signup .form.login{
+        opacity: 0;
+        pointer-events: none;
+    }
+    header{
+        font-size: 28px;
+        font-weight: 600;
+        color: #e9eced;
+        text-align: center;
+    }
+    form{
+        margin-top: 20px;
+    }
+    .form .field{
+        position: relative;
+        height: 40px;
+        width: 100%;
+        margin-top: 20px;
+        border-radius: 6px;
+    }
+    .field input,
+    .field button{
+        height: 100%;
+        width: 100%;
+        border: none;
+        font-size: 16px;
+        font-weight: 400;
+        border-radius: 6px;
+    }
+    .field input{
+        outline: none;
+        background-color: rgba(239, 234, 234, 0.688);
+        padding: 0 15px;
+        border: 1px solid#CACACA;
+    }
+    .field input:focus{
+        border-bottom-width: 2px;
+    }
+    .eye-icon{
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        font-size: 22px;
+        color: #053758;
+        cursor: pointer;
+        padding: 5px;
+    }
+    .field button{
+        color: #fff;
+        background-color: rgba(46, 162, 240, 0.3);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .field button:hover{
+        background-color: rgba(46, 162, 240, 0.4);
+    }
+    .form-link{
+        text-align: center;
+        margin-top: 10px;
+    }
+    .form-link span,
+    .form-link a{
+        font-size: 14px;
+        font-weight: 400;
+        color: #b7c5ed;
+    }
+    .form a{
+        color: #ffffff;
+        text-decoration: none;
+    }
+    .form-content a:hover{
+        text-decoration: underline;
+    }
+    .line{
+        position: relative;
+        height: 1px;
+        width: 100%;
+        margin: 36px 0;
+        background-color: #4e4b4b;
+    }
+    .line::before{
+        content: 'Or';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #4e4b4b;
+        color: #fcf6f6;
+        border-radius: 50%;
+
+        padding: 4px 7px;
+        margin:0;
+    }
+    .media-options a{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    a.facebook{
+        border: 1px solid #646161;
+        color: #82c4fd;
+        background-color: rgba(46, 162, 240, 0.3);
+    }
+    a.facebook:hover{
+        background-color: rgba(46, 162, 240, 0.4);
+    }
+    a.facebook .facebook-icon{
+        height: 28px;
+        width: 28px;
+        color: #0171d3;
+        font-size: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+    }
+    .facebook-icon,
+    img.google-img{
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        transform: translateY(-50%);
+    }
+    img.google-img{
+        height: 35px;
+        width: 35px;
+        object-fit: cover;
+    }
+    a.google{
+        border: 1px solid #646161;
+        color: #82c4fd;
+        background-color: rgba(46, 162, 240, 0.3);
+    }
+    a.google:hover{
+        background-color: rgba(46, 162, 240, 0.4);
+    }
+    a.google span{
+        font-weight: 500;
+    }
+    .co-img{
+        width:35px;
+        position: relative;
+        top: 10px;
+    }
+    #Company{
+        width:100px;
+        margin:0px;
+        padding:0px;
+        height:20px;
+        border-radius: 5px;
+        position: relative;
+        top: 10px; 
+        background:none;
+        color:#4498f7;
+
+    }
+    
+    #comp{
+        display:block; 
+    }
+
+    @media screen and (max-width: 400px) {
+        .form{
+            padding: 20px 10px;
+        }
+        
+    }
+
+</style>
+
+
+
+</html>

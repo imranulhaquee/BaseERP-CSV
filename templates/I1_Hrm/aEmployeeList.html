@@ -1,0 +1,554 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+<!--════ Top Section ═══════════════════════════════════════ //Start-->
+    <section id="tMenu">
+        <div class='BoxA' >
+            <div> <img src=" {% static 'Java/Images/Logo/clientLogo.png' %}" style="width:100px; margin-top:5px" alt=""> </div>
+            <!-- <span class='p1'>〄</span> <span class="basCo" ></span>  -->
+        </div>
+        <div class='BoxB'>
+            <img src="{% static 'JAVA/Images/Icon/clock.png'%}" alt="" class='img1'>
+            <img src="{% static 'JAVA/Images/Icon/folder.png'%}" alt="" class='img1'>
+            <img src="{% static '../media/iuh.jpg'%}" alt="" class='img2'> 
+        </div>
+    </section>
+<!--════ Top Section ═══════════════════════════════════════ // End -->
+
+
+<!--====================== TABLE ================================= //Start-->
+    <div class="conA">
+        <div class="topBar" >
+            <div style="position:relative"> 
+                <span class="Search">
+                    <img class="Icon iA" src="static/JAVA/Images/Icon/search.png" alt="" width="10px" >
+                    <span class="Icon iB">|
+                        <div style='position:absolute; top:3px; left:-10px; z-index:101'>
+                            <select style="font-size: 9px;" id="sType"  style="margin:0px 5px;">
+                                <option value="Name">Name</option>
+                                <option value="Position">Position</option>
+                                <option value="Department">Department</option>
+                            </select>
+                        </div>
+                    </span>                   
+                    <input id="filterA" onkeyup="filterA()" type="text" placeholder="| Search">
+                </span>
+
+                <span style="font-size:12px; color:rgb(7, 4, 82);">TotEmp:<span class="tSupplier">  </span> </span>
+            </div>
+
+            <div class="boxC"><img class="word" src="static/JAVA/Images/Word/Employee.png" alt="" ></div>
+
+            <div class="boxB"> 
+                <a href="/addEmployee"> <span class="open-modal bBtn bAdd" onclick="addPopup()"> ✚ New </span> </a>
+                <img src="static/JAVA/Images/Icon/setup.png" alt="" style="position:relative; top:4px; width:20px">
+                <span class="mBtn">☰</span> 
+                <img src="static/JAVA/Images/Icon/refresh.png" alt="" onclick="supRefresh()" style="position:relative; top:4px; width:20px; cursor:pointer;">
+            </div>
+        </div>
+        <div class="tDiv">
+            <table id="Table">
+                <tr class="topLine" >
+                    <th style="display:none"></th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Department</th>
+                    <th>Image</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="botLine" >
+            <div>                 
+                <button id="firstButton" onclick="first()" class="pBtn">❬❬ First</button>  
+                <button id="prevButton" class="pBtn" >❬ Previous</button > <span id="cpNo" class="pBtn"></span> 
+                <button id="nextButton" class="pBtn" >Next ❭</button>
+                <button id="lastButton" onclick="last()" class="pBtn">Last ❭❭</button>  
+            </div>
+            <div class="boxB">
+                <span onclick="jumpTo()"> Go to Page </span> 
+                <input id="goto" style="width:50px; height:20px; border-radius:5px; border: 1px solid gray; padding: 1px 5px;"></input> 
+            </div>
+        </div>
+
+    </div>
+<!--====================== TABLE ================================= // End -->
+
+
+
+
+<script>
+    let basInfo = {{basInfo|safe}}
+    //const myCom = document.querySelector(".basCo").innerHTML = basInfo.Company[0]
+
+    //======================Show Records ========================== //Start-->
+        let finalData = []
+        let pageSize = 10
+        let currentPage = 1
+        
+        //----Function to Render Table ------------------------------------
+        async function renderTable() {
+            await showRecord()
+            dataTable(finalData)
+        }
+        renderTable()
+
+
+        //----Fetch API to Show Record ------------------------------------
+        async function showRecord(){
+            const response = await fetch(`${basInfo.IP[0]}/showEmp`)
+            const data = await response.json()
+            finalData = data  //when call showRecord() function data will save in finalData
+            temData = finalData
+            
+            //console.log(finalData)
+        }
+
+        //----Render Table ------------------------------------
+        function dataTable(Data){
+            //console.log(Data)
+
+            //show number of supplier     
+            let tSupplier = document.querySelector(".tSupplier").innerHTML = Data.length  //total Employee
+
+            let fD = Data.filter((row, index) => {
+                let start = (currentPage - 1) * pageSize
+                let end = currentPage * pageSize
+                if (index >= start && index < end) return true;
+            })
+        
+            var table = document.getElementById('tableBody').innerHTML=` ${fD.map(temList).join('')}`
+            function temList (e){
+                return`<tr">
+                    <td style="display:none">${e.id}</td> 
+                    <td style="color:#794203">${e.empCode} </td>
+                    <td style="font-size:14px;">${e.empFName} ${e.empMName} ${e.empLName} 
+                        </br> <span style="color:#0254cf; font-size:10px;"> ${e.empEmail} </span>
+                    </td>
+                    <td>${e.empPosi}</td>
+                    <td>${e.empDept}</td>
+                    ${ `${e.empImg == null || e.empImg == "" || e.empImg == "abc"
+                        ? `<td><img src="/media/Empty.jpg" alt="" class="imgSize"></td>` 
+                        : `<td><img src="/media/${e.empImg}"alt="" class="imgSize"></td>`}` 
+                    }
+                    <td style="color:#794203">${e.empStat} </td>
+                    <td style="text-align:center">
+                        <button class="open-modal mBtn" onclick="delRecrod(this)"> <img src="static/JAVA/Images/Icon/trash.png" alt="" style=" width:15px; cursor:pointer"> </button>
+                        <a style="margin-right: 30px;" href="/editEmployee/${e.id}"><button class="open-modalB mBtn" > <img src="static/JAVA/Images/Icon/edit.png" alt="" style=" width:15px; cursor:pointer"> </button></a>
+                    </td>
+                    </tr>`
+            }
+            var cp = currentPage
+            document.querySelector('#cpNo').innerHTML = Math.ceil(cp)
+        }
+          
+
+        function previousPage() {
+        if (currentPage > 1)
+                currentPage--;
+                dataTable(temData)   //renderTable()
+        }
+        document.querySelector('#prevButton').addEventListener('click', previousPage, false)
+
+        function nextPage() {
+        if ((currentPage * pageSize) < temData.length )
+                currentPage++;
+                dataTable(temData)   //renderTable()
+        }
+        document.querySelector('#nextButton').addEventListener('click', nextPage, false)
+
+        function jumpTo() {
+            let num = document.querySelector('#goto').value
+            currentPage = parseInt(num);
+            dataTable(temData)   //renderTable()
+        }
+
+        function first() {
+            currentPage = 1;
+            dataTable(temData)   //renderTable()
+        }
+
+        function last() {
+            currentPage = (temData.length)/pageSize;
+            dataTable(temData)   //renderTable()
+        }
+
+    //======================Show Records ========================== // End -->
+    
+
+    //--===================== Filter Records ====================== //Start-->
+
+        // Process to Filter Table Data .....................................
+        function filterA(input){tableInside()}
+        function tableInside(){
+            var searchType = document.querySelector('#sType').value;
+            //console.log(searchType)
+
+            let filterD = document.querySelector('#filterA').value //.toUpperCase(); //capturing input value
+            let myTable = document.querySelector('#tableBody'); //get table rows
+            let data = finalData
+            
+            if (filterD.length >= 3) {
+                if (searchType == 'Name'){
+                    let abc = data.filter(x => x.empFName.toLowerCase().includes(filterD.toLowerCase()))  //filter will not work if there is numaric value in the column
+                    currentPage = parseInt(1);
+                    temData = abc
+                    dataTable(temData)
+                }
+                if (searchType == 'Position'){
+                    let abc = data.filter(x => x.empPosi.toLowerCase().includes(filterD.toLowerCase()))  //filter will not work if there is numaric value in the column
+                    currentPage = parseInt(1);
+                    temData = abc
+                    dataTable(temData)
+                }
+                if (searchType == 'Department'){
+                    let abc = data.filter(x => x.empDept.toLowerCase().includes(filterD.toLowerCase()))
+                    currentPage = parseInt(1);
+                    temData = abc
+                    dataTable(temData)
+                }
+            }else {
+                temData = finalData
+                dataTable(temData)
+            }
+        }
+
+    //--===================== Filter Records ===================== // End -->
+
+
+    //--===================== Refresh Excel File ================= //Start-->
+        async function supRefresh(){
+            const response = await fetch(`${basInfo.IP[0]}/aEmpRefresh`)
+            const data = await response.json()
+            finalData = data  //when call showRecord() function data will save in finalData
+            temData = finalData
+            alert('Employeer Data Refreshd......')
+            //console.log(temData)
+        }
+
+    //--===================== Refresh Excel File ================= //Start-->
+
+
+
+    //--===================== Edit Records ======================= //Start-->
+        async function editRecrod(td) {
+            row = td.parentElement.parentElement
+            recID = row.cells[0].innerHTML
+            //console.log(recID)
+
+            href="{% url 'aEditCustomer' 'abc' %}"
+
+            var arr = [recID, "Medica Care Solution","Medica Pharma", "Medica Trading LLC"]
+            document.getElementById('editSupplier').setAttribute('href', `aEditSupplierr?query_name= ${arr}`);
+        
+            
+        };
+
+
+    //--===================== Edit Records ======================= // End -->
+
+
+
+
+    //--===================== Delete Records ====================== //Start-->
+        const deletPost = async (id) => {
+            try {
+            const response = await fetch (`${basInfo.IP[0]}/delEmp/${id}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                alert('Record deleted successfully.');
+            } else {
+                alert('Unable to Delete there might be some transaction')
+                throw new Error('Unable to Delete there might be some transaction');
+            }
+
+            const post = await response.json();
+            return post;
+                alert('Removed Data Successfully...')
+                
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        async function delRecrod(td) {
+            row = td.parentElement.parentElement
+            recID = row.cells[0].innerHTML
+            recCriteria = row.cells[6].innerHTML
+            console.log(recCriteria)
+            if (recCriteria == "Inactive" || recCriteria == "Inactive " ){
+                if (confirm('Do you want to delete this record?')) {
+                    const deletedPost = await deletPost(recID);
+                    finalData.splice(finalData.findIndex(a => a.id === recID) , 1)
+                    dataTable(finalData)
+                }
+            }else{
+                alert("You can't delete the record! Employee status is Active")
+            }
+            //console.log(finalData)
+            //console.log(deletedPost);
+            
+        };
+
+    //--===================== Delete Records ====================== // End -->
+
+
+
+  </script>
+
+
+
+
+
+
+<style>
+
+        
+    /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        #tMenu {
+            position: relative;
+            display:grid; 
+            padding:0 25px;
+            box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.34);
+            border-bottom:#181919;
+            grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));  
+            align-items: center; 
+            background:#f2f5f8; 
+            height:35px;
+            background-image: linear-gradient(to right, #2e2436, #474053, #615e72, #7e7e92, #9b9fb3);
+        }
+        #tMenu .BoxA {
+            color:#fcf6c4; 
+            font-weight:600; 
+            font-size:20px;
+        }
+        #tMenu .BoxA .p1{
+            color:#fcbce9; 
+            font-weight:bold;
+        }
+        #tMenu .BoxB {
+            justify-self:end;
+        }
+        #tMenu .BoxB .img1{
+            position:relative; 
+            top:-2px; 
+            width:20px; 
+            height:20px; 
+            margin-right: .5rem;
+        }
+        #tMenu .BoxB .img2{
+            position:relative; 
+            top:2px;
+            border-radius:50%; 
+            width: 30px; 
+            height: 30px;
+        }       
+    /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Customer Options ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .conA{
+            position:relative;
+            /* display:grid;
+            justify-items:start; */
+            min-width:95vw;
+            min-height: 95vh;
+            background:#fff ;
+            padding:25px 15px 15px 15px;
+            overflow:auto;
+            
+        }
+        .Search {
+            position:relative;
+        }
+        .Search .Icon {
+            position:absolute; 
+            color:rgb(25, 24, 24);
+        }
+        .Search .Icon.iA{
+            left:7px;
+            top: 7px;
+        }
+        .Search .Icon.iB{
+            font-size: 10px;
+            top: 2px;
+            left:25px;
+        }
+
+        .Search input{
+            border-radius: 25px;
+            min-width:175px;
+            height: 25px;
+            padding-left: 90px;
+            font-size: 12px;
+            border: 1px solid rgb(209, 207, 207);  
+        }
+        .word{
+            width: min(max(150px, 17vw), 200px);
+            /* position:absolute;
+            margin-left: 20%;
+            top: 25px;
+            */
+        }
+        .tDiv{
+            max-height: 75vh;
+            overflow:auto;
+        }
+
+        .bAdd{
+            cursor: pointer;
+        }
+
+    /* ⚊⚊⚊⚊ Customer Options ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Table ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        #Table {
+            font-size: 12px;
+            background: #FFFDFF;
+            border-collapse: collapse;
+            width: 100%;
+            
+        }
+        #Table .topLine th {
+            /*
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            height:25px;
+            background: #F8F7F6;
+            text-align: left;
+            padding-left:15px;
+            */
+            background-image: linear-gradient(to bottom, #f7e2a3, hsl(38, 39%, 76%), #ecead0, #eee8d1);
+            text-transform: uppercase;
+            color: #794203;
+            font-size: 13px;
+            font-weight: 100;
+            text-align: left;
+            padding: 5px 15px;
+            margin: 5px 0px 15px 0px;
+        }
+        th, td {
+            border-bottom: 1px solid #c69205;
+        }
+        td {
+            padding: 4px 5px;
+        }
+
+
+        .imgSize{
+            width: 38px;
+            height: 38px;
+            border-radius: 100%;
+            overflow: hidden;
+            background-color: #f7edfc;
+            margin:-10px 10% -10px 10%;
+            padding:0px;
+          }
+    /* ⚊⚊⚊⚊ Table ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+    /* ⚊⚊⚊⚊ Bottom Line ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .topBar{
+            min-height:35px;
+            margin-bottom: 5px;
+            display: grid;
+            grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); 
+            justify-content: space-between;
+            align-items: center;
+        }
+        .topBar .boxB{
+            justify-self:end;
+        }
+        .botLine{
+            display:grid; 
+            grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); 
+            justify-content: space-between;
+            align-items: center;
+            height:40px;
+            font-size:13px;
+        }
+        .botLine .boxB{
+                justify-self:end;
+        }
+    /* ⚊⚊⚊⚊ Bottom Line ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Button ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .pBtn { /* Pagination Button */  
+            background:#ebe9e9; 
+            color:#0f013b; 
+            font-size: 12px;
+            border: none;   
+            border-radius:3px; 
+            margin:0 .1rem; 
+            padding: 4px 7px;
+            transition: 0.3s ease;
+        }
+        .pBtn:hover {
+            background:#cdcdcc; 
+            color:#1b132b; 
+            /*border: 1px solid gray;   */
+        }
+        .mBtn { /* menu Button */   
+            border:0.5px solid gray; 
+            border-radius:3px; 
+            margin:0 2px; 
+            padding: 2px 6px;
+        }
+        .bBtn { /* blue Button */
+            background:#ce8a00 ; 
+            font-size: 13px;
+            color:#fff; 
+            border-radius:3px; 
+            border: none;
+            margin:0 5px; 
+            padding: 4px 7px;
+            transition: 0.3s ease;
+        }
+        .bBtn:hover { /* blue Button */
+            background:#ac7300; 
+        }
+
+    /* ⚊⚊⚊⚊ Button ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Media Queries ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊*/
+        @media (max-width:800px){
+            .conA{
+                min-width:75vw;
+            }
+            .botLine{
+                justify-content: start;
+            }
+            .topBar .boxB{
+                justify-self:start;
+            }
+        
+            .tDiv{
+                max-height: 75vh;
+            }
+            .botLine .boxB{
+                justify-self:start;
+            }
+            .word{
+            top: 50px;
+            }
+        }
+        
+    /* ⚊⚊⚊⚊ Media Queries ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊*/
+
+
+</style>
+
+
+
+{% endblock body %}

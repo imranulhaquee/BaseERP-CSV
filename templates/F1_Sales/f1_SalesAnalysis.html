@@ -1,0 +1,358 @@
+
+{% load static%}
+
+<!-- ============================= < Background Image> ======================================= -->
+<body class="wc-image1 " style=" min-height: 100%;"> 
+      <style>
+         .wc-image1 {   
+              background: linear-gradient(rgba(43, 63, 70, 0.5), rgba(43, 40, 65, 0.7)), #040c31 url('static/JAVA/Images/Background/banner3.jpg'); 
+              background-size: cover;
+              font-family: 'Barlow', sans-serif;
+          } 
+      </style>
+  <!-- ............................. < End of Background Image> ................................ -->
+  
+  <a href="/"> <img src="static/JAVA/images/Logo/logoNameWhite.png" style="width:100px;" alt=""></a>
+<h3 class="Heading"> Sales Analysis </h3>
+
+<div class="btnDiv">
+    <button class="btn1" onclick="resultFormatting1()">+Collapse</button>
+    <button class="btn2" onclick="resultFormatting2()">-Expend</button>
+
+</div>
+
+<div class="Table">
+    <table id="myTable">
+        <tr class="tableHeading1" style="text-align:center; font-size: 18px;">
+            <th colspan="1" class="tableRow1"> </button></th>
+            <th colspan="1" class="tableRow1"></th>
+            <th colspan="1" class="tableRow1"></th>
+            <th colspan="4" class="tableRow1">Actual </th>
+            <th colspan="4" class="tableRow1">Budget </th>
+            <th colspan="4" class="tableRow1">Actual </th>
+
+        </tr>
+        <tr  class="tableHeading2">
+            <th>Vertical</th>
+            <th style="font-size:0px">Department</th>
+            <th>Country</th>
+            <th class="Heading2">Act-Revenue</th>
+            <th class="Heading2">Act-Cost</th>
+            <th class="Heading2">Act-Margin</th>
+            <th class="Heading2">GP</th>
+            <th class="Heading2">Bdg-Revenue</th>
+            <th class="Heading2">Bdg-Cost</th>
+            <th class="Heading2">Bdg-Margin</th>
+            <th class="Heading2">GP</th>
+            <th class="Heading2">Pre-Revenue</th>
+            <th class="Heading2">Pre-Cost</th>
+            <th class="Heading2">Pre-Margin</th>
+            <th class="Heading2">GP</th>
+        </tr>
+        <tbody id="myTableB">
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+  // ....................................................................................
+  // Bring Data and show in Table........................................................
+  // ....................................................................................
+    var objJson = {{ DataVer|safe }}
+    document.getElementById("myTableB").innerHTML=""; 
+    var table = document.getElementById('myTableB')
+
+    for (var i = 0; i < objJson.length; i++) {
+        var row = `<tr>
+                    <td class="sHad1">${objJson[i].New}</td>
+                    <td class="sHad3">${objJson[i].level_0}</td>
+                    <td class="sHad2">${objJson[i].level_1}</td>
+                    <td class="Amt sAmt">${(objJson[i].CY_Revenue).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td class="Amt sAmt">${(objJson[i].CY_CoS).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td class="Amt sAmt">${(objJson[i].CY_Margin).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td class="gp per">${(objJson[i].CY_GP*100).toLocaleString('en', {minimumFractionDigits: 1, maximumFractionDigits: 1,})} % </td>
+                    <td class="Amt sAmt">${(objJson[i].BY_Revenue).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td class="Amt sAmt">${(objJson[i].BY_CoS).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td class="Amt sAmt">${(objJson[i].BY_Margin).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td class="gp per">${(objJson[i].BY_GP*100).toLocaleString('en', {minimumFractionDigits: 1, maximumFractionDigits: 1,})} % </td>
+                    <td class="Amt sAmt">${(objJson[i].PY_Revenue).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td class="Amt sAmt">${(objJson[i].BY_CoS).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td class="Amt sAmt">${(objJson[i].BY_Margin).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td class="gp per">${(objJson[i].PY_GP*100).toLocaleString('en', {minimumFractionDigits: 1, maximumFractionDigits: 1,})} % </td>
+                </tr>`
+        table.innerHTML += row
+    }
+
+  // ....................................................................................
+  // Hide and Show Rows..................................................................
+  // ....................................................................................
+    function resultFormatting1() {
+        var rows = document.getElementById("myTable").getElementsByTagName('tr');
+            for (var i = 0; i < rows[1].children.length && rows[1].children[i].innerHTML !== "Vertical"; i++);
+            for (var j = 1; j < rows.length; j++) {
+            rows[j].classList.add(rows[j].children[i].innerHTML === "hideRow001" ? 'hide' :'abc');
+        }
+    };
+    resultFormatting1()
+
+    function resultFormatting2() {
+        var rows = document.getElementById("myTable").getElementsByTagName('tr');
+        for (var i = 0; i < rows[1].children.length && rows[1].children[i].innerHTML !== "Vertical"; i++);
+        for (var j = 1; j < rows.length; j++) {
+        rows[j].classList.remove(rows[j].children[i].innerHTML === "hideRow001" ? 'hide' : 'abc');
+        }
+    };
+
+
+    // ....................................................................................
+    //  to unhide the selected vertical on click...........................................
+    // ....................................................................................
+    function ggg(line) {
+        // To hide the rest of the rows again..................................................
+        var rows = document.getElementById("myTable").getElementsByTagName('tr');
+            for (var i = 0; i < rows[1].children.length && rows[1].children[i].innerHTML !== "Vertical"; i++);
+            for (var j = 1; j < rows.length; j++) {
+            rows[j].classList.add(rows[j].children[i].innerHTML === "hideRow001" ? 'hide' :'abc');
+        }
+
+        // To unhide the selected ............................................................
+        var rows = document.getElementById("myTable").getElementsByTagName('tr');
+        for (var i = 0; i < rows[1].children.length && rows[1].children[i].innerHTML !== "Department"; i++);
+        for (var j = 1; j < rows.length; j++) {
+        rows[j].classList.remove(rows[j].children[i].innerHTML === line ? 'hide' : 'abc');
+
+        }
+    }
+
+
+
+  // ....................................................................................
+  // Formating Raw based on Condition....................................................
+  // ....................................................................................
+    function rowFormating() {
+        var rows = document.getElementById("myTable").getElementsByTagName('tr');
+        for (var i = 0; i < rows[1].children.length && rows[1].children[i].innerHTML !== "Country"; i++);
+        for (var j = 1; j < rows.length; j++) {
+        rows[j].classList.add(rows[j].children[i].innerHTML === "Total" ? 'subHeading' : 'abc');
+        }
+        for (var j = 1; j < rows.length; j++) {
+            rows[j].classList.add(rows[j].children[i].innerHTML === "Grand Tot" ? 'gTotal' : 'abc2');
+        }
+    }
+    rowFormating()
+
+    // Color 'hideRow001' Gray ..........................................................
+    const rows1 = document.querySelectorAll('#myTable tr');
+    rows1.forEach( function (row) {
+        var text = row.textContent;
+        if (text.includes('hideRow001')) {row.classList.add('hideByColor')}
+    })
+
+    const rows2 = document.querySelectorAll('#myTable td');
+    rows2.forEach( function (row) {
+        var text = row.textContent;
+        if (text.includes('NaN')) {row.classList.add('hideByColor1')}
+    })
+
+
+  // ....................................................................................
+  // Get Value of the Table  and run a function to unhide selected row...................
+  // ....................................................................................
+    function highlight_row() {
+        let line
+
+        var table = document.getElementById('#myTableB');
+        var cells = document.querySelectorAll('td');
+    
+        for (var i = 0; i < cells.length; i++) {
+            // Take each cell
+            var cell = cells[i];
+            // do something on onclick event for cell
+            cell.onclick = function () {
+                // Get the row id where the cell exists
+                var rowId = this.parentNode.rowIndex;
+    
+                var rowsNotSelected = document.querySelectorAll('tr');
+                for (var row = 0; row < rowsNotSelected.length; row++) {
+                    rowsNotSelected[row].style.backgroundColor = "";
+                    rowsNotSelected[row].classList.remove('selected');
+                }
+                var rowSelected = document.querySelectorAll('tr')[rowId];
+                rowSelected.style.backgroundColor = "#808080";
+                rowSelected.className += " selected";
+    
+                msg = 'The ID of the company is: ' + rowSelected.cells[0].innerHTML;
+                msg += '\nThe cell value is: ' + this.innerHTML;
+                //alert(msg);
+
+                line = rowSelected.cells[1].innerHTML
+                ggg(line)
+            }
+        }
+    } //end of function
+    highlight_row()
+   // window.onload = highlight_row;
+
+
+</script>
+
+
+
+
+
+<style>
+
+  /*-----------------------------------------------------------------------------------*/
+  /*----------------------------- HTML Formating --------------------------------------*/
+  /*-----------------------------------------------------------------------------------*/
+    .Heading {
+        margin: 10px 5%; 
+        color: #9fc4c4;
+        font-size:25px;
+    }
+    .Heading2 {
+        text-align: right;
+        padding-right: 10px;
+
+    }
+    .btnDiv {
+        margin: 10px 5%; 
+        color: orange;
+        font-size: 12px;
+    }
+    .btn1, .btn2{
+        border-radius: 15px;
+        font-weight: bold;
+        background: #3f8f8f;
+        color: black;
+    }
+    .Table {
+        width:90%;
+        max-height: 550px;
+        margin: auto;
+        overflow: auto;
+        font-size: 13px;
+        border: 2px sold;
+        background:white;
+        border-collapse: separate;
+        border:3px solid #fff;
+        font-family: Ubuntu;
+        @include border-radius(5px);
+        @include box-shadow(0px 0px 5px rgba(0,0,0,0.3));
+        webkit-box-shadow: 10px 9px 34px 0px rgba(126,167,212,0.46); 
+        box-shadow: 10px 9px 34px 0px rgba(121, 125, 124, 0.45);
+        margin: auto;
+        z-index: 30;
+    }
+    .tableHeading1 {
+        background: #2d7575;
+        box-shadow: inset 0 1px 0 #999999, inset 0 -1px 0 #999999;
+        background: linear-gradient(#87888a, #121417);
+        height:30px;
+        border-collapse: collapse;
+        top: 0px;
+        position: sticky; position: -webkit-sticky;
+        color: white;
+        z-index: 30;
+    }
+    .tableHeading2 {
+        background: #2d7575;
+        box-shadow: inset 0 1px 0 #999999, inset 0 -1px 0 #999999;
+        background: linear-gradient(#87888a, #121417);
+        height:30px;
+        border-collapse: collapse;
+        top: 30px;
+        position: sticky; position: -webkit-sticky;
+        color: white;
+        z-index: 30;
+    }
+
+    td {
+        width: 150px;
+        height: 0px;
+    }
+    
+    th {
+        cursor: pointer;
+    }
+
+    .sHad1{
+        min-width:60px;
+        background: #808080;
+        left: 0px;
+        position: sticky; position: -webkit-sticky;
+        z-index: 10;
+    }
+    .sHad2{
+        /*background: #d6d6c9;*/
+        border-right: 1px solid black;
+        min-width: 120px;
+        color: black;
+        font-weight:bold;
+    }
+    .sHad3{
+        background: #808080;
+        font-size:0px;
+
+    }
+
+    .Amt{
+        text-align: right;
+        padding-right:5px; 
+        color:Black; 
+    }
+    .gp{
+        border-right: .75px solid black;
+        color: red;
+        text-align: right;
+        padding-right:5px;
+        font-size:10px;
+    }
+
+  /*-----------------------------------------------------------------------------------*/
+  /*------------------------Collapse and Expend Button---------------------------------*/
+  /*-----------------------------------------------------------------------------------*/
+    .hide {
+        display:none;
+    }
+
+    .abc {
+        border-bottom: 0.75px solid #808080;;
+    }
+
+    .abc2 {
+        border-bottom: 0.75px solid #484848;;
+    }
+
+  /*-----------------------------------------------------------------------------------*/
+  /*------------------------------Formating through JS---------------------------------*/
+  /*-----------------------------------------------------------------------------------*/
+    .gTotal{
+        background: rgb(116, 116, 116);
+        font-size: 15px;
+        font-weight: bold;
+        border-bottom: 5px double red;
+        border-top: 2px solid;
+    }
+
+    .subHeading{
+        background-color: rgb(170, 166, 166);
+        font-weight: bold;
+        border-bottom: 1.5px double black;
+    }
+
+    .hideByColor{
+        color: gray;
+    }
+    .hideByColor1{
+        color: #fff;
+    }
+
+    .abc {
+        border-bottom: 0.75px solid #a1b8ba;
+    }
+</style>
+
+
+</body>

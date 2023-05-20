@@ -1,0 +1,137 @@
+[
+ {
+  "Quote": 20230001,
+  "CUSTOMER": "Women's Medical Center (Dr. Ameena)",
+  "DATE": "04\/21\/2023",
+  "TAX": 649,
+  "TOTAL WITH TAX": 13628,
+  "SALES PERSON": "Tariq Naeem",
+  "STATUS": "Closed"
+ },
+ {
+  "Quote": 20230002,
+  "CUSTOMER": "Health & Aesthetic Medical Center",
+  "DATE": "04\/21\/2023",
+  "TAX": 2460,
+  "TOTAL WITH TAX": 51660,
+  "SALES PERSON": "James William",
+  "STATUS": "Closed"
+ },
+ {
+  "Quote": 20230003,
+  "CUSTOMER": "Sahar Pharmacy",
+  "DATE": "04\/17\/2023",
+  "TAX": 530,
+  "TOTAL WITH TAX": 11130,
+  "SALES PERSON": "George A.",
+  "STATUS": "Open"
+ },
+ {
+  "Quote": 20230004,
+  "CUSTOMER": "Slim Spa - Dubai",
+  "DATE": "01\/16\/2023",
+  "TAX": 1585,
+  "TOTAL WITH TAX": 33285,
+  "SALES PERSON": "Sara",
+  "STATUS": "Open"
+ },
+ {
+  "Quote": 20230005,
+  "CUSTOMER": "Slim Spa - Dubai",
+  "DATE": "01\/16\/2023",
+  "TAX": 1153,
+  "TOTAL WITH TAX": 24203,
+  "SALES PERSON": "Benjamin",
+  "STATUS": "Closed"
+ },
+ {
+  "Quote": 20230006,
+  "CUSTOMER": "BETTER MEDICAL SOLUTIONS LLC (COSMECLIC).",
+  "DATE": "02\/23\/2023",
+  "TAX": 2425,
+  "TOTAL WITH TAX": 50925,
+  "SALES PERSON": "Sara",
+  "STATUS": "Closed"
+ },
+ {
+  "Quote": 20230009,
+  "CUSTOMER": "Mohammed Hamoud Alshaya(LLC) -Dubai Br",
+  "DATE": "04\/21\/2023",
+  "TAX": 5,
+  "TOTAL WITH TAX": 95,
+  "SALES PERSON": "Hammed",
+  "STATUS": "Open"
+ },
+ {
+  "Quote": 20230011,
+  "CUSTOMER": "Gulf Diagnostic Centre Hospital- WLL",
+  "DATE": "04\/21\/2023",
+  "TAX": 67,
+  "TOTAL WITH TAX": 1407,
+  "SALES PERSON": "Sara",
+  "STATUS": "Open"
+ },
+ {
+  "Quote": 20230012,
+  "CUSTOMER": "2310101-",
+  "DATE": "04\/21\/2023",
+  "TAX": 19,
+  "TOTAL WITH TAX": 399,
+  "SALES PERSON": 0,
+  "STATUS": "Closed"
+ },
+ {
+  "Quote": 20230013,
+  "CUSTOMER": "2310101-",
+  "DATE": "04\/22\/2023",
+  "TAX": 123,
+  "TOTAL WITH TAX": 2573,
+  "SALES PERSON": 0,
+  "STATUS": "Open"
+ },
+ {
+  "Quote": 20230014,
+  "CUSTOMER": "Qmedic (close account)",
+  "DATE": "04\/23\/2023",
+  "TAX": 24,
+  "TOTAL WITH TAX": 494,
+  "SALES PERSON": "test man",
+  "STATUS": "Open"
+ },
+ {
+  "Quote": 20230015,
+  "CUSTOMER": "Women's Medical Center (Dr. Ameena)",
+  "DATE": "04\/23\/2023",
+  "TAX": 5,
+  "TOTAL WITH TAX": 95,
+  "SALES PERSON": "asdf",
+  "STATUS": "Open"
+ },
+ {
+  "Quote": 20230017,
+  "CUSTOMER": "Al Nakheel Pharmacy RAK",
+  "DATE": "04\/23\/2023",
+  "TAX": 19,
+  "TOTAL WITH TAX": 399,
+  "SALES PERSON": "qwe",
+  "STATUS": "Open"
+ },
+ {
+  "Quote": 20230018,
+  "CUSTOMER": "Al Mazroui Medical Center",
+  "DATE": "04\/23\/2023",
+  "TAX": 578,
+  "TOTAL WITH TAX": 12132,
+  "SALES PERSON": "Farhan Ali",
+  "STATUS": "Open"
+ },
+ {
+  "Quote": 20230008,
+  "CUSTOMER": "Bait Al Maqdes Pharmacy LLC",
+  "DATE": "04\/21\/2023",
+  "TAX": 320,
+  "TOTAL WITH TAX": 6710,
+  "SALES PERSON": "John William",
+  "STATUS": "Open"
+ }
+]

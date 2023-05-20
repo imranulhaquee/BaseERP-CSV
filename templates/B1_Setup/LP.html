@@ -1,0 +1,702 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+<!--════ Top Section ═══════════════════════════════════════ //Start-->
+  <section id="tMenu">
+    <div class='BoxA' >
+      <div><img class="word" src="static/JAVA/Images/Word/dashboard.png" alt="" width="150px" ></div>
+    </div>
+    
+    <div class='BoxB'>
+        <img src="{% static 'JAVA/Images/Icon/clock.png'%}" alt="" class='img1'>
+        <img src="{% static 'JAVA/Images/Icon/folder.png'%}" alt="" class='img1'>
+        <img src="{% static '../media/iuh.jpg'%}" alt="" class='img2'> 
+    </div>
+  </section>
+<!--════ Top Section ═══════════════════════════════════════ // End -->
+
+
+
+<section class="content">
+
+
+    <script type="text/javascript" src="/static/js/ApexChart.js"></script>
+    
+    
+    <!--========== Top Section ============== //Start-->
+      <section id="top">
+        <div class="container">
+            <div class="box box1">
+                <div class="imag">            
+                    <a href="#" ><img src="{% static 'images/Web Page/history1.png' %}" class="image" alt=""></a>
+                </div>
+                <i class="fax fa-graduation-cap"></i>
+                <h3>Scholarship Facility</h3>
+                <p>One make creepeth, man bearing </p>
+            </div>
+            <div class="box box2">
+                <div class="imag">            
+                    <a href="#" ><img src="{% static 'images/Web Page/history1.png' %}" class="image" alt=""></a>
+                </div>
+                
+                <i class="fax fa-graduation-cap"></i>
+                <h3>Dell Online Courses</h3>
+                <p>One make creepeth, man bearing </p>
+            </div>
+            <div class="box box3">
+                <div class="imag">            
+                    <a href="#" ><img src="{% static 'images/Web Page/report1.png' %}" class="image" alt=""></a>
+                </div>
+                
+                <i class="fax fa-graduation-cap"></i>
+                <h3>Global Certification</h3>
+                <p>One make creepeth, man bearing </p>
+            </div>
+            <div class="box box4">
+                <div class="imag">            
+                    <a href="#" ><img src="{% static 'images/Web Page/report1.png' %}" class="image" alt=""></a>
+                </div>
+                
+                <i class="fax fa-graduation-cap"></i>
+                <h3>Global Certification</h3>
+                <p>One make creepeth, man bearing </p>
+            </div>
+        </div>
+      </section>
+    <!--========== Top Section ============== // End -->
+    
+        
+    <!--========== Mid Section ============== //Start-->
+      <section id="mid">
+        <div class="container">
+            
+            <div class="box box1">
+                <div  id="ColumnWithData" ></div>
+            </div>
+            <div class="box box2">
+                <div  id="CustomAngle" ></div>
+            </div>
+            <div class="box box3">
+                <div  id="BasicLine" ></div>
+            </div>
+        </div>
+      </section>
+    <!--========== Mid Section ============== // End -->
+    
+    
+  <!--========== Bottom Section ============== //Start-->
+    <section id="bottom">
+      <div class="container">
+        <div class="box box1">
+            <div class="col-4 mx-0 mt-4 px-5"> 
+                <!-- <h4 Class="my-0 py-0"> Multi Radial Bar Chart<h4> -->
+                <div  id="lineChart" ></div>
+            </div>
+        </div>
+        <div class="box box2">
+          <i class="fax fa-graduation-cap"></i>
+          <h3 style="margin:10px 0;">Dell Online Courses</h3>
+
+          <div class="progress p1">
+              <h4> Data analysis & Data Driven Decision Making <span> 95% </span> </h4>
+              <div class="bar"> <span></span> </div>
+          </div>
+          <div class="progress p2">
+              <h4> Data analysis & Data Driven Decision Making <span> 75% </span> </h4>
+              <div class="bar"> <span></span> </div>
+          </div>
+          <div class="progress p3">
+              <h4> Data analysis & Data Driven Decision Making <span> 90% </span> </h4>
+              <div class="bar"> <span></span> </div>
+          </div>
+          <div class="progress p4">
+              <h4> Data analysis & Data Driven Decision Making <span> 60% </span> </h4>
+              <div class="bar"> <span></span> </div>
+          </div>
+        </div>
+        </div>
+    </section>
+  <!--========== Bottom Section ============== // End -->
+    
+    
+    </section>
+
+    
+<style>
+  :root{
+    --main-color:#28bae3  /* #28bae3  */;
+  }
+
+  /* ------- Global Tag --------------- */
+    *{
+        font-family: 'Roboto', sans-serif;
+        margin:0; padding:0;
+        box-sizing: border-box;
+        outline: none; border:none;
+        text-decoration: none;
+    }
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: rgb(35, 35, 85);
+    }
+    span {
+        font-size: 0.9rem;
+        color: #757373;
+    }
+    h6{
+        font-size: 1.1rem;
+        color: rgb(24, 24, 49);  
+    }
+  /* ------- Global Tag --------------- */
+
+
+  /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+    #tMenu {
+        position: relative;
+        display:grid; 
+        padding:0 25px;
+        box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.34);
+        border-bottom:#181919;
+        grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));  
+        align-items: center; 
+        background:#f2f5f8; 
+        height:35px;
+        background-image: linear-gradient(to right, #2e2436, #474053, #615e72, #7e7e92, #9b9fb3);
+    }
+    #tMenu .BoxA {
+        color:#fcf6c4; 
+        font-weight:600; 
+        font-size:20px;
+    }
+    #tMenu .BoxA .p1{
+        color:#fcbce9; 
+        font-weight:bold;
+    }
+    #tMenu .BoxB {
+        justify-self:end;
+    }
+    #tMenu .BoxB .img1{
+        position:relative; 
+        top:-2px; 
+        width:20px; 
+        height:20px; 
+        margin-right: .5rem;
+    }
+    #tMenu .BoxB .img2{
+        position:relative; 
+        top:2px;
+        border-radius:50%; 
+        width: 30px; 
+        height: 30px;
+    }       
+  /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    
+
+    
+        /* ------- topSec Section ----------- */
+            #top{
+                padding: 1.5vw 1vw 0vw 1vw;
+                width: 100%;
+                
+            }
+            #top .container{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                
+            }
+            #top .container .box{
+                flex-basis: 200px;
+                flex-grow: 1;
+                margin: 10px;
+                /* background: #F9F9FF; */
+                box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+                border-radius: 1px;
+                padding: 0 20px;
+                min-width: 200px;
+                max-width: 300px;
+                min-height: 60px;
+                position:relative;
+                border-left: 10px solid rgb(177, 237, 251);
+            }
+            .box1 {
+                background: linear-gradient(41deg, rgba(107, 107, 107, 0.04) 0%, rgba(107, 107, 107, 0.04) 8%,rgba(31, 31, 31, 0.04) 8%, rgba(31, 31, 31, 0.04) 100%),linear-gradient(9deg, rgba(228, 228, 228, 0.04) 0%, rgba(228, 228, 228, 0.04) 62%,rgba(54, 54, 54, 0.04) 62%, rgba(54, 54, 54, 0.04) 100%),linear-gradient(124deg, rgba(18, 18, 18, 0.04) 0%, rgba(18, 18, 18, 0.04) 37%,rgba(233, 233, 233, 0.04) 37%, rgba(233, 233, 233, 0.04) 100%),linear-gradient(253deg, rgba(201, 201, 201, 0.04) 0%, rgba(201, 201, 201, 0.04) 55%,rgba(47, 47, 47, 0.04) 55%, rgba(47, 47, 47, 0.04) 100%),linear-gradient(270deg, rgba(172, 172, 172, 0.04) 0%, rgba(172, 172, 172, 0.04) 33%,rgba(26, 26, 26, 0.04) 33%, rgba(26, 26, 26, 0.04) 100%),linear-gradient(64deg, rgba(11, 11, 11, 0.04) 0%, rgba(11, 11, 11, 0.04) 38%,rgba(87, 87, 87, 0.04) 38%, rgba(87, 87, 87, 0.04) 100%),linear-gradient(347deg, rgba(199, 199, 199, 0.04) 0%, 69%,rgba(4, 4, 4, 0.04) 69%, rgba(4, 4, 4, 0.04) 100%),linear-gradient(313deg, rgba(36, 36, 36, 0.04) 0%, rgba(36, 36, 36, 0.04) 20%,rgba(91, 91, 91, 0.04) 20%, rgba(91, 91, 91, 0.04) 100%),linear-gradient(90deg, rgb(107, 114, 167),rgb(93, 210, 237));
+    
+            }
+            .box2 {
+                background: linear-gradient(45deg, rgba(163, 62, 136, 0.4) 0%, rgba(163, 62, 136, 0.4) 12%,rgba(170, 91, 113, 0.4) 12%, rgba(170, 91, 113, 0.4) 16%,rgba(176, 121, 91, 0.4) 16%, rgba(176, 121, 91, 0.4) 21%,rgba(183, 150, 68, 0.4) 21%, rgba(183, 150, 68, 0.4) 46%,rgba(190, 179, 45, 0.4) 46%, rgba(190, 179, 45, 0.4) 53%,rgba(196, 209, 23, 0.4) 53%, rgba(196, 209, 23, 0.4) 94%,rgba(203, 238, 0, 0.4) 94%, rgba(203, 238, 0, 0.4) 100%),linear-gradient(135deg, rgba(200, 199, 213, 0.2) 0%, rgba(200, 199, 213, 0.2) 21%,rgba(202, 162, 196, 0.2) 21%, rgba(202, 162, 196, 0.2) 35%,rgba(204, 126, 179, 0.2) 35%, rgba(204, 126, 179, 0.2) 40%,rgba(205, 89, 162, 0.2) 40%, rgba(205, 89, 162, 0.2) 63%,rgba(207, 53, 145, 0.2) 63%, rgba(207, 53, 145, 0.2) 99%,rgba(209, 16, 128, 0.2) 99%, rgba(209, 16, 128, 0.2) 100%),linear-gradient(90deg, rgb(250, 211, 75) 0%, rgb(250, 211, 75) 2%,rgb(245, 197, 103) 2%, rgb(245, 197, 103) 13%,rgb(240, 183, 132) 13%, rgb(240, 183, 132) 27%,rgb(235, 168, 160) 27%, rgb(235, 168, 160) 56%,rgb(230, 154, 189) 56%, rgb(137, 117, 126) 90%,rgb(147, 116, 144) 90%, rgb(178, 153, 176) 100%);
+            }
+            .box3 {
+                background: linear-gradient(194deg, rgba(231, 231, 231, 0.03) 0%, rgba(231, 231, 231, 0.03) 17%,rgba(29, 29, 29, 0.03) 17%, rgba(29, 29, 29, 0.03) 19%,rgba(234, 234, 234, 0.03) 19%, rgba(234, 234, 234, 0.03) 37%,rgba(240, 240, 240, 0.03) 37%, rgba(240, 240, 240, 0.03) 79%,rgba(91, 91, 91, 0.03) 79%, rgba(91, 91, 91, 0.03) 84%,rgba(73, 73, 73, 0.03) 84%, rgba(73, 73, 73, 0.03) 98%,rgba(21, 21, 21, 0.03) 98%, rgba(21, 21, 21, 0.03) 100%),linear-gradient(59deg, rgba(160, 160, 160, 0.03) 0%, rgba(160, 160, 160, 0.03) 3%,rgba(224, 224, 224, 0.03) 3%, rgba(224, 224, 224, 0.03) 6%,rgba(137, 137, 137, 0.03) 6%, rgba(137, 137, 137, 0.03) 23%,rgba(226, 226, 226, 0.03) 23%, rgba(226, 226, 226, 0.03) 30%,rgba(96, 96, 96, 0.03) 30%, rgba(96, 96, 96, 0.03) 44%,rgba(210, 210, 210, 0.03) 44%, rgba(210, 210, 210, 0.03) 74%,rgba(61, 61, 61, 0.03) 74%, rgba(61, 61, 61, 0.03) 100%),linear-gradient(22deg, rgba(201, 201, 201, 0.03) 0%, rgba(201, 201, 201, 0.03) 5%,rgba(89, 89, 89, 0.03) 5%, rgba(89, 89, 89, 0.03) 6%,rgba(100, 100, 100, 0.03) 6%, rgba(100, 100, 100, 0.03) 18%,rgba(172, 172, 172, 0.03) 18%, rgba(172, 172, 172, 0.03) 52%,rgba(128, 128, 128, 0.03) 52%, rgba(128, 128, 128, 0.03) 85%,rgba(240, 240, 240, 0.03) 85%, rgba(240, 240, 240, 0.03) 89%,rgba(51, 51, 51, 0.03) 89%, rgba(51, 51, 51, 0.03) 100%),linear-gradient(283deg, rgba(123, 123, 123, 0.03) 0%, rgba(123, 123, 123, 0.03) 10%,rgba(194, 194, 194, 0.03) 10%, rgba(194, 194, 194, 0.03) 34%,rgba(22, 22, 22, 0.03) 34%, rgba(22, 22, 22, 0.03) 36%,rgba(177, 177, 177, 0.03) 36%, rgba(177, 177, 177, 0.03) 46%,rgba(180, 180, 180, 0.03) 46%, rgba(180, 180, 180, 0.03) 59%,rgba(89, 89, 89, 0.03) 59%, rgba(89, 89, 89, 0.03) 80%,rgba(217, 217, 217, 0.03) 80%, rgba(217, 217, 217, 0.03) 100%),linear-gradient(342deg, rgba(171, 171, 171, 0.03) 0%, rgba(171, 171, 171, 0.03) 22%,rgba(238, 238, 238, 0.03) 22%, rgba(238, 238, 238, 0.03) 37%,rgba(186, 186, 186, 0.03) 37%, rgba(186, 186, 186, 0.03) 65%,rgba(80, 80, 80, 0.03) 65%, rgba(80, 80, 80, 0.03) 68%,rgba(49, 49, 49, 0.03) 68%, rgba(49, 49, 49, 0.03) 71%,rgba(137, 137, 137, 0.03) 71%, rgba(137, 137, 137, 0.03) 88%,rgba(224, 224, 224, 0.03) 88%, rgba(224, 224, 224, 0.03) 100%),linear-gradient(90deg, rgb(230, 215, 236),rgb(204, 154, 200));
+            }
+            .box4 {
+                background: linear-gradient(45deg, rgba(114, 244, 149, 0.27) 0%, rgba(114, 244, 149, 0.27) 37%,rgba(126, 221, 156, 0.27) 37%, rgba(126, 221, 156, 0.27) 48%,rgba(137, 197, 162, 0.27) 48%, rgba(137, 197, 162, 0.27) 49%,rgba(149, 174, 169, 0.27) 49%, rgba(149, 174, 169, 0.27) 59%,rgba(160, 151, 175, 0.27) 59%, rgba(160, 151, 175, 0.27) 60%,rgba(172, 128, 182, 0.27) 60%, rgba(172, 128, 182, 0.27) 86%,rgba(183, 104, 188, 0.27) 86%, rgba(183, 104, 188, 0.27) 95%,rgba(195, 81, 195, 0.27) 95%, rgba(195, 81, 195, 0.27) 100%),linear-gradient(135deg, rgba(100, 114, 232, 0.27) 0%, rgba(100, 114, 232, 0.27) 18%,rgba(126, 135, 203, 0.27) 18%, rgba(126, 135, 203, 0.27) 23%,rgba(153, 156, 173, 0.27) 23%, rgba(153, 156, 173, 0.27) 44%,rgba(179, 178, 144, 0.27) 44%, rgba(179, 178, 144, 0.27) 62%,rgba(206, 199, 114, 0.27) 62%, rgba(206, 199, 114, 0.27) 98%,rgba(232, 220, 85, 0.866) 98%, rgba(232, 220, 85, 0.786) 100%),linear-gradient(0deg, rgb(149, 160, 92) 0%, rgb(209, 235, 133) 2%,rgb(168, 208, 47) 2%, rgb(159, 185, 100) 44%,rgb(180, 204, 136) 44%, rgb(136, 147, 108) 48%,rgb(176, 227, 47) 48%, rgb(207, 230, 138) 77%,rgb(239, 240, 156) 77%, rgb(177, 190, 143) 78%,rgb(186, 237, 141) 78%, rgb(154, 213, 144) 100%);
+            }
+            #top .container .box .imag{
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+            #top .container .box .image{
+                width: 40px;
+            }
+            #top .container .box h3{
+                font-size: 1rem;
+                font-weight: 600;
+            }
+            #top .container .box p{
+              font-size: .75rem;
+          } 
+        /* ------- topSec Section ----------- */
+    
+    
+        /* ------- midSec Section ----------- */
+            #mid{
+                padding: 0.5vw 1vw 0vw 1vw;
+                width: 100%;
+                text-align: center;
+            }
+            #mid .container{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+    
+            #mid .container .box{
+                flex-basis: 275px;
+                flex-grow: 1;
+                margin: 10px;
+                min-height: 150px;
+                background-color: #587c92; background-image: linear-gradient(160deg, #587c92 0%, #eaf1f1 100%);
+                background: #F9F9FF;
+                border-radius: 1px;
+                padding: 0 20px;
+                border-left: 5px solid gray;
+            }
+    
+            #mid .container .box1{
+                min-width: 350px;
+                max-width: 33%;
+            }
+            #mid .container .box2{
+                min-width: 350px;
+                max-width: 33%;
+            }
+            #mid .container .box2{
+                min-width: 350px;
+                max-width: 33%;
+            }
+            #mid .container .box .image{
+                width: 50px;
+            }
+            #mid .container .box h3{
+                font-size: 1.4rem;
+                font-weight: 600;
+            }
+    
+            @media screen and (max-width: 1100px) {
+                #mid .container .box1 {
+                    min-width: 100%;
+                }
+                #mid .container .box2 {
+                    min-width: 100%;
+                }
+                #mid .container .box3 {
+                    min-width: 100%;
+                }
+            }
+        /* ------- midSec Section ----------- */
+    
+    
+        /* ------- BottomSec Section ----------- */
+            #bottom{
+                padding: 0.5vw 1vw 0vw 1vw;
+                width: 100%;
+                text-align: center;
+            }
+            #bottom .container{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            #bottom .container .box{
+                flex-basis: 300px;
+                flex-grow: 1;
+                margin: 10px;
+                min-height: 200px;
+                background-color: #587c92; background-image: linear-gradient(160deg, #587c92 0%, #eaf1f1 100%);
+                background: #F9F9FF;
+                border-radius: 1px;
+                padding: 0 20px;
+                border-left: 5px solid gray;
+            }
+            #bottom .container .box1{
+                min-width: 500px;
+                max-width: 50%;
+            }
+            #bottom .container .box2{
+                min-width: 500px;
+                max-width: 50%;
+            }
+            #bottom .container .box .image{
+                width: 50px;
+            }
+            #bottom .container .box h3{
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+            .progress h4{
+                display: flex;
+                justify-content: space-between;
+                padding: 0.3rem 0 0 0;
+                font-size: .8rem;
+                color:#111;
+                font-weight: 400;
+            }
+            .progress h4 span{
+                font-size: 1rem;
+                color:#111;
+                font-weight: 400;
+            }
+            .progress .bar{
+                width:100%;
+                background:#ccc;
+                overflow:hidden;
+                height:.75rem;
+                border-radius: 50rem;
+                padding-bottom: .1rem;
+            }
+            .progress .bar span{
+                display:block;
+                height:100%;
+                background:var(--main-color);
+                border-radius: 50rem;
+            }
+            .p1 .bar span{ width:95%; }
+            .p2 .bar span{ width:75%; }
+            .p3 .bar span{ width:90%; }
+            .p4 .bar span{ width:60%; }
+    
+            @media screen and (max-width: 1100px) {
+                #bottom .container .box1 {
+                    min-width: 100%;
+                }
+                #bottom .container .box2 {
+                    min-width: 100%;
+                }
+            }
+        /* ------- BottomSec Section ----------- */
+    
+    
+    </style>
+    
+    
+    <script>
+    
+        var options = {
+            series: [{
+            name: 'Inflation',
+            data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
+          }],
+            chart: {
+            height: 170,
+            width: '100%',
+            type: 'bar',
+          },
+          plotOptions: {
+            bar: {
+              dataLabels: {
+                position: 'top', // top, center, bottom
+              },
+            }
+          },
+          dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+              return val + "%";
+            },
+            offsetY: -20,
+            style: {
+              fontSize: '12px',
+              colors: ["#304758"]
+            }
+          },
+          
+          xaxis: {
+            categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            position: 'bottom',
+            axisBorder: {
+              show: false
+            },
+            axisTicks: {
+              show: false
+            },
+            crosshairs: {
+              fill: {
+                type: 'gradient',
+                gradient: {
+                  colorFrom: '#D8E3F0',
+                  colorTo: '#BED1E6',
+                  stops: [0, 100],
+                  opacityFrom: 0.4,
+                  opacityTo: 0.5,
+                }
+              }
+            },
+            tooltip: {
+              enabled: true,
+            }
+          },
+          yaxis: {
+            axisBorder: {
+              show: false
+            },
+            axisTicks: {
+              show: false,
+            },
+            labels: {
+              show: false,
+              formatter: function (val) {
+                return val + "%";
+              }
+            }
+          
+          },
+          title: {
+            text: 'Monthly Inflation in Argentina, 2002',
+            floating: true,
+            offsetY: 330,
+            align: 'center',
+            style: {
+              color: '#444'
+            }
+          }
+          };
+    
+        var chart = new ApexCharts(document.querySelector("#ColumnWithData"), options);
+        chart.render();
+    
+    
+        var options = {
+            series: [{
+            name: 'Net Profit',
+            data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+            }, {
+            name: 'Revenue',
+            data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+            }, {
+            name: 'Free Cash Flow',
+            data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+            }],
+            chart: {
+            type: 'bar',
+            height: '170',
+            width: '100%'
+            },
+            plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '70%',
+                endingShape: 'flat' //'rounded'
+            },
+            },
+            dataLabels: {
+            enabled: false
+            },
+            stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+            },
+            xaxis: {
+            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+            },
+            yaxis: {
+            title: {
+                text: '$ (thousands)'
+            }
+            },
+            fill: {
+            opacity: 1
+            },
+            tooltip: {
+            y: {
+                formatter: function (val) {
+                return "$ " + val + " thousands"
+                }
+            }
+            }
+            };
+    
+        var chart = new ApexCharts(document.querySelector("#BasicLine"), options);
+        chart.render();
+    
+    
+        var options = {
+            series: [76, 67, 61, 90],
+            chart: {
+            height: 170,
+            type: 'radialBar',
+          },
+          plotOptions: {
+            radialBar: {
+              offsetY: 0,
+              startAngle: 0,
+              endAngle: 150,
+              hollow: {
+                margin: 5,
+                size: '40%',
+                background: 'transparent',
+                image:  undefined,
+              },
+              dataLabels: {
+                name: {
+                  show: false,
+                },
+                value: {
+                  show: false,
+                }
+              }
+            }
+          },
+          colors: ['#1ab7ea', '#0084ff', '#39539E', '#0077B5'],
+          labels: ['Vimeo', 'Messenger', 'Facebook', 'LinkedIn'],
+          legend: {
+            show: true,
+            floating: true,
+            fontSize: '12px',
+            position: 'right',
+            offsetX: 160,
+            offsetY: 15,
+            labels: {
+              useSeriesColors: true,
+            },
+            markers: {
+              size: 0
+            },
+            formatter: function(seriesName, opts) {
+              return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
+            },
+            itemMargin: {
+              vertical: 3
+            }
+          },
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              legend: {
+                  show: true
+              }
+            }
+          }]
+          };
+    
+        var chart = new ApexCharts(document.querySelector("#CustomAngle"), options);
+        chart.render();   
+    
+    
+        var options = {
+            series: [{
+              name: "Session Duration",
+              data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
+            },
+            {
+              name: "Page Views",
+              data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
+            },
+            {
+              name: 'Total Visits',
+              data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
+            }
+          ],
+            chart: {
+            height: 170,
+            type: 'line',
+            zoom: {
+              enabled: false
+            },
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            width: [5, 7, 5],
+            curve: 'straight',
+            dashArray: [0, 8, 5]
+          },
+          title: {
+            text: 'Page Statistics',
+            align: 'left'
+          },
+          legend: {
+            tooltipHoverFormatter: function(val, opts) {
+              return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + ''
+            }
+          },
+          markers: {
+            size: 0,
+            hover: {
+              sizeOffset: 6
+            }
+          },
+          xaxis: {
+            categories: ['01 Jan', '02 Jan', '03 Jan', '04 Jan', '05 Jan', '06 Jan', '07 Jan', '08 Jan', '09 Jan',
+              '10 Jan', '11 Jan', '12 Jan'
+            ],
+          },
+          tooltip: {
+            y: [
+              {
+                title: {
+                  formatter: function (val) {
+                    return val + " (mins)"
+                  }
+                }
+              },
+              {
+                title: {
+                  formatter: function (val) {
+                    return val + " per session"
+                  }
+                }
+              },
+              {
+                title: {
+                  formatter: function (val) {
+                    return val;
+                  }
+                }
+              }
+            ]
+          },
+          grid: {
+            borderColor: '#f1f1f1',
+          }
+          };
+    
+        var chart = new ApexCharts(document.querySelector("#lineChart"), options);
+        chart.render();
+    
+    </script>
+    
+    <script>
+      let mOpen = document.querySelector('#menu-btn');
+      let mClose = document.querySelector('#menu-close');         
+      let sMenu = document.querySelector('nav div ul');
+    
+      mOpen.onclick = () =>{
+          sMenu.style.right = '0px';
+      }
+    
+      mClose.onclick = () =>{
+          sMenu.style.right = '-220px';
+      }
+    
+    </script>
+    
+{% endblock body %}

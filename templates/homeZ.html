@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+{% load static%}
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="static/JAVA/Images/Icon/favicon.png" />
+  </head>
+
+<body>
+
+  <!--===================== Container A ============================== //Start-->
+
+    <div class="banner1">
+      <div> <a href="/LP"><img src="{% static 'JAVA/Images/Icon/menu.png' %}"   class="Menu" alt=""> </a> </div> 
+      <!--Login-->
+      <div class="Login">
+        {% if user.id is None %}
+          <a href="/login">Login <span>🔒</span></a> 
+        {% else %}
+          <a href="/logout">Logout <span>🔓</span></a> 
+        {% endif %}
+      </div>
+
+      <!--===================== Text Animation ========================================= //Start-->
+        <div class="animated-title">
+          <div class="text-top">
+            <div>
+              <span style="color:white;"  >Intelligent Knowledge Base </span>
+              <span style="color:white;" >Financial Reporting</span>
+              <hr style="width:60%; background:red; ">
+            </div>
+          </div>
+          <div class="text-bottom">
+            <div style="color:#37a4b0;">Software</div>
+          </div>
+        </div>
+      <!--===================== Text Animation ========================== // End -->
+
+        <div style=" display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))  ; color:white; padding: 0 25px; grid-gap: 15px 20px; "> 
+          <div style=" background:rgb(245, 199, 37, .2); padding:30px; border-radius:5px;">
+            <h3 style="color:orange;  margin-bottom:10px;">Close with Conficence </h3>
+                Accelerate the financial close and maintain compliance with accoungting standards.
+          </div>
+          <div style=" background:rgb(238, 245, 37, .2); padding:30px; border-radius:5px;">
+            <h3 style="color:#f5f489;  margin-bottom:10px;">Report with Accuracy </h3>
+                Drill down into underlying details and understand the impact to your business..
+          </div>
+          <div style=" background:rgb(149, 156, 163, .3); padding:30px; border-radius:5px;">
+            <h3 style="color:#a0fc48;  margin-bottom:10px;">Real-time Information </h3>
+                Improve performance with real-time metrics and role-based dashboards.
+          </div>
+        </div>
+
+
+      <!--===================== Youtube Section ========================= //Start-->
+        <div class="youTab">
+          <div style="width: 100%; padding:5px;" >
+            <div style="position: relative; padding-bottom: 56.15%; height: 0; overflow: hidden;">
+              <iframe 
+                style="position: absolute; top: 0; left:0; width: 100%; height: 100%; border: 0;"
+                loading="lazy";
+                srcdoc="<style>
+                        * { padding: 0; margin: 0; overflow: hidden; }
+                        img, svg { position: absolute;  width: 100%; top: 0; bottom: 0;  margin: auto; }
+                        svg { filter: drop-shadow(1px 1px 10px hsl(206.5, 70.7%, 8%)); transition: all 250ms ease-in-out; }
+                        body:hover svg {filter: drop-shadow(1px 1px 10px hsl(206.5, 0%, 10%)); transform: scale(1.2); }
+                      </style>
+                      <a href='https://www.youtube.com/embed/ENNQp-iKM9M?autoplay=1&fs=0&iv_load_policy=3&showinfo=0&rel=0&cc_load_policy=0&start=0&end=0'>
+                        <img src='https://i.ytimg.com/vi/ENNQp-iKM9M/hqdefault.jpg' alt='Coffee Recipe Javascript Project'>
+                        <svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='none' stroke='#ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-play-circle'><circle cx='12' cy='12' r='10'></circle><polygon points='10 8 16 12 10 16 10 8'></polygon></svg>
+                      </a>
+                    "
+                src="https://www.youtube.com/embed/ENNQp-iKM9M" 
+                title="Coffee Recipe Javascript Project Imran"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+        </div>
+      <!--===================== Section 2a. Intro ================================= //End-->
+
+    </div>
+
+
+  <!--===================== Container B ============================== //Start-->
+
+    <div class="container">
+      
+      <div class="pic1" style="position:relative">
+        <h1 class="title">Intelligent Financial Reporting Tool</h1>
+        
+        <div style=" position:absolute; top: 100px; display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))  ; color:white; padding: 0 25px; grid-gap: 15px 20px; z-index:10"> 
+          <div style=" background:rgb(245, 199, 37, .2); padding:30px; border-radius:5px;">
+            <h3 style="color:orange; margin-bottom:10px;">Budgeting and Forcasting </h3>
+            BASE build a driver-based budget model in days. Test multiple scenarios, generate accurate, automated forecasts, and enforce your chart of accounts.
+          </div>
+          <div style=" background:rgb(238, 245, 37, .2); padding:30px; border-radius:5px;">
+            <h3 style="color:#f5f489; margin-bottom:10px; ">Monitoring and Controls </h3>
+            BASE Ensure the allocation and usage of Organization financial resources in most efficient way by monitors and controls.
+          </div>
+          <div style=" background:rgb(56, 245, 37, .2); padding:30px; border-radius:5px;">
+            <h3 style="color:#a0fc48;  margin-bottom:10px; ">Financial Repoting </h3>
+            BASE Make Financial reporting and analytics easy. Quickly put analytics-based actionable reports and dashboards at every stakeholder's fingertips.
+          </div>
+        </div>
+
+        <img class="Img" src="/static/JAVA/Images/Temp/F1s.jpg" alt="Finance 1" />
+      </div>
+
+      <div class="pic2" style="position:relative">
+        <h1 class="title">Intelligent Financial Reporting Tool</h1>
+        <img class="Img" src="/static/JAVA/Images/Temp/F2s.jpg" alt="Finance 2" />
+      </div>
+
+      <div style="position:relative">
+        <h1 class="title">Intelligent Financial Reporting Tool</h1>
+        <img class="Img" src="/static/JAVA/Images/Temp/F3kk.jpg" alt="Finance 3" />
+      </div>
+
+      <div class="pic2" style="position:relative">
+        <h1 class="title">Intelligent Financial Reporting Tool</h1>
+        <img class="Img" src="/static/JAVA/Images/Temp/F4kk.jpg" alt="Finance 4" />
+      </div>
+
+      <div style="position:relative">
+        <h1 class="title">Intelligent Financial Reporting Tool</h1>
+        <img class="Img" src="/static/JAVA/Images/Temp/F5kk.jpg" alt="Finance 5" />
+      </div>
+
+      <div class="pic2" style="position:relative">
+        <h1 class="title">Intelligent Financial Reporting Tool</h1>
+        <img class="Img" src="/static/JAVA/Images/Temp/F6s.jpg" alt="Finance 6" />
+      </div>
+
+    </div>
+
+
+<script>
+    const images = document.querySelectorAll("img");
+
+    const imgOptions = {};
+    const imgObserver = new IntersectionObserver((entries, imgObserver) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+    
+        const img = entry.target;
+        img.src = img.src.replace("s.jpg", ".jpg");
+        img.src = img.src.replace("kk.jpg", ".gif");
+        imgObserver.unobserve(entry.target);
+      });
+    }, imgOptions);
+    
+    images.forEach((img) => {
+      imgObserver.observe(img);
+    });
+    
+
+</script>
+
+<style>
+    * {
+      margin: 0;  padding: 0;  box-sizing: border-box; overflow-x:hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .Login {
+      text-align:right; padding:10px; z-index:10; 
+      font-size: min(max(16px, 4vw), 22px);
+    }
+    .Menu{
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        /* width: min(12vw, 7vw, 12vw);*/
+        width: 40px;
+
+        color:azure;
+        opacity: 1;
+        cursor: pointer;
+    }
+    .banner1{
+      background:  repeating-linear-gradient(45deg, transparent 0.5px 1px, rgba(107, 105, 105, 0.075) 5px 1px),
+                   repeating-linear-gradient(135deg, transparent 0.5px 1px,  rgba(41, 101, 131, 0.192) 5px 1px),
+                   repeating-linear-gradient(45deg, transparent 0.5px 1px,  rgba(85, 88, 90, 0.068) 5px 1px),
+                   linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.3)), 
+                   url('/static/JAVA/Images/Background/banner.jpg') no-repeat;
+    }
+    .banner2{
+      background:  repeating-linear-gradient(45deg, transparent 0.5px 1px, rgba(107, 105, 105, 0.075) 5px 1px),
+                   repeating-linear-gradient(135deg, transparent 0.5px 1px,  rgba(41, 101, 131, 0.192) 5px 1px),
+                   repeating-linear-gradient(45deg, transparent 0.5px 1px,  rgba(85, 88, 90, 0.068) 5px 1px),
+                   linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.3)), 
+                   url('/static/JAVA/Images/Background/BG4.jpg') no-repeat;
+    }
+    .banner1, .banner2{
+      height: 100vh;
+      background-size: cover;
+      background-position: left ;
+      background-attachment: fixed;
+      }
+
+
+    .container {
+        width: 100%;  margin: 0 auto;  position:relative
+      }
+
+    .pic1{
+      opacity: 1;
+    }
+
+    .pic1:after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, rgb(23, 23, 29, .9), rgba(181, 181, 193, 0.15));
+    } 
+
+    .pic2{
+      width:100%
+    }
+
+    .pic2:after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: rgba(17, 32, 48, 0.2);
+      background-image: radial-gradient(black 30%, transparent 50%);
+      background-size: 2.5px 2.5px;
+    } 
+
+
+      * {
+        font-family: sans-serif;
+      }
+      
+      .title {
+        text-align: left;
+        padding: 2rem;
+        font-size: min(max(25px, 5vw), 40px);
+        color:white;
+        position:absolute;
+        z-index:1;
+      }
+      
+      .Img {
+        border-radius: 0px;
+        display: block;
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+      }
+
+
+      .youTab{
+        position:absolute; 
+        min-width:400px; 
+        background:white; 
+        padding:0px; 
+        bottom:50px; right:5%; 
+        box-shadow: 9px 9px 6px -5px rgba(141,177,204,0.66);
+        z-index:10;
+      }
+
+      a{
+        outline: none;
+        text-decoration: none;
+        color:lightgray;
+      }
+/*============ Tax Animation ==========================================//Start */
+        @keyframes showTopText {
+            0% {
+                transform: translate3d(0, 100%, 0);
+            }
+            40%, 60% {
+                transform: translate3d(0, 50%, 0);
+            }
+            100% {
+                transform: translate3d(0, 0, 0);
+            }
+        }
+        @keyframes showBottomText {
+            0% {
+                transform: translate3d(0, -100%, 0);
+            }
+            100% {
+                transform: translate3d(0, 0, 0);
+            }
+        }
+        .animated-title {
+            color: lightgray;
+            font-family: Roboto, Arial, sans-serif;
+            height: 25vmin;
+            left: 25px;
+            position: relative;
+            top: 0px;
+            width: 100%;
+            line-height: 1.1;
+        }
+        .animated-title > div {
+            height: 50%;
+            overflow: hidden;
+            position: absolute;
+            width: 100%;
+        }
+        .animated-title > div div {
+            font-size: 5vmin;
+            padding: 0vmin 0;
+            position: absolute;
+            min-width:110%
+        }
+        .animated-title > div div span {
+            display: block;
+        }
+        .animated-title > div.text-top {
+            /*border-bottom: 1vmin solid rgb(233, 25, 14, 0.8);*/
+            top: 0;
+        }
+        .animated-title > div.text-top div {
+            animation: showTopText 1s;
+            animation-delay: 0.5s;
+            animation-fill-mode: forwards;
+            bottom: 0;
+            transform: translate(0, 100%);
+        }
+        .animated-title > div.text-top div span:first-child {
+            color: #fafbfc;
+        }
+        .animated-title > div.text-bottom {
+            bottom: 0;
+        }
+        .animated-title > div.text-bottom div {
+            animation: showBottomText 0.5s;
+            animation-delay: 1.75s;
+            animation-fill-mode: forwards;
+            top: 0;
+            transform: translate(0, -100%);
+        }
+/*============ Tax Animation ==========================================//End */
+
+    /*--- Mobile device --------------------------------------------------------------------*/
+    @media only screen and (max-width:1000px){
+      .youTab{
+        position:absolute; 
+        min-width:300px;
+        bottom:50px; right:8%; 
+        
+        }
+    .animated-title > div div {
+        font-size: 6vmin;
+    }
+
+    @media only screen and (max-width:500px){
+      .youTab{
+        position:absolute; 
+        min-width:400px;
+        bottom:50px; right:8%; 
+        
+        }
+    .animated-title > div div {
+        font-size: 6vmin;
+    }
+
+</style>
+
+</body>
+
+<p> Visit to Landing Page <a href = "{% url 'LP'%}"> Log In </a> </p>

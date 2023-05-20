@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static%}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Browser Image and Heading -->
+    <link rel="shortcut icon" href="static/images/logoSmal.png" />
+    
+    <title>{% block title %}   {% endblock title %} | BaseFR</title>
+
+    <title>IUH</title>
+
+    <div id="loadOverlay" style="background:#373637 url('static/images/preLoader5.gif'); position:absolute; top:0px; left:0px; width:100vw; height:100vh; z-index:2000; background-repeat: no-repeat; background-size: 35%; background-position: center;"></div>
+
+</head>
+
+
+    <!--========== Navigation ================ //Start-->
+        <nav>
+            <img src="static/images/Web Page/logo.png" alt="BASE FR" >
+            <div class="navigation abc" >
+                <ul>
+                <li id="menu-close">✖</li>
+                <li><a class="active" href='/'>Home</a></li>
+                <li><a href='/DB1'>DashBoard 1</a></li>
+                <li><a href='/DB2'>DashBoard 2</a></li>
+                <li><a href='/DB3'>DashBoard 3</a></li>
+                <li><a href='/DB4'>DashBoard 4</a></li>
+                </ul>
+                <img id="menu-btn" src="static/images/Web Page/menu.png" alt="">
+            </div>
+        </nav>
+    <!--========== Navigation ================ // End -->
+    
+    {% block body %}   {% endblock body %}
+
+    <style>
+
+        /* ------- Global Tag --------------- */
+            *{
+                font-family: 'Roboto', sans-serif;
+                margin:0; padding:0;
+                box-sizing: border-box;
+                outline: none; border:none;
+                text-decoration: none;
+            }
+            h1 {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: rgb(35, 35, 85);
+            }
+            span {
+                font-size: 0.9rem;
+                color: #757373;
+            }
+            h6{
+                font-size: 1.1rem;
+                color: rgb(24, 24, 49);  
+            }
+        /* ------- Global Tag --------------- */
+
+        /* ------- Nav Bar ------------------ */
+        nav {
+            position:fixed;
+            z-index:1000;
+            width:100%;
+            background-color: rgb(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            display:flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0vw 8vw; 
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15)
+        }
+        nav img{
+            width: 6rem;
+            cursor: pointer;
+        }
+        nav .navigation{
+            display:flex;
+        }
+        #menu-btn{
+            width: 30px;
+            height:30px;
+            display:none;
+        }
+        #menu-close{
+            display:none;
+        }
+        nav .navigation ul {
+            display:flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        nav .navigation ul li{
+            list-style: none; 
+            margin-left: 30px;
+        }
+        nav .navigation ul li a{
+            color: rgb(21, 21, 100);
+            font-size: 1rem;
+            font-weight: 500;
+            transition: 0.3s ease;
+        }
+        nav .navigation ul li a.active,
+        nav .navigation ul li a:hover {
+            color: #FDC93B;
+        }
+
+        /* ------- Nav Bar ------------------ */
+
+        /* ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ Media Queries ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊*/
+            /* media queries  */
+            @media (max-width:991px){
+            
+                html{
+                    font-size: 100%;
+                }
+                
+                body{
+                    padding: 0;
+                }
+                nav{
+                    padding: 15px 20px;
+                }
+                #menu-btn{
+                    display: initial;
+                }
+                #menu-close{
+                    display: initial;
+                    font-size: 1.5rem;
+                    color: #fff;
+                    padding: 30px 0 20px 20px;
+                    cursor: pointer;
+                }
+
+                nav .navigation ul{
+                    position: absolute;
+                    top: 0;
+                    right: -220px;
+                    width: 220px;
+                    background: linear-gradient(41deg, rgba(107, 107, 107, 0.04) 0%, rgba(107, 107, 107, 0.04) 8%,rgba(31, 31, 31, 0.04) 8%, rgba(31, 31, 31, 0.04) 100%),linear-gradient(9deg, rgba(228, 228, 228, 0.04) 0%, rgba(228, 228, 228, 0.04) 62%,rgba(54, 54, 54, 0.04) 62%, rgba(54, 54, 54, 0.04) 100%),linear-gradient(124deg, rgba(18, 18, 18, 0.04) 0%, rgba(18, 18, 18, 0.04) 37%,rgba(233, 233, 233, 0.04) 37%, rgba(233, 233, 233, 0.04) 100%),linear-gradient(253deg, rgba(201, 201, 201, 0.04) 0%, rgba(201, 201, 201, 0.04) 55%,rgba(47, 47, 47, 0.04) 55%, rgba(47, 47, 47, 0.04) 100%),linear-gradient(270deg, rgba(172, 172, 172, 0.04) 0%, rgba(172, 172, 172, 0.04) 33%,rgba(26, 26, 26, 0.04) 33%, rgba(26, 26, 26, 0.04) 100%),linear-gradient(64deg, rgba(11, 11, 11, 0.04) 0%, rgba(11, 11, 11, 0.04) 38%,rgba(87, 87, 87, 0.04) 38%, rgba(87, 87, 87, 0.04) 100%),linear-gradient(347deg, rgba(199, 199, 199, 0.04) 0%, 69%,rgba(4, 4, 4, 0.04) 69%, rgba(4, 4, 4, 0.04) 100%),linear-gradient(313deg, rgba(36, 36, 36, 0.04) 0%, rgba(36, 36, 36, 0.04) 20%,rgba(91, 91, 91, 0.04) 20%, rgba(91, 91, 91, 0.04) 100%),linear-gradient(90deg, rgb(67, 70, 92),rgb(80, 81, 114));
+                    border: 1px solid rgba(255, 255, 255, 0.18);
+                    backdrop-filter: blur(14.5px);
+                    height: 100vh;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    transition: 0.5s ease;
+                }
+                nav .navigation ul li{
+                    padding: 20px 0 20px 40px;
+                    margin-left: 0;
+                }
+                nav .navigation ul li a {
+                    color: #fff;
+                    font-size: 1.5rem;
+                }
+            }
+        
+        /* ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ Media Queries ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊*/
+
+        #loadOverlay{display: none;}
+    </style>
+
+
+    <script>
+        let mOpen = document.querySelector('#menu-btn');
+        let mClose = document.querySelector('#menu-close');         
+        let sMenu = document.querySelector('nav div ul');
+    
+        mOpen.onclick = () =>{
+            sMenu.style.right = '0px';
+        }
+    
+        mClose.onclick = () =>{
+            sMenu.style.right = '-220px';
+        }
+  
+    </script>
+  
+
+
+</html>

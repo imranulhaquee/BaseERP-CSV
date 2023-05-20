@@ -1,0 +1,27 @@
+view.py
+===========================================
+
+
+#Employee Name (quotAddiItems) --------------------------------
+spCode = int(Basic.salPer)
+reqB = ['empCode','empFName', 'empMName','empLName','comment']
+dfSel = pd.read_csv("Data/I1_Hrm/Employees/EmpMaster.csv", usecols=reqB, index_col=False)
+### Step 1a- Remove Duplicate Line and Deleted Record ----------
+dfSel = dfSel.drop_duplicates(subset=['empCode'], keep='last')
+dfSel = dfSel.drop(dfSel.loc[dfSel['comment']=='Delete'].index)
+dfDetail = dfSel.fillna('')
+dfDetail['empName'] = dfDetail['empFName']+" "+dfDetail['empMName']+" "+dfDetail['empLName']
+
+if (spCode !=""):
+    result = dfDetail.loc[dfDetail['empCode'] == spCode, 'empName'].tolist()
+else:
+    spCode = 0
+    result = dfDetail.loc[dfDetail['empCode'] == spCode, 'empName'].tolist()
+
+
+HTML
+====================================
+
+let spName ={{spName|safe}}
+let spCode ={{spCode|safe}}
+console.log(spCode)

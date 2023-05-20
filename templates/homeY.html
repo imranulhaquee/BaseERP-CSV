@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static%}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Browser Image and Heading -->
+    <link rel="shortcut icon" href="static/images/Logo1.png" />
+    <title>IUH</title>
+</head>
+
+<body>
+
+
+
+<!--========== Home Section ============== //Start-->
+    <section id="home">
+        <div class="imgVid">
+            <img class="Img" src="/static/JAVA/Images/Temp/ABC.jpg" alt="" />
+            <div class="transparent-overlay"></div>
+        </div>
+
+        <div class="topLine">
+            <div class="border a1"> <div>☏</div> <h2>+(971) 50 460 9019  <p> Call us </p></div>
+            <div class="border a2"> <div>✉</div> <h2>imranulhaque.ae  <p>  Email us </p></h2></div>
+            <div class="border a3"> <div>⛯</div> <h2>Bay Square, Dubai <p> Visit us </p> </h2></div>
+        </div>
+
+        <div class="menu">
+            <img src="static/JAVA/Images/Logo/logoNameWhite.png" alt="BASE FR" style="width:100px;">
+               <div class="navigation abc" >
+                <ul>
+                  <li id="menu-close">✖</li>
+                  <li><a class="active" href='/'>Home</a></li>
+                  <li><a href='/7'>About</a></li>
+                  <li><a href='#'>Blog</a></li>
+                  <li><a href='#'>Courses</a></li>
+                  <li><a href='#'>Contact</a></li>
+                </ul>
+                <img id="menu-btn" src="static/images/Web Page/menu.png" alt="">
+              </div>
+        </div>
+        <div class="dummy" style="min-height:0px;"></div>
+
+        <div class="register">
+
+            <div class="botLine">
+                <h1 class="l1">It’s time to get decisive! </h1>
+                <h1 class="l2">Start Your Business <br> in the UAE </h1>
+                <h1 class="l3">UAE company setup, residency, banking and much more. </h1>
+            </div>
+        
+            <div class="form">
+                <h3>Create Free Account Now!</h3>
+                <input type="text" placeholder="Name" name="" id="">
+                <input type="text" placeholder="Email Address" name="" id="">
+                <input type="text" placeholder="Phone Number" name="" id="">
+                <div class="btnSub">
+                    <a class="yellow" href="#">Submit Form</a>
+                </div>
+            </div>
+        
+        </div>
+       
+        
+        <div class="btn">
+            <a class="orange" href="#">COST CALCULATOR</a>
+            <a class="blue" href="#">CONTACT US</a>
+        </div>
+ 
+    </section>
+<!--========== Home Section ============== // End -->
+
+<!--========== Into Section ============== //Start-->
+<section id="first">
+    
+</section>
+<!--========== Into Section ============== // End -->
+
+
+<!--========== Into Section ============== //Start-->
+    <section id="intro">
+        <div class="transparent-overlay"></div>
+    </section>
+<!--========== Into Section ============== // End -->
+
+
+</body>
+
+
+
+<style>
+
+    /* ------- Global Tag ------------------------------------------------ */
+        *{
+            font-family: 'Roboto', sans-serif;
+            margin:0; padding:0;
+            box-sizing: border-box;
+            outline: none; border:none;
+            text-decoration: none;
+        }
+        html{
+            font-size: 62.5%;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: rgb(35, 35, 85);
+        }
+        span {
+            font-size: 0.9rem;
+            color: #757373;
+        }
+        h6{
+            font-size: 1.1rem;
+            color: rgb(24, 24, 49);  
+        }
+
+        .transparent-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: radial-gradient(rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 100%), radial-gradient(rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 100%);
+            background-size: 3.5px 3.5px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.5;
+        }
+        .Img {
+            border-radius: 0px;
+            position:absolute;
+            z-index:-1;
+            display: block;
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+        }
+    /* ------- Global Tag ------------------------------------------------ */
+
+
+
+
+    /* ------- Home Section ---------------------------------------------- */
+        #home{
+            position: relative;
+            background: repeating-linear-gradient(45deg, transparent 0.5px 1px, rgba(107, 105, 105, 0.075) 5px 1px),
+                        url('/static/JAVA/Images/Background/banner1.jpg') no-repeat;
+            min-height: 100vh;
+            max-height: 100vh;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow:hidden;
+            z-index: 1000;
+        }
+        #home .topLine {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: end /* space-between*/;
+            color: #fff;
+            padding: 1rem 1rem;
+        }
+        #home .topLine p{ 
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        #home .topLine .border{
+            border-left: 2px solid white;
+            padding-left: 35px; 
+        }
+        #home .topLine div{
+            min-width:150px;
+            position: relative;
+            padding: 0 15px;
+        }
+        #home .topLine div div{
+            font-size: 1.5rem;
+            position:absolute;
+            left:-10px;
+            top: -5px;
+        }
+        #home .botLine{
+            position: relative;
+            margin: 4rem 0 0 4rem;
+            z-index:100;
+        }
+        #home .botLine{
+            margin-left: 4rem;
+        }
+        #home .botLine .l1{
+            margin-top:30px; 
+            color:white; 
+            font-weight: 300; 
+            font-size:2.2rem;
+        }
+        #home .botLine .l2{
+            color:white; 
+            font-weight: 300; 
+            font-size:5.2rem;
+        }
+        #home .botLine .l3{
+            margin-top:20px; 
+            color:white; 
+            font-weight: 300;
+            font-size:2rem;
+        }
+        #home .btn{
+            position: absolute;
+            top: 15px;
+            left: 4rem;
+        }
+        #home .btn a {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            background-color: #fff;
+            font-weight: 600;
+            border-radius: 2px;
+        }
+        #home .btn a.orange {
+            color: #0e032d;
+            background-color: rgb(255, 223, 66 );
+            transition: 0.6s ease;
+            margin: 5px;
+            font-size: 1.5rem;
+        }
+        #home .btn a.orange:hover {
+            color:#fff;
+            background: transparent;
+            border: 2px solid #fff;
+        }
+        #home .btn a.blue {
+            color:#fff;
+            background-color: rgb(3, 20, 80 );
+            transition: 0.6s ease;
+            margin: 5px;;
+            font-size: 1.5rem;
+        }
+        #home .btn a.blue:hover {
+            color: #fff;
+            background: transparent;
+            border: 2px solid #fff;;
+        }
+        
+    /* ------- Registration Section ----- */
+        #home .register {
+            padding: 2vw 1vw 1vw 1vw;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            display: grid;
+            grid-template-columns: repeat( auto-fill, minmax(500px, 1fr) );
+            justify-content: space-between;  
+            /* display: flex;
+            flex-wrap: wrap;
+            justify-content: right/* space-around*/;
+            align-items: space-around;
+        }
+        #home .register .form{
+            background: #fff;
+            border-radius: 8px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+            margin:6rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37)
+        }
+        #home .register .form input{
+            margin: 15px 0;
+            padding: 15px 10px;
+            border: 1px solid rgb(84, 40, 241);
+            outline: none;
+        }
+        #home .register .form input::placeholder{
+            color: #413c3c;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        #home .register .form .btnSub{
+            margin-top: 20px;
+        }      
+        #home .register .form a.yellow{
+            font-size: 0.9rem;
+            padding: 13px 35px;
+            background-color: #fff;
+            font-weight: 600;
+            border-radius: 5px;
+            color: #a76a01;
+            background: #f8d87f;
+            transition: 0.6s ease;
+        }
+        #home .register .form a.yellow:hover {
+            color:#fff;
+            background-color: rgb(198, 142, 0);
+        }
+    /* ------- Registration Section ----- */
+
+
+    /* ------- Home Section ---------------------------------------------- */
+
+
+    /* ------- Nav Bar ------------------ */
+        .menu {
+            position: relative;
+            z-index:1000;
+            width:100%;
+            height: 60px;
+            display:flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0vw 4vw; 
+            background: linear-gradient(41deg, rgba(107, 107, 107, 0.04) 0%, rgba(107, 107, 107, 0.04) 8%,rgba(31, 31, 31, 0.04) 8%, rgba(31, 31, 31, 0.04) 100%),linear-gradient(9deg, rgba(228, 228, 228, 0.04) 0%, rgba(228, 228, 228, 0.04) 62%,rgba(54, 54, 54, 0.04) 62%, rgba(54, 54, 54, 0.04) 100%),linear-gradient(124deg, rgba(18, 18, 18, 0.04) 0%, rgba(18, 18, 18, 0.04) 37%,rgba(233, 233, 233, 0.04) 37%, rgba(233, 233, 233, 0.04) 100%),linear-gradient(253deg, rgba(201, 201, 201, 0.04) 0%, rgba(201, 201, 201, 0.04) 55%,rgba(47, 47, 47, 0.04) 55%, rgba(47, 47, 47, 0.04) 100%),linear-gradient(270deg, rgba(172, 172, 172, 0.04) 0%, rgba(172, 172, 172, 0.04) 33%,rgba(26, 26, 26, 0.04) 33%, rgba(26, 26, 26, 0.04) 100%),linear-gradient(64deg, rgba(11, 11, 11, 0.04) 0%, rgba(11, 11, 11, 0.04) 38%,rgba(87, 87, 87, 0.04) 38%, rgba(87, 87, 87, 0.04) 100%),linear-gradient(347deg, rgba(199, 199, 199, 0.04) 0%, 69%,rgba(4, 4, 4, 0.04) 69%, rgba(4, 4, 4, 0.04) 100%),linear-gradient(313deg, rgba(36, 36, 36, 0.04) 0%, rgba(36, 36, 36, 0.04) 20%,rgba(91, 91, 91, 0.04) 20%, rgba(137, 155, 202, 0.04) 100%),linear-gradient(90deg, rgb(165, 168, 197),rgb(161, 166, 174));
+            box-shadow: 2px 2px 10px rgba(161, 159, 159, 0.15);
+            transition: background 0.5s ease;
+            
+        }
+        .menu.sticky {
+            position: fixed;
+            top: 0;
+            background-color: rgb(255, 255, 255, 0.5);
+            backdrop-filter: blur(15px);
+        }
+        .menu img{
+            width: 6rem;
+            cursor: pointer;
+        }
+        .menu .navigation{
+            display:flex;
+        }
+        #menu-btn{
+            width: 30px;
+            height:30px;
+            display:none;
+        }
+        #menu-close{
+            display:none;
+        }
+        .menu .navigation ul {
+            display:flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .menu .navigation ul li{
+            list-style: none; 
+            margin-left: 30px;
+        }
+        .menu .navigation ul li a{
+            /* color:white; */
+            color: rgb(21, 21, 100);
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: 0.3s ease;
+        }
+        .menu .navigation ul li a.active,
+        .menu .navigation ul li a:hover {
+            color: #FDC93B;
+        }
+
+    /* ------- Nav Bar ------------------ */
+
+
+    /* ------- Intro Section --------------------------------------------- */
+        #first{
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            max-height: 100vh;
+
+        }
+    /* ------- Intro Section --------------------------------------------- */
+
+
+
+    /* ------- Intro Section --------------------------------------------- */
+        #intro{
+            position: relative;
+            background: repeating-linear-gradient(45deg, transparent 0.5px 1px, rgba(107, 105, 105, 0.075) 5px 1px),
+                        url('/static/JAVA/Images/Background/banner1.jpg') no-repeat;
+            min-height: 100vh;
+            width: 100%;
+            max-height: 100vh;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow:hidden;
+            z-index: 100;
+        }
+    /* ------- Intro Section --------------------------------------------- */
+
+
+
+    /* ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ Media Queries ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊*/
+
+    /* media queries  */
+        @media (max-width:991px){
+
+            html{
+                font-size: 67.5%;
+            }
+
+            body{
+                padding: 0;
+            }
+
+            #home, #intro{
+                position: relative;
+                min-height: 100vh;
+                }
+                .Img {
+                    border-radius: 0px;
+                    position:absolute;
+                    z-index:-1;
+                    display: block;
+                    height: 100vh;
+                    object-fit: cover;
+
+                }
+                nav{
+                    padding: 15px 20px;
+                }
+                #home .topLine .border .a1{
+                    display:none;
+
+                }
+
+            }
+
+            @media (max-width:450px){
+
+            html{
+                font-size: 67.5%;
+            }
+            #registration {
+                justify-content: center;
+            }
+
+            }
+            /* ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ Media Queries ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊*/
+
+</style>
+
+
+
+<script> //-- Change low resolution to high resolution picture -------------
+    const images = document.querySelectorAll("img");
+    const imgOptions = {};
+    const imgObserver = new IntersectionObserver((entries, imgObserver) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+                const img = entry.target;
+                //img.src = img.src.replace("ABC.jpg", "ABC6.mp4");
+                img.src = img.src.replace("ABC.jpg", "screen.gif");
+                img.src = img.src.replace("s.jpg", ".jpg");
+                img.src = img.src.replace("kk.jpg", ".gif");
+                imgObserver.unobserve(entry.target);
+            });
+      
+            //Change Image to Video---------------------------------------------- Star >
+                const imgVid = document.querySelector('.Img1');
+                const video = document.createElement('video');
+                const source = document.createElement('source');
+                source.src = imgVid.src;
+                source.type = 'video/mp4'; // replace with appropriate video MIME type
+                video.appendChild(source);
+                video.autoplay = true;
+                video.muted = true;   //muted is necess other wise video will not play
+                video.loop = true;
+                video.style.minHeight = '100vh';
+                video.style.minWidth = '100vw';
+                video.style.position = 'absolute';
+                video.style.top = '0';
+                imgVid.replaceWith(video);
+            //Change Image to Video----------------------------------------------- End >
+
+        }, imgOptions);
+    
+    images.forEach((img) => {
+      imgObserver.observe(img);
+    });
+</script>
+
+<script> //-- sticky top bar when reach to top 0-------------
+    var menu = document.querySelector('.menu');
+    var dum = document.querySelector('.dummy');
+    var menuOffset = menu.offsetTop;
+
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > menuOffset) {
+            menu.classList.add('sticky');
+            dum.style.minHeight = '76px';
+        } else {
+            menu.classList.remove('sticky');
+            dum.style.minHeight = '0px';
+        }
+    });
+</script>

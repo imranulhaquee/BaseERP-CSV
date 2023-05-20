@@ -1,0 +1,58 @@
+
+<h1> Office Location</h1>
+<div id="map"></div> 
+<button onclick="getLocation()"> Get Location Name</button>
+<button onclick="showDetail()"> Get Location Name</button>
+
+<h4 id="lat"> Location Latitude:  </h4>
+<h4 id="lon"> Location Longitude:  </h4>
+<h4 id="area"> Name of Area:  </h4>
+
+
+<script>
+    
+    let areaName = ''
+    let areaLat
+    let areaLon
+
+    //-------- Get the Latitude and Longitude of a location --------------------
+    function getLocation(){
+        navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+            map.innerHTML = `<iframe width="700" height="300" src="https://maps.google.com/maps?q=`+latitude+`,`+longitude+`&amp;z=15&amp;output=embed"></iframe>`;
+
+            console.log(latitude)
+            console.log(longitude)
+            areaLat = latitude
+            areaLon = longitude
+
+            //-------- Get the Name of the location ------------------------------------
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+            .then(response => response.json())
+            .then(data => {
+                const locationName = data.display_name;
+                console.log(locationName);
+                areaName = locationName
+            })
+            .catch(error => console.error(error));
+
+        })
+    }
+
+
+    //-------- Show the Detail on Dom ------------------------------------------
+    function showDetail(){
+        const lat = document.getElementById('lat')
+        lat.innerHTML = `Location Latitude: ${areaLat}`
+
+        const lon = document.getElementById('lon')
+        lon.innerHTML = `Location Longitude: ${areaLon}`
+
+        const area = document.getElementById('area')
+        area.innerHTML = `Name of Area: ${areaName}`
+    }
+
+
+</script>
+
+

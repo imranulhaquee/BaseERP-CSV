@@ -1,0 +1,1199 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+
+<!--.........................................................................-->
+<!--==== Main Container ==============================================//Start-->
+<!--.........................................................................-->
+  <div class="mainCon">
+          
+    <!--════ Heading Section ══════════════════════════════════════ //Start-->
+      <div class="heading"> 
+        <div> <img src=" {% static 'Java/Images/Logo/clientLogo.png' %}" style="width:175px;" alt=""> </div>
+        <h2><span class="span1">┃</span><span class="span2">Edit Sales Target</span> </h2>
+      </div>
+    <!--════ Heading Section ══════════════════════════════════════ //Start-->
+    
+
+    <!--════ TOP Section ══════════════════════════════════════ //Start-->
+      <div class="top"> 
+              <div class="boxA"> 
+                  <div style="margin-bottom: 10px;">
+                    <label style="margin-right:60px;">  <span >Edit Customer Data </span> </label>
+                    <input class="cEdit" type="checkbox" id="myCheckbox"> 
+                  </div>
+
+                  <div class="inputField" style="position:relative">
+                      <p>Employee Code:</p> 
+                      <p onclick="showDiv_A()" style="position:absolute; top:-2px; left:120px; color:orange; font-weight:bold; cursor:pointer" >☰</p>
+                      <input  type="text" id="empCode" name="empCode" disabled=true>
+                  </div>
+                  <!--━━━━ Employee Deatil (Search Table Div_A) ━━━━━━━━━━━━━━━━━━-->
+                    <div  id="Div_A"  onmouseleave="hideDiv_A()" > 
+                      <div class="serDiv"> 
+                          <span class="Search">
+                              <img onclick="fetchDiv_A()" style="cursor:pointer " class="Icon iA" src="static/JAVA/Images/Icon/search.png" alt="" width="15px" >
+                              <span  class="Icon iB">🞃 |</span>
+                              <input id="filter_A" onkeyup="filter_A()" type="text" placeholder="Search Item" >
+                          </span>
+                          
+                          <span class="genItm"> - </span>
+                          <a target="_blank"> <span class="newItm" > - </span>  </a>
+                          <span onclick="hideDiv_A()" style="position:absolute; right:5px; top:5px; font-size:11px; cursor:pointer;"> ❌ </span>
+                          <br>
+                      </div>
+
+                      <table id="table_A">
+                          <tr class="tableHead"> <th style="width:80px"> Emp#</th>  <th>Employee Name</th>  <th>Position</th> </tr>
+                          <tbody id="body_A"> </tbody>
+                      </table>
+
+                    </div>
+                  <!--━━━━ Employee Deatil (Search Table Div_A) ━━━━━━━━━━━━━━━━━━━-->
+
+                  <div class="inputField">
+                      <p>Employee Name:</p> 
+                      <input disabled=true type="text" id="empName" name="empName">
+                  </div>
+                  <div class="inputField">
+                      <p>Position:</p> 
+                      <input disabled=true type="text" id="empPos" name="empPos">
+                  </div>
+                  <div class="inputField">
+                      <p>Annual Salary:</p> 
+                      <input type="text" id="empSal" name="empSal">
+                  </div>
+                  <div class="inputField">     
+                      <p>Annual Target:</p> 
+                      <input  type="text" id="anTarget" name="anTarget">
+                  </div>
+              </div>
+              <div class="boxB"> 
+                  <div> <img id="logoPic" src=" {% static '../media/Blank1.jpg' %}"  alt=""> </div>
+              </div>
+      </div>
+    <!--════ TOP Section ══════════════════════════════════════ //Start-->
+
+
+    <!--════ Table Section ════════════════════════════════════════ //Start-->
+      <!--━━━━ Item Search Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━-->
+        <div  id="listDiv"  onmouseleave="listHide()" > 
+          <div class="serDiv"> 
+              <span class="Search">
+                  <img onclick="fetchItm()" style="cursor:pointer " class="Icon iA" src="static/JAVA/Images/Icon/search.png" alt="" width="15px" >
+                  <span  class="Icon iB">🞃 |</span>
+                  <input id="filterB" onkeyup="filterB()" type="text" placeholder="Search Item" >
+              </span>
+              
+              <span class="genItm"> - </span>
+              <a target="_blank"> <span class="newItm" > - </span>  </a>
+              <span onclick="listHide()" style="position:absolute; right:5px; top:5px; font-size:11px; cursor:pointer;"> ❌ </span>
+              <br>
+          </div>
+
+          <table id="itmTable">
+              <tr class="itmHead"> <th style="width:80px">Item #</th>  <th>Item Name</th>  <th>Item Cost</th> <th>Std Salling Price</th></tr>
+              <tbody id="itmBody"> </tbody>
+          </table>
+
+        </div>
+      <!--━━━━ Item Search Table ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━-->
+    
+      <!--━━━━ Table Section ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━-->
+          <div class="Table">
+              <table id="myTable" >
+                  <!--== Table First Heading =========================================-->
+                  <tr  style="text-align:center; position:relative">
+                      <th style="text-align: center;"width="25px;"class="addRow" onclick="create_tr('tBody')"> ✚ </th>
+                      <th style="width:20px;" style="text-align:center;"> </th> 
+                      <th style="width:50px;">S.No</th>
+                      <th style="width:90px;">Item Code </th>
+                      <th >Item Description</th>
+                      <th style="width:80px; text-align:right;">Item </br> Selling Price</th>
+                      <th style="width:60px; text-align:right;" onkeyup="getTot(this)"></br>Qty</th>
+                      <th style="width:100px; text-align:right;">Sales </br> Target</th>
+                      <th style="width:100px; text-align:right;">Total </br> Salary Cost</th>
+                      <th style="width:100px; text-align:right;">Salary Cost </br> Per Unit</th>
+                  </tr>
+                  <!--== Table Second Heading (Hidden) for field name ===============-->
+                  <tr style="display:none">
+                      <th></th>
+                      <th></th>
+                      <th>sno</th>
+                      <th>itmCode</th>
+                      <th>itmDesc</th>
+                      <th>itemSelPrice</th>
+                      <th>qty</th>
+                      <th>salesTarget</th>
+                      <th>totalSalCost</th>
+                      <th>salCostPU</th>
+                  </tr>
+                  <!--== Table Body (Input) to get value =============================-->
+                  <tbody id="tBody">
+                      <tr>
+                          <td><button class="remRow" onclick="remove_tr(this)"> 🗑 </button></td>
+                          <td style="text-align:center;"><button onclick="getRowAndCellIndex(this)" style="background:#fae0bb; border-radius:5px; padding: 0px 2px 2px 2px; cursor:pointer"> ☲ </button></td>                     
+                          <td><input type="number" id="sno" class="input" value=1 disabled=true></td>
+                          <td><input  id="itmCod" type="text" disabled=true></td>
+                          <td ><input  id="desc" type="text" disabled=true></td>
+                          <td><input type="floatformat" step="0.01" class="input" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
+                          <td><input type="floatformat" step="0.01" class="input" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
+                          <td><input type="floatformat" step="0.01" class="input" value=0 disabled=true onkeyup="getTot(this)" style="text-align:right"> </td>
+                          <td><input type="floatformat" step="0.01" class="input" value=0 disabled=true  style="text-align:right"> </td>
+                          <td><input type="floatformat" step="0.01" class="input" value=0 disabled=true  style="text-align:right"> </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      <!--━━━━ Table Section ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━-->
+    <!--════ Table Section ════════════════════════════════════════ //Start-->
+
+
+    <!--════ Total Section ════════════════════════════════════════ //Start-->
+      <div class="Total">
+
+        <div class="boxA"> 
+        </div>
+
+        <div class="boxB"> 
+          <div class="inputField">
+            <p>Annual Allocated Target:</p> 
+            <input disabled=true type="text" id="targetAllocated" name="targetAllocated" style="text-align:right">
+          </div>
+          <div class="inputField">
+              <p>Annual Salary:</p> 
+              <input disabled=true type="text" id="salaryAllocated" name="salaryAllocated" style="text-align:right">
+          </div>
+        </div>
+
+      </div>
+    <!--════ Total Section ════════════════════════════════════════ //Start-->
+
+
+    <!--════ Save Section ══════════════════════════════════════ //Start-->
+        <section id="savSec">
+            <div><button  onclick="event.preventDefault()" class="hBtn" type="submit"> ⚠ HELP</button></div>
+            <div><button onclick="canRecord()" id="cancelA" class="cBtn" type="submit"> ✂ CANCEL</button></div>
+            <div><button onclick="addRecord()" id="addRec"  class="addRec sBtn" type="submit" disabled=true>✚ Save</button></div>
+        </section>
+    <!--════ Save Section ══════════════════════════════════════ // End -->
+
+
+  </div>
+<!--====  Item Deatil Popup Window  ==================================// End -->
+
+
+
+<!--.........................................................................-->
+<!--==== PAGE JS =====================================================//Start-->
+<script>
+
+  //.... Get Data from Context Process and stored in Variable ...............
+    let basInfo = {{basInfo|safe}}
+  //.... Get Data from Context Process and stored in Variable ...............
+
+    let empImage = ""  //to get the image link to save in excel file
+    let emplCode
+
+  //▒▒▒▒▒▒ ADD REMOVE RESET TABLE ROWS ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+    //■■■■■ ADD NEW ROW IN THE TABLE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    function create_tr(table_id) {
+      var tBody = document.getElementById(table_id),
+          last_tr   = tBody.lastElementChild,
+          tr_clone   = last_tr.cloneNode(true);
+      tBody.append(tr_clone);
+
+      //console.log(tBody.lastElementChild)
+      clean_last_tr(tBody.lastElementChild);
+      resetNo ()
+    }
+
+    //---- CLEAN LAST ROW ------------------------------------------------------
+    function clean_last_tr(lastTr) {
+        let children = lastTr.children;
+        children = Array.isArray(children) ? children : Object.values(children);
+
+        children.forEach(x=>{
+            if(x !== lastTr.lastElementChild){
+                x.lastElementChild.value = "";
+            }
+        });
+    }
+
+    //---- REMOVE LAST ROW -----------------------------------------------------
+    function remove_tr(This) {
+        if(This.closest('tbody').childElementCount == 1) {
+            alert("You Don't have Permission to Delete This ?");
+        }else{
+            This.closest('tr').remove();
+            //resetNo ()
+        }
+        resetNo ('No')
+    }
+  
+    //---- RAESET NO ----------------------------------------------------------
+    function resetNo (Numb){
+        var lastRow = tBody.rows[ tBody.rows.length - 1 ] //get the last row of the table
+        var addColNo = parseInt(lastRow.cells[2].getElementsByTagName('input')[0].value); //get the value of the last row 1st cell
+        var sno = addColNo + 1 //add 1 to Last Column Value
+        var addSO = lastRow.cells[2].getElementsByTagName('input')[0].value = sno;
+        //---Loop Throgh Table length to reset number from begning---------------
+        
+        var a = 0
+        for (var j=0; j<tBody.rows.length; j++) {
+            var x = document.getElementById("tBody").rows[a].getElementsByTagName('input')[0].value = a+1;
+            a=a+1
+        } 
+        
+        if (Numb=="No"){
+
+        }else{
+        //---- Give the new line Specific Value----------------------------------
+        var addQty = parseInt(lastRow.cells[5].getElementsByTagName('input')[0].value = 0); //add Value to new row "Quantity" 
+        var addPri = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+        var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+        var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+        var addId = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+        }
+    }
+  //▒▒▒▒▒▒ ADD REMOVE RESET TABLE ROWS ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+  //▒▒▒▒▒▒ GET SUM OF THE ITEM SOLD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+      function getTot(abc) {
+        const ab = (abc.closest('tr').rowIndex)
+        var table = document.getElementById("myTable"), sumTarget=0, totCost=0; cPUnit=0;
+
+        var Salary = parseFloat(document.getElementById('empSal').value.replace(/,/g, ''))
+        var Target = parseFloat(document.getElementById('targetAllocated').value.replace(/,/g, ''))  //anTarget
+        var Price = parseFloat(table.rows[ab].cells[5].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+        var Qty = parseFloat(table.rows[ab].cells[6].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+
+
+        STPI = (Price*Qty)
+        parseFloat(table.rows[ab].cells[7].getElementsByTagName('input')[0].value =  STPI.toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,}))
+
+        //Go through each row calculate total sales Target target............
+        for(var i = 2; i < table.rows.length; i++){
+          let tCost = (Salary / Target)
+          tCost = tCost * parseFloat(table.rows[i].cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''));
+
+
+          //Go through each row to calculate Grand Sales Target...............
+          for(var i = 2; i < table.rows.length; i++){
+            sumTarget = sumTarget + parseFloat(table.rows[i].cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''));
+
+            // execute on last row table......................................
+            // on last row perform the following i.e caluclate total Cost of Salary and Cost of Salay per unit
+            if(i === table.rows.length - 1) {
+              var ddd = sumTarget;
+
+              document.getElementById('targetAllocated').value = ddd.toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,})
+              document.getElementById('salaryAllocated').value = Salary.toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,})
+
+              // Allocate the value to column................................
+              for(var j = 2; j < table.rows.length; j++){  
+                mmm = parseFloat(table.rows[j].cells[7].getElementsByTagName('input')[0].value.replace(/,/g, '')) / ddd * Salary;
+                parseFloat(table.rows[j].cells[8].getElementsByTagName('input')[0].value =  mmm.toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,}))
+
+                Quan = parseFloat(table.rows[j].cells[6].getElementsByTagName('input')[0].value.replace(/,/g, '')) ;
+                Valu= parseFloat(table.rows[j].cells[8].getElementsByTagName('input')[0].value.replace(/,/g, '')) ;
+
+                nnn = Valu/Quan
+                parseFloat(table.rows[j].cells[9].getElementsByTagName('input')[0].value =  nnn.toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,}))
+              }
+            }
+
+          }       
+        }
+      }
+  //▒▒▒▒▒▒ CALCULATION INSIDE TABLE ROWS ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+  //▒▒▒▒▒▒ ADD RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+      //■■■■■ GET JAVASCRIPT ARRAY OF OBJECTS - BY CALLING  'tableToJson()'■■■■■■■■■■ 
+      function addRecord() {
+        var addData = tableToJson(document.getElementById("myTable")); // Get table  
+          //console.log(addData)
+          //console.log(addData[1][0]['description'])
+          add_Record (addData)  
+      }
+
+
+      //■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+      function tableToJson(table) {
+        //----  Get Input field to gererate Basic Data Object ----------------------
+        let EmpCode = document.getElementById('empCode').value;
+            emplCode = EmpCode
+        let EmpName = document.getElementById('empName').value;
+        let AnSalary = document.getElementById('salaryAllocated').value.replace(/,/gi,'')
+        let AnTarget = document.getElementById('targetAllocated').value.replace(/,/gi,'')
+        let EmpPosi = document.getElementById('empPos').value  //---
+
+        let currentDate = new Date();
+        const year = currentDate.getFullYear(); // get the current year
+        const month = currentDate.getMonth() + 1; // get the current month (Note: month is zero-indexed)
+        const day = currentDate.getDate(); // get the current day of the month
+        const hours = currentDate.getHours(); // get the current hour
+        const minutes = currentDate.getMinutes(); // get the current minute
+        const seconds = currentDate.getSeconds(); // get the current second
+        let curDate = `${year}-${month}-${day} ${hours}-${minutes}-${seconds}`
+
+        var data = []
+        //first row needs to be headers
+        var headers = []; //if header contain code in second row means i=1
+        for (var i=1; i<table.rows[1].cells.length; i++) {
+            headers[i] = table.rows[1].cells[i].innerHTML.toLowerCase().replace(/ /gi,'').replace(/[.]/g,'');
+        }
+        
+        //---- go through each cells of all rows -- to generate Arry of Qut Items ---
+        for (var i=2; i<table.rows.length; i++) {
+            var tableRow = table.rows[i];
+            var rowData = {};
+            for (var j=2; j<tableRow.cells.length; j++) {
+                if(j>=5){ 
+                  rowData [headers[j] ] = tableRow.cells[j].getElementsByTagName('input')[0].value.replace(/,/gi,'');
+          
+                }else{
+                  rowData [headers[j] ] = tableRow.cells[j].getElementsByTagName('input')[0].value;
+                }
+                rowData ["empCode"] = EmpCode;
+                rowData ["empName"] = EmpName;
+                rowData ["anSalary"] = AnSalary;
+                rowData ["anTarget"] = AnTarget;
+                rowData ["traDate"] = curDate;
+                rowData ["image"] = empImage;
+                rowData ["empPosi"] = EmpPosi;               
+              }
+            data.push(rowData);
+        }
+
+        let dataA = data.filter(item => item.qty != 0);
+        console.log(dataA)
+        return dataA;
+      }
+      
+      //■■■■■ SAVE RECORD IN EXCEL FILE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+      const add_Record = async (data) => {
+        try {
+          //console.log(data)
+          const response = await fetch(`${basInfo.IP[0]}//tEmpTargetURL`, {
+              method: 'POST',
+              body: JSON.stringify(data), 
+              headers: {"Content-type":"application/json; charset=UTF-8"},
+          })
+          const post = await response.json();
+              alert("Record Saved Successfully...!");
+              remEmpAfterSave() //remove employee from list
+              addRefresh();
+        } catch (e) {  
+              alert("There is an Issue to Saved Data...")
+              console.log(e)
+        }
+      }
+
+      //■■■■■ REFRESH FORM ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+      function addRefresh(opt){
+        if (opt=="newSelection"){ }
+        else{
+            logoPic.src = `/media/Blank1.jpg`;
+            document.getElementById('empCode').value ="";
+            document.getElementById('empName').value ="";
+            document.getElementById('empPos').value ="";
+            document.getElementById('empSal').value ="";
+            document.getElementById('anTarget').value =""; 
+            document.getElementById('salaryAllocated').value =""; 
+            document.getElementById('targetAllocated').value ="";
+          
+            var table = document.getElementById("myTable");   
+            var rows = table.rows; // Get all rows in the table except the first 3 lines
+            for (var i = rows.length - 1; i >= 3; i--) {
+              table.deleteRow(i);// Delete the current row
+            }
+        
+            //---- Get the last row of the table -----------------------------------
+            var lastRow = table.rows[table.rows.length - 1];
+            //---- Refresh the line with nill value --------------------------------
+            lastRow.cells[3].getElementsByTagName('input')[0].value = "";
+            lastRow.cells[4].getElementsByTagName('input')[0].value = ""; 
+            parseInt(lastRow.cells[5].getElementsByTagName('input')[0].value = 0); 
+            parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = 0); 
+            parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); 
+            parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0);
+            parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); 
+        }
+        savDisable('Yes')  //to Disable Save option..............
+      }
+
+
+  //▒▒▒▒▒▒ ADD RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+  //▒▒▒▒▒▒ FORM VALIDATION ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+    function savDisable (elem) {
+      const subBtn = document.querySelector(".addRec");
+      if (elem == 'Yes'){
+          subBtn.disabled = true;
+          subBtn.classList.remove('addColor')
+      }else{
+          subBtn.disabled = false;
+          subBtn.classList.add('addColor')
+      }
+    }
+  //▒▒▒▒▒▒ FORM VALIDATION ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+</script>
+
+
+
+<!--.........................................................................-->
+<!--==== PAGE CSS ====================================================//Start-->
+<style>
+    
+    /* ⚊⚊⚊⚊ General INPUT ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+      input {
+          border: none;
+          box-sizing: border-box;
+          border-bottom: 1px solid rgb(0, 21, 255);
+          box-shadow: 1px 1px 4px #EBEBEB;
+          font-size: 13px;
+          padding: 2px 0 2px 5px;
+      }
+      input:focus { 
+          outline: none; 
+          background-color:#e8f0f5;
+      }
+
+      .cEdit{
+        width: 100px;
+      }
+      .check-box {
+          transform: scale(2);
+      }
+      input[type="checkbox"] {
+          position: relative;
+          appearance: none;
+          width: 50px;
+          height: 20px;
+          background: #ccc;
+          border-radius: 50px;
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+          cursor: pointer;
+          transition: 0.4s;
+      }
+      input:checked[type="checkbox"] {
+          background: #2CBBBB;
+          max-width: 120px;
+      }
+      input[type="checkbox"]::after {
+          position: absolute;
+          content: "";
+          width: 20px;
+          height: 20px;
+          top: 0;
+          left: 0;
+          background: #fff;
+          border-radius: 50%;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+          transform: scale(1.1);
+          transition: 0.4s;
+      }
+      input:checked[type="checkbox"]::after {
+          left: 73%;
+      }
+
+    /* ⚊⚊⚊⚊ General INPUT ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Main Container ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .mainCon { 
+            width: 95%;
+            min-width: 700px;
+            margin:3%; 
+            padding: 1% 3%; 
+            background-color: #fff;  
+            border-radius: 5px;
+            border-top: 10px solid rgb(91, 80, 104); 
+            border-bottom: 1px solid rgb(91, 80, 104); 
+            box-shadow: 0 1px 5px rgba(0,0,0,0.15); 
+        }
+    /* ⚊⚊⚊⚊ Main Container ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Heading Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .heading {
+            display:flex; 
+            flex-wrap:wrap; 
+            justify-content: space-between; 
+            width:100%; 
+            margin-bottom: 20px;
+        } 
+        .heading .span1 {
+            color:orange;
+        }
+        .heading .span2 {
+            font-weight:300;
+            letter-spacing: 3px;
+        }
+    /* ⚊⚊⚊⚊ Heading Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .top { 
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr) );
+            grid-gap: 20px;
+            align-items: center; 
+            margin-bottom: 10px; 
+        }
+        .top .boxB{
+            justify-self:end;
+        }
+        .top .inputField{
+            margin-bottom: 7px;
+            display:flex;
+            justify-content: start;
+        }
+        .top .inputField p{
+            width: 200px;
+        }
+        .top .boxB img{
+          width:150px; 
+          border-radius:10px;
+        }
+    /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Table Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        .Table {
+            margin-bottom: 20px;
+            max-height:250px;
+            overflow:auto;
+            border-bottom: 1px solid gray;
+            border-radius: 2px;
+        }
+        #myTable {
+            font-size: 14px;
+            background: #FFFDFF;
+            border-collapse: collapse;
+            width: 100%;    
+        }
+        #myTable th {
+            border-bottom:2px solid #FFE485;
+            background-image:linear-gradient(0deg, #354A70 15%,#8DC0EB);
+            color:white;
+            position:sticky;
+            top:0px;
+            font-weight:500;
+            padding:3px 0px;
+            border: 1px solid rgb(5, 120, 209);
+        }
+        #myTable td, tr {
+            font-weight:500;
+            border: 1px solid rgb(5, 120, 209);
+        }
+        #myTable th:first-child {
+            position:-webkit-sticky;
+            position: sticky;
+            left: -15px;
+            background:linear-gradient(0deg, #30569c 15%,#63b5f8);
+            z-index: 10;
+            color:#FFE485;
+        }
+         
+        #myTable input {
+            border: none;
+            box-sizing: border-box;
+            /* border: 1px solid rgb(0, 21, 255); */
+            box-shadow: 1px 1px 4px #EBEBEB;
+            font-size: 13px;
+            margin: 3px 0;
+            padding: 2px 0;
+            width: 100%;
+            resize: vertical;
+        }
+        #sno{
+            text-align: center;
+        }
+        .addRow{
+            cursor:pointer;
+        }
+        .remRow{
+            color: #fc6f03;
+            font-size: 18px;
+            font-weight: bold;
+            padding-left: 6px;
+        }
+    /* ⚊⚊⚊⚊ Table Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Total Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+      .Total { 
+        display:grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr) );
+        grid-gap: 20px;
+        align-items: center; 
+        margin-bottom: 10px; 
+      }
+      .Total .boxB{
+          justify-self:end;
+      }
+      .Total .inputField{
+          margin-bottom: 7px;
+          display:flex;
+          justify-content: start;
+      }
+      .Total .inputField p{
+          width: 200px;
+      }
+      .Total .boxB img{
+        width:150px; 
+        border-radius:10px;
+      }
+    /* ⚊⚊⚊⚊ Total Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+      #savSec {
+        display: flex;
+        justify-content:flex-end;
+        flex-wrap: wrap;
+        padding: 5px 0px 0px 40px;
+      }
+      .sBtn, .hBtn, .cBtn{
+          /* box-shadow: inset 0px 1px 0px 0px #45D6D6;
+            border: 1px solid #27A0A0;
+            background-color: #2CBBBB; */
+          box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+          background-color: #AAAAAA;
+          display: inline-block;
+          cursor: pointer;
+          color: #FFFFFF;
+          font-family: 'Open Sans Condensed', sans-serif;
+          font-size: 14px;
+          padding: 4px 18px;
+          margin: 5px 10px;
+          text-decoration: none;
+          text-transform: uppercase;
+      }
+      .cBtn{
+          background-color: #1DA1F2;
+      }
+      .hBtn{
+          background-color: #3B5998;
+      }
+      .addColor{
+          background-color: #2CBBBB;
+      }
+      .cusTab3 {
+          display: flex;
+          justify-content:space-between;
+          flex-wrap: wrap;
+      }
+    /* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+</style>
+
+
+
+
+<!--.........................................................................-->
+<!--==== Employee Deatil Popup Window ================================//Start-->
+<!--.........................................................................-->
+  <script>
+    //--==== Fetch Detail of Employeess whose target has been Set====== //Start-->
+      let list_A=[]
+
+      async function fetchDiv_A(){
+          list_A = {{Data|safe}}  //when call showRecord() function data will save in finalData
+          Table_A(list_A) //if don't want to show data initially in the table..
+      }
+    //--==== Fetch Detail of Employeess whose target has been Set====== // End -->
+    
+    //--==== Fetch Selected Employee and show the detail on page ====== //Start-->
+      targetDetail=[]
+      async function fetchDetail(){
+        abc=iID  //id of employee selected
+
+        const response = await fetch(`${basInfo.IP[0]}/tEmpTargetFetchURL/${abc}`)
+        const data = await response.json()
+
+        const iterableArray = Object.values(data);  //Very Important convert data into itterable from when convert df to javascript data
+        const targetDetail = (iterableArray[0] )
+
+        var table = document.getElementById('tBody')
+
+        //to empty the table rows already exist.............................
+        var rows = table.rows.length;
+        if (rows >= 2) { //reset form and delete all rows
+            //formEquip.reset()  //reset form if even if there is a single 
+            for (let i = 0; i < rows-1; i++) {
+                var delRow = table.deleteRow(1)  //delete first row which is emptry
+            }
+        }
+
+        //to Show Data in Table ............................................
+        if (targetDetail.length!=0) { //to avoid delete first row incase of empty record that cause of error
+          targetDetail.map(editable).join('')  //-----MAP------------------------
+          function editable(Data){
+              last_tr   = table.lastElementChild,
+              tr_clone   = last_tr.cloneNode(true);
+              table.append(tr_clone);
+              var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
+              var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sNo;
+              var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itemCode;
+              var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.itemDesc;
+              var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.titemSelPrice;
+              var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.qty;
+              var Col_id = lastRow.cells[7].getElementsByTagName('input')[0].value = Data.salesTarget;
+              var Col_id = lastRow.cells[8].getElementsByTagName('input')[0].value = Data.totalSalCost;
+              var Col_id = lastRow.cells[9].getElementsByTagName('input')[0].value = Data.salCostPU;
+          }
+          var delRow = table.deleteRow(0)  //delete first row which is emptry
+        }
+
+
+      }
+    //--==== Fetch Selected Employee and show the detail on page ====== // End -->
+
+
+    //------ Render Employee Table to Select Employee ----------------- //Start-->
+      function Table_A(itemList){
+          //console.log(itemList)
+          var table = document.getElementById('body_A').innerHTML=` ${itemList.map(temList).join('')}`
+          function temList (e){
+            return`<tr">
+                    <td style="color:#0464d1">${e.empCode} </td>
+                    <td>${e.empName} </td>
+                    <td>${e.empPosi} </td>
+                </tr>`
+          }
+
+          //-- on click select the row -------------------------
+          var cells = document.querySelectorAll(`#body_A td`);
+          for (var j = 0; j < cells.length; j++) {
+              var cell_A1 = cells[j];
+              cell_A1.onclick =  async function () {
+                      var rowId = this.parentNode.rowIndex-1;
+                      var rowSelected = document.querySelectorAll(`#body_A tr`)[rowId];
+                      
+                      iID = rowSelected.cells[0].innerHTML;
+                      fetchDetail() //get detail data of selected employee and show on the page
+
+                      const abc = parseInt(iID); // 329 convert to number
+
+                      //Filter the data to show other element not included in summary table
+                      let filteredData = itemList.filter(obj => obj.empCode == abc);
+                      let selData = filteredData[0]
+                      
+                      // ------------------------------------------------------------------------------
+                      // Show Detail on selection of Employee -----------------------------------------
+                      // ------------------------------------------------------------------------------
+                      document.getElementById('empCode').value = selData['empCode']
+                      document.getElementById('empName').value = selData['empName']
+                      document.getElementById('empPos').value = selData['empPosi']
+                      document.getElementById('empSal').value = selData['anSalary'].toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,})
+                      document.getElementById('anTarget').value = selData['anTarget'].toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,})
+
+                      const repImg = document.getElementById('logoPic');
+                      if (selData['empImg'] == 0) {logoPic.src = `/media/Blank1.jpg`;} 
+                      else {logoPic.src = `/media/${selData['empImg']}`;}  //i.e `{% static '../media/images/File.jpg' %}`;
+                      
+                      empImage = selData['empImg']  //store image value to update employ file
+
+                      document.getElementById('targetAllocated').value = selData['anTarget'].toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,})
+                      document.getElementById('salaryAllocated').value = selData['anSalary'].toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,})
+
+                      hideDiv_A()
+                      addRefresh('newSelection')
+                      savDisable('No')
+              }
+          }
+      }
+    //------ Render Employee Table to Select Employee ----------------- // End -->
+
+
+    //------ Filter Records-------------------------------------------- //Start-->
+      function filter_A(input){tableInside_A()}
+      function tableInside_A(){
+          let filter = document.querySelector('#filter_A').value.toUpperCase(); //capturing input value
+
+          //Filter data and remove entry available in the List.................
+          const data= list_A
+
+          if (filter.length >= 3) {
+              let abc = data.filter(x => x.empName.toLowerCase().includes(filter.toLowerCase()))
+              Table_A(abc)
+          }else if (filter == '*'){
+              Table_A(list_A)
+          }
+          else {
+              Table_A(list_A)
+          }
+      }
+
+      function remEmpAfterSave(){
+        const filteredData = list_A.filter((employee) => employee.empCode !== emplCode);
+        list_A = filteredData
+        Table_A(list_A)
+      }
+    //------ Filter Records --------------------------------------------// End -->
+
+
+    //-------Temporary Item Entry as General Item ------------------ //Start-->
+      function genItem(){
+          // Get the table row and cell elements
+          var tableA = document.getElementById('myTable')                      
+          ccd = tableA.rows[clickRow].cells[clickCell+2].getElementsByTagName('input')[0].value = '10000000'
+          ccd = tableA.rows[clickRow].cells[clickCell+3].getElementsByTagName('input')[0].value = 'General Item'
+          hideDiv_A()
+      }
+    //-------Temporary Customer Entry as Cash Customer ------------- // End -->
+
+
+    //-------Run function On Click to "show the list Div"........... //Start-->
+      function showDiv_A(){ 
+          var abbc = document.getElementById("Div_A");
+          abbc.classList.toggle("hide"); 
+          abbc.style.display = "block";
+      }
+
+      function hideDiv_A(){
+          var abbc = document.getElementById("Div_A");
+          abbc.style.display = "none"; 
+      }
+
+      function custHide(){
+          var abbc = document.getElementById("conCol");
+          abbc.style.display = "none"; 
+      }
+    //-------Run function On Click to "show the list Div"........... // End -->
+  </script>
+
+
+  <style>
+      /* Employee Search Table ------------------------------------------------- */
+        #Div_A {
+          position:absolute;
+          margin: 0px 0 0 127px;
+          display:none;
+          width:500px; 
+          min-height:150px;
+          max-height:300px; 
+          background:#fcffff; 
+          border: 1px solid #3B5998;
+          box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+          overflow-y: auto;
+          z-index:10; 
+        }
+        #Div_A .serDiv{ 
+          background:#ffffff;
+          position:sticky;
+          top:0;
+          padding-top:2px;
+          padding-bottom: 10px;
+          z-index: 100;
+        }
+        #Div_A .Search {
+          position:absolute;
+          margin-left: 5px;
+          left: 2px;
+        }
+        #Div_A .Search .Icon {
+          position:absolute; 
+          color:gray;
+        }
+        #Div_A .Search .Icon.iA{
+          left:7px;
+          top: 4px;
+        }
+        #Div_A .Search .Icon.iB{
+          font-size: 10px;
+          top: 2px;
+          left:25px;
+        }
+        #Div_A .Search input{
+          border-radius: 25px;
+          min-width:250px;
+          height: 25px;
+          margin-left: 5px;
+          padding-left: 43px;
+          font-size: 11px;
+          border: 1px solid rgb(209, 207, 207);  
+        }
+        #Div_A .newItm{
+          position: absolute;
+          right: 20px;
+          background:lightgray;
+          padding: 5px 10px;
+          font-size: 12px;
+          border-radius: 25px;
+          cursor:pointer;
+        }
+        #Div_A .genItm{
+          position: absolute;
+          right: 105px;
+          background:lightgray;
+          padding: 5px 10px;
+          font-size: 12px;
+          border-radius: 25px;
+          cursor:pointer;
+        }
+        #Div_A .newItm:hover, .genItm:hover{
+          background:rgb(185, 199, 219);
+          box-shadow: 4px 6px 2px -4px rgba(0,0,0,0.4);
+          font-size: 12.5px;
+        }
+      /* Table ------------------------------------------------------------------*/
+        #table_A {
+          margin:0 2.5% 2.5% 2.5%;
+          font-size: 11px;        
+          border-collapse: collapse;
+          width: 95%;
+        }
+        #table_A .tableHead {
+          background: lightgray;
+          position:sticky;
+          border: 1px solid #30569c;
+          box-shadow: 0px 6px 2px -4px rgba(0,0,0,0.4);
+          top:28px;
+          z-index: 100;
+        }
+        #table_A td, th {
+            text-align: left;
+            padding: 3px 8px;
+            background: none;
+        }
+
+      /* Employee Search Table --------------------------------------------------*/
+  </style>
+<!--==== Employee Deatil Popup Window ================================// End -->
+
+
+
+<!--.........................................................................-->
+<!--==== Item Deatil Popup Window ====================================//Start-->
+<!--.........................................................................-->
+  <script>
+    //--==== Fetch Item Data to Select ================================= //Start-->
+      let itemList=[]; // Declare a global variable to store the data
+      async function fetchItm(){
+          const response = await fetch(`${basInfo.IP[0]}/itemPrice`)
+          const data = await response.json()
+          itemList = data  //when call showRecord() function data will save in finalData
+          console.log(itemList)
+          //itemTable(itemList) //if don't want to show data initially in the table..
+      }
+    //--==== Fetch Item Data to Select ================================= // End -->
+
+
+    //------ Render Item Table ----------------------------------------- //Start-->
+      function itemTable(itemList){
+          var table = document.getElementById('itmBody').innerHTML=` ${itemList.map(temList).join('')}`
+          function temList (e){
+              return`<tr">
+                      <td style="color:#0464d1">${e.itmCode} </td>
+                      <td>${e.itmName} </td>
+                      <td>${e.uPrice.toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,})} </td>
+                      <td>${e.selPrice.toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,})} </td>
+                  </tr>`
+          }
+          //-- on click select the row -------------------------
+          var cells = document.querySelectorAll(`#itmBody td`);
+          for (var j = 0; j < cells.length; j++) {
+              var cell_A1 = cells[j];
+              cell_A1.onclick =  async function () {
+                      var rowId = this.parentNode.rowIndex-1;
+                      var rowSelected = document.querySelectorAll(`#itmBody tr`)[rowId];
+                      
+                      iID = rowSelected.cells[0].innerHTML;
+                      iName = rowSelected.cells[1].innerHTML;
+                      sPrice = rowSelected.cells[3].innerHTML;
+
+                      // Get the table row and cell elements
+                      var tableA = document.getElementById('myTable')                      
+                      tableA.rows[clickRow].cells[clickCell+2].getElementsByTagName('input')[0].value = iID
+                      tableA.rows[clickRow].cells[clickCell+3].getElementsByTagName('input')[0].value = iName
+                      tableA.rows[clickRow].cells[clickCell+4].getElementsByTagName('input')[0].value = sPrice.toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,})
+                      listHide()
+              }
+          }
+      }
+    //------ Render Item Table ----------------------------------------- // End -->
+
+
+    //------ Get Clicked Row and Cell Index ---------------------------- //Start-->
+      var clickRow
+      var clickCell
+      function getRowAndCellIndex(button) {
+          itemListDiv()
+        
+          var row = button.parentNode.parentNode; // Get the row index
+          var rowIndex = row.rowIndex;          
+          var cell = button.parentNode; // Get the cell index
+          var cellIndex = cell.cellIndex;
+
+          clickRow = rowIndex
+          clickCell = cellIndex
+      }
+    //------ Get Clicked Row and Cell Index ---------------------------- // End -->
+
+
+    //------ Filter Records-------------------------------------------- //Start-->
+      function filterB(input){tableInsideB()}
+      function tableInsideB(){
+          let filter = document.querySelector('#filterB').value.toUpperCase(); //capturing input value
+          //let myTable = document.querySelector('#tableBody'); //get table rows
+          let data = itemList
+
+          if (filter.length >= 3) {
+              let abc = data.filter(x => x.itmName.toLowerCase().includes(filter.toLowerCase()))
+              //currentPage = parseInt(1);
+              //temData = abc
+              itemTable(abc)
+          }else if (filter == '*'){
+              itemTable(itemList)
+          }
+          else {
+              //dataTable(custList)
+          }
+      }
+
+    //------ Filter Records --------------------------------------------// End -->
+
+
+    //-------Temporary Item Entry as General Item ------------------ //Start-->
+      function genItem(){
+          // Get the table row and cell elements
+          var tableA = document.getElementById('myTable')                      
+          ccd = tableA.rows[clickRow].cells[clickCell+2].getElementsByTagName('input')[0].value = '10000000'
+          ccd = tableA.rows[clickRow].cells[clickCell+3].getElementsByTagName('input')[0].value = 'General Item'
+          listHide()
+      }
+    //-------Temporary Customer Entry as Cash Customer ------------- // End -->
+
+
+    //-------Run function On Click to "show the list Div"........... //Start-->
+      function itemListDiv(){ 
+          var abbc = document.getElementById("listDiv");
+          abbc.classList.toggle("hide"); 
+          abbc.style.display = "block";
+      }
+
+      function listHide(){
+          var abbc = document.getElementById("listDiv");
+          abbc.style.display = "none"; 
+      }
+
+      function custHide(){
+          var abbc = document.getElementById("conCol");
+          abbc.style.display = "none"; 
+      }
+    //-------Run function On Click to "show the list Div"........... // End -->
+  </script>
+
+
+  <style>
+      /* Item Search Table ---------------------------------------------------- */
+        #listDiv {
+          position:absolute;
+          margin: 27px 0 0 127px;
+          display:none;
+          width:500px; 
+          min-height:150px;
+          max-height:300px; 
+          background:#fcffff; 
+          border: 1px solid #3B5998;
+          box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+          overflow-y: auto;
+          z-index:10; 
+        }
+        .serDiv{ 
+          background:#ffffff;
+          position:sticky;
+          top:0;
+          padding-top:2px;
+          padding-bottom: 10px;
+          z-index: 100;
+        }
+        .Search {
+          position:absolute;
+          margin-left: 5px;
+          left: 2px;
+        }
+        .Search .Icon {
+          position:absolute; 
+          color:gray;
+        }
+        .Search .Icon.iA{
+          left:7px;
+          top: 4px;
+        }
+        .Search .Icon.iB{
+          font-size: 10px;
+          top: 2px;
+          left:25px;
+        }
+        .Search input{
+          border-radius: 25px;
+          min-width:250px;
+          height: 25px;
+          margin-left: 5px;
+          padding-left: 43px;
+          font-size: 11px;
+          border: 1px solid rgb(209, 207, 207);  
+        }
+        .newItm{
+          position: absolute;
+          right: 20px;
+          background:lightgray;
+          padding: 5px 10px;
+          font-size: 12px;
+          border-radius: 25px;
+          cursor:pointer;
+        }
+        .genItm{
+          position: absolute;
+          right: 105px;
+          background:lightgray;
+          padding: 5px 10px;
+          font-size: 12px;
+          border-radius: 25px;
+          cursor:pointer;
+        }
+        .newItm:hover, .genItm:hover{
+          background:rgb(185, 199, 219);
+          box-shadow: 4px 6px 2px -4px rgba(0,0,0,0.4);
+          font-size: 12.5px;
+        }
+      /* Table -----------------------------------------------------------------*/
+        #itmTable {
+          margin:0 2.5% 2.5% 2.5%;
+          font-size: 11px;        
+          border-collapse: collapse;
+          width: 95%;
+        }
+        #itmTable .itmHead {
+          background: lightgray;
+          position:sticky;
+          border: 1px solid #30569c;
+          box-shadow: 0px 6px 2px -4px rgba(0,0,0,0.4);
+          top:28px;
+          z-index: 100;
+        }
+        #itmTable td, th {
+            text-align: left;
+            padding: 3px 8px;
+            background: none;
+        }
+
+      /* Item Search Table -----------------------------------------------------*/
+  </style>
+<!--====  Item Deatil Popup Window  ==================================// End -->
+
+
+{% endblock body %}

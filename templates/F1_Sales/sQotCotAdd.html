@@ -1,0 +1,983 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+
+
+<!--...........................................................................-->
+<!--==== Main Container ================================================//Start-->
+<!--...........................................................................-->
+	<div class="mainCon">
+
+		<!--════ Heading Section ══════════════════════════════════════════ //Start-->
+			<div class="heading"> 
+				<div> <img src=" {% static 'Java/Images/Logo/clientLogo.png' %}" style="width:175px;" alt=""> </div>
+				<h2><span class="span1">┃</span><span class="span2">Sales Quotation - Profitability</span> </h2>
+			</div>
+		<!--════ Heading Section ══════════════════════════════════════════ //Start-->
+			
+		<!--════ TOP Section ══════════════════════════════════════════════ //Start-->
+			<div class="top"> 
+				<div class="boxA"> 
+					<div class="inputField">
+						<p>Sales Order Ref:</p> 
+						<input disabled type="text" id="soRef" name="soRef" placeholder="Ref #" style="width:180px; min-width:180px;"> 
+					</div>
+					<div class="inputField">
+						<p>Sales Order Date:</p> 
+						<input disabled type="date" id="soDat" name="soDat" style="width:180px; min-width:180px;">
+					</div>
+					<div class="inputField">
+						<p>Customer ID:</p>
+						<input disabled type="text" id="cusCode" name="cusCode" style="width:180px; min-width:180px;">
+					</div>
+					<div class="inputField">     
+						<p>Customer Name:</p> 
+						<input type="text" id="cusName" name="cusName" disabled style="width:450px; min-width:300px;">
+					</div>
+				</div>
+				<div class="boxB"> 
+					<div style="display:flex; margin-bottom:10px;">
+						<p>Adjust Profitability:</p>
+						<input class="cEdit" type="checkbox" id="myCheckbox"> 
+					</div>
+
+					<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
+						<div style="min-width:120px;">Sales Person </div>
+						<div><input type="text" id="spName" name="spName" style="min-width:220px;" disabled=true></div>
+					</div>
+				</div>
+			</div>
+		<!--════ TOP Section ══════════════════════════════════════════════ //Start-->
+
+
+		<!--════ Table Section ════════════════════════════════════════════ //Start-->
+
+			<!--==== Table ========================================================= -->
+				<div class="Table">
+					<table id="myTable" >
+						<!--== Table First Heading =========================================-->
+							<tr  style="text-align:center; position:relative">
+								<th style="text-align: center;"width="25px;"class="addRow" onclick="create_tr('tBody')"> ✚ </th>
+								<th width="20px;" style="text-align:center;"> </th> 
+								<th width="50px;">S.No</th>
+								<th width="80px;">Item Code </th>
+								<th >Item Description</th>
+								<th width="70px;">Quantity</th>
+								<th width="70px;">S. Price</th>
+								<th width="70px;">C. Price</th>
+								<th width="70px;">Emp.Cost</th>
+								<th width="70px;">Discunt</th>
+								<th width="100px;">Total</th>
+								<th style="display:none">ID</th>
+							</tr>
+						<!--== Table Second Heading (Hidden) for field name ===============-->
+							<tr style="display:none">
+								<th></th>
+								<th></th>
+								<th>sno</th>
+								<th>itmCode</th>
+								<th>desc</th>
+								<th>qty</th>
+								<th>sPrice</th>
+								<th>cPrice</th>
+								<th>empCost</th>
+								<th>disc</th>
+								<th>tot</th>
+								<th style="display:none">id</th>
+							</tr>
+						<!--== Table Body (Input) to get value =============================-->
+							<tbody id="tBody">
+								<tr>
+									<td><button class="remRow" onclick="remove_tr(this)"> 🗑 </button></td>
+									<td style="text-align:center;"><button style="border-radius:5px; color:orange; font-size: 15px; font-weight:bold; padding: 0px 2px 2px 2px; cursor:pointer">☰</button></td>                     
+									<td><input type="number" id="sno" class="input" value=1 disabled=true></td>
+									<td><input  id="itmCod" type="text" disabled=true></td>
+									<td ><input  id="desc" type="text" disabled=true></td>
+									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
+									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
+									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
+									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
+									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right;"> </td>
+									<td><input type="floatformat" step="0.01" class="input numInput" value=0 disabled=true  style="text-align:right;"> </td>
+									<td><input type="number"  class="input" value=0 disabled=true  style="text-align:right; display:none" disabled> </td>
+								</tr>
+							</tbody>
+					</table>
+				</div>
+			<!--==== Table ========================================================= -->
+
+		<!--════ Table Section ════════════════════════════════════════════ // End -->
+
+
+		<!--════ Total Section ════════════════════════════════════════════ //Start-->
+			<div class="total"> 
+				<div class="boxA"> 
+					<div class="inputField" style="font-weight:bold; color:#6660d1">
+						<p>Total After Discount : </p> 
+						<input type="floatformat" id="totAftDis" disabled=true style="font-weight:bold; color:#6660d1"> 
+					</div>
+
+					<p id="markup"> Markup : </p>
+					<p id="margin"> Margin : </p>
+
+				</div>
+				<div class="boxB"> 
+					<div class="inputField" style="font-weight:bold; color:#6660d1">
+						<p>Total Basic Cost : </p> 
+						<input type="floatformat" id="totBasCost" disabled=true style="font-weight:bold; color:#6660d1"> 
+					</div>
+					<div class="inputField" style="color:gray;">
+						<p>1. Interest Cost :</p> 
+						<input type="floatformat" id="intCost" value=0 onkeyup="getSum()">
+					</div>
+
+					<div class="inputField" style="color:gray;">
+						<p>2. Other Cost : </p>
+						<input type="floatformat" id="othCost" value=0 onkeyup="getSum()">
+					</div>
+
+					<div class="inputField" style="color:gray;">     
+						<p>3. Special Discount :</p> 
+						<input type="floatformat" id="speDis" value=0 onkeyup="getSum()">
+					</div>
+
+					<div class="inputField" style="font-weight:bold; color:#6660d1">
+						<p>Total Cost: </p> 
+						<input type="floatformat" id="totCost" disabled=true style="font-weight:bold; color:#6660d1"> 
+					</div>
+				</div>
+			</div><br><br>		
+	  <!--════ Total Section ════════════════════════════════════════════ //Start-->
+
+
+
+	<!--════ Save Section ═══════════════════════════════════════════════ //Start-->
+			<section id="savSec">
+				<div><button  onclick="event.preventDefault()" class="hBtn" type="submit"> ⚠ HELP</button></div>
+				<div><button onclick="canRecord()" id="cancelA" class="cBtn" type="submit"> ✂ CANCEL</button></div>
+				<div><button onclick="addRecord()" id="addRec"  class="addRec sBtn" type="submit" disabled=true>✚ Save</button></div>
+			</section>
+		<!--════ Save Section ══════════════════════════════════════ // End -->
+
+	</div><br><br>
+<!--==== Main Container ================================================// End -->
+
+
+
+<!--...........................................................................-->
+<!--==== PAGE JS =======================================================//Start-->
+  <script> 
+
+		//.... Get Data from Context Process and General Functions ....................
+			let basInfo = {{basInfo|safe}}
+		//.... Get Data from Context Process and General Functions ....................
+
+
+		//▒▒▒▒▒▒ SHOW Sales Order DATA ON INITIAL LOAD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+			
+			//.... Get Data while Loading the Page  ...................................
+				let oBasic ={{oBasic|safe}}
+				let oBasicOrder = (oBasic)
+
+				let oAddi ={{addiOrder|safe}}
+				let befAddi = oAddi // data before adjustments 
+
+				console.log(oBasic)
+				console.log(oAddi)
+
+			//.... Get Data while Loading the Page  ...................................
+
+			//■■■■■ Get Quotation next Number and Current Date■■■■■■■■■■■■■■■■■■■■■■■■
+				document.querySelector('#soRef').value = oBasic[0].qotRef;
+				document.querySelector("#soDat").value = oBasic[0].qotDat;
+				document.querySelector("#cusCode").value = oBasic[0].cusCode;
+				document.querySelector("#cusName").value = oBasic[0].cusName;
+				document.querySelector("#spName").value = oBasic[0].spName;
+
+				//console.log(finalData)
+				var table = document.getElementById('tBody')
+						
+				//to empty the table rows already exist...................................
+				var rows = table.rows.length;
+				if (rows >= 2) { //reset form and delete all rows
+						//formEquip.reset()  //reset form if even if there is a single 
+						for (let i = 0; i < rows-1; i++) {
+								var delRow = table.deleteRow(1)  //delete first row which is emptry
+						}
+				}
+
+				if (oAddi.length!=0) { //to avoid delete first row incase of empty record that cause of error
+						oAddi.map(editable).join('')  //-----MAP------------------------
+						function editable(Data){
+								last_tr   = table.lastElementChild,
+								tr_clone   = last_tr.cloneNode(true);
+								table.append(tr_clone);
+								var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
+								var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sno;
+								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCode;
+								var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.desc;
+								var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.qty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.price.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[7].getElementsByTagName('input')[0].value = Data.ItemCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[8].getElementsByTagName('input')[0].value = Data.EmpCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[9].getElementsByTagName('input')[0].value = Data.disc.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								//var Col_id = lastRow.cells[10].getElementsByTagName('input')[0].value = Data.tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[11].getElementsByTagName('input')[0].value = Data.id;
+								getTotIni(last_tr)
+							}
+						var delRow = table.deleteRow(0)  //delete first row which is emptry
+						
+				}
+
+
+			//■■■■■ Get Quotation next Number and Current Date■■■■■■■■■■■■■■■■■■■■■■■■
+
+
+		//▒▒▒▒▒▒ SHOW Sales Order DATA ON INITIAL LOAD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+
+		//▒▒▒▒▒▒ Form Validation ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+			
+				let checkbox = document.getElementById('myCheckbox');
+				checkbox.addEventListener('change', function() {
+						if (this.checked) {savDisable('No')} 
+						else {savDisable('Yes')}
+				});
+
+				//==== Form Validation =====================================//Start-->
+					function savDisable (elem) {
+						const subBtn = document.querySelector(".addRec");
+						if (elem == 'Yes'){
+								subBtn.disabled = true;
+								subBtn.classList.remove('addColor')
+						}else{
+								subBtn.disabled = false;
+								subBtn.classList.add('addColor')
+						}
+					}
+				//==== Form Validation =====================================// End -->
+
+		//▒▒▒▒▒▒ Sales Order Number and Date ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+		//▒▒▒▒▒▒ SHOW DATA ON INITIAL LOAD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+      //---- Fetch Sales Quotation Detail Data -------------------------------
+      let qotDetailData=[];
+      async function fetchQotDetail(qRef) {
+          const response = await fetch(`${basInfo.IP[0]}/sQuotEditFetch/${qRef}`)
+          const data = await response.json()
+					qotDetailData=data
+ 					showQoutDetail(data)
+      }
+
+			//■■■■■ Get Quotation Detail ■■■■■■■■■■■■■■■■■■■■■■■■
+			function showQoutDetail(data){
+				
+				//console.log(data)
+
+				document.querySelector('#qotRef').value = data[0].qotRef;
+				document.querySelector("#qotDat").value = data[0].qotDat;
+				document.querySelector("#cusCode").value = data[0].cusCode;
+				document.querySelector("#cusName").value = data[0].cusName;
+				document.querySelector("#soTBD").value = data[0].qotTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#soTAD").value = data[0].qotTAD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#soTax").value = data[0].qotTax.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#soTAT").value = data[0].qotTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#soComm").value = data[0].qotComm;
+				document.querySelector("#billTo").value = data[0].shipTo;
+				document.querySelector("#shipTo").value = data[0].shipTo;
+				document.querySelector("#salPer").value = data[0].salPer;
+				document.querySelector("#spName").value = data[0].spName;
+
+
+				//console.log(finalData)
+				var table = document.getElementById('tBody')
+						
+				//to empty the table rows already exist...................................
+				var rows = table.rows.length;
+				if (rows >= 2) { //reset form and delete all rows
+						//formEquip.reset()  //reset form if even if there is a single 
+						for (let i = 0; i < rows-1; i++) {
+								var delRow = table.deleteRow(1)  //delete first row which is emptry
+						}
+				}
+
+				if (data[1].length!=0) { //to avoid delete first row incase of empty record that cause of error
+						data[1].map(editable).join('')  //-----MAP------------------------
+						function editable(Data){
+								last_tr   = table.lastElementChild,
+								tr_clone   = last_tr.cloneNode(true);
+								table.append(tr_clone);
+							
+								var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
+								var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sno;
+								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCode;
+								var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.desc;
+								var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.qty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.price.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[7].getElementsByTagName('input')[0].value = Data.disc.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[8].getElementsByTagName('input')[0].value = Data.tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[9].getElementsByTagName('input')[0].value = Data.id;
+						}
+						var delRow = table.deleteRow(0)  //delete first row which is emptry
+				}
+				//■■■■■ Get Quotation next Number and Current Date■■■■■■■■■■■■■■■■■■■■■■■■
+
+				hidePop_A()
+			}
+
+
+		//▒▒▒▒▒▒ SHOW DATA ON INITIAL LOAD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+	
+	
+		//▒▒▒▒▒▒ ADD REMOVE RESET TABLE ROWS ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+			//■■■■■ ADD NEW ROW IN THE TABLE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			function create_tr(table_id) {
+				var tBody = document.getElementById(table_id),
+					last_tr   = tBody.lastElementChild,
+					tr_clone   = last_tr.cloneNode(true);
+				tBody.append(tr_clone);
+
+				//console.log(tBody.lastElementChild)
+				clean_last_tr(tBody.lastElementChild);
+				resetNo ()
+			}
+
+			//---- CLEAN LAST ROW ------------------------------------------------------
+			function clean_last_tr(lastTr) {
+				let children = lastTr.children;
+				children = Array.isArray(children) ? children : Object.values(children);
+
+				children.forEach(x=>{
+						if(x !== lastTr.lastElementChild){
+								x.lastElementChild.value = "";
+						}
+				});
+			}
+
+			//---- REMOVE LAST ROW -----------------------------------------------------
+			function remove_tr(This) {
+				if(This.closest('tbody').childElementCount == 1) {
+						alert("You Don't have Permission to Delete This ?");
+				}else{
+						This.closest('tr').remove();
+						getSum()
+						resetNo ('No')
+				}
+			}
+			
+			//---- RAESET NO ----------------------------------------------------------
+			function resetNo (Numb){
+				var lastRow = tBody.rows[ tBody.rows.length - 1 ] //get the last row of the table
+				var addColNo = parseInt(lastRow.cells[2].getElementsByTagName('input')[0].value); //get the value of the last row 1st cell
+				var sno = addColNo + 1 //add 1 to Last Column Value
+				var addSO = lastRow.cells[2].getElementsByTagName('input')[0].value = sno;
+				//---Loop Throgh Table length to reset number from begning---------------
+				
+				var a = 0
+				for (var j=0; j<tBody.rows.length; j++) {
+						var x = document.getElementById("tBody").rows[a].getElementsByTagName('input')[0].value = a+1;
+						a=a+1
+				} 
+
+				if (Numb=="No"){
+				}else{
+					//---- Give the new line Specific Value----------------------------------
+					var addQty = parseInt(lastRow.cells[5].getElementsByTagName('input')[0].value = 0); //add Value to new row "Quantity" 
+					var addPri = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addID = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+				}
+			}
+
+		//▒▒▒▒▒▒ ADD REMOVE RESET TABLE ROWS ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+		//▒▒▒▒▒▒ GET TOTAL AND PROFITABILITY ON INITIAL LOAD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+			function getTotIni(last_tr) {  //total on initall Loading
+				var lastRow = table.rows[ table.rows.length -1 ]
+				var qty = parseFloat(lastRow.cells[5].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var unitCost = parseFloat(lastRow.cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var empCost = parseFloat(lastRow.cells[8].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var discount = parseFloat(lastRow.cells[9].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+
+				let totUnitCost = (qty * unitCost)
+				let totEmpCost = (qty * empCost)
+				let total = (totUnitCost + totEmpCost - discount)
+				var sPrice = lastRow.cells[10].getElementsByTagName('input')[0].value = total.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				
+				var totAftDis = document.querySelector("#totAftDis").value = oBasic[0].qotTAD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+
+				getProft()
+			}
+
+			//■■■■■ GET SUM OF THE TOTAL COLUMN ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+			function getProft() {
+				// Get sum of a table column --(temporary here)----------------------
+				// ==================================================================
+				var table = document.getElementById("myTable"), sumADis = 0; sumDis = 0;
+				for(var i = 2; i < table.rows.length; i++){
+						sumADis = sumADis + parseFloat(table.rows[i].cells[10].getElementsByTagName('input')[0].value.replace(/,/g, ''));
+						sumDis = sumDis + parseFloat(table.rows[i].cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''));
+				}
+
+				document.getElementById("totBasCost").value = sumADis.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				
+				let intCost = document.getElementById("intCost").value;
+				let othCost = document.getElementById("othCost").value;
+				let speDis = document.getElementById("speDis").value;
+				
+				let totCos = ( sumADis + parseFloat(intCost) +  parseFloat(othCost) - parseFloat(speDis) )
+				let totCost = document.getElementById("totCost").value = totCos.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+
+				//Margn and Markup Calculation----------------------------
+				var totRev = parseFloat(document.getElementById("totAftDis").value.replace(/,/g, ''))
+				let marginPer = ((totRev - totCos) / totRev) * 100
+				let markupPer = ((totRev - totCos) / totCos) * 100
+				var markupElement = document.getElementById("markup").innerHTML = "Markup: " + markupPer.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2,}) + "%"
+				var markupElement = document.getElementById("margin").innerHTML = "Margin: " + marginPer.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2,}) + "%"
+			}
+
+
+		//▒▒▒▒▒▒ GET TOTAL AND PROFITABILITY ON INITIAL LOAD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+
+
+		//▒▒▒▒▒▒ GET TOTAL AND PROFITABILITY ON CHANGE OF ROW ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+			//■■■■■ GET SUM OF THE ITEM SOLD ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+			function getTot(abc) {
+				var table = document.getElementById("myTable")
+				
+				const ab = (abc.closest('tr').rowIndex)  //get the row number of the cell where entering the data
+				const closestCell = abc.closest('td').cellIndex; //just for info (to find out cell number)
+				
+				//Change the input number into Comma Seperated Value ------------------
+					var value = event.target.value;
+					event.target.value = value.replace(/[^0-9]/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");  
+				//Change the input number into Comma Seperated Value ------------------
+
+				var qty = parseFloat(table.rows[ab].cells[5].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var unitCost = parseFloat(table.rows[ab].cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var empCost = parseFloat(table.rows[ab].cells[8].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var discount = parseFloat(table.rows[ab].cells[9].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+
+				var totUnitCost = qty * unitCost
+				var totEmpCost = qty * empCost
+
+				var total = (totUnitCost + totEmpCost) - discount
+
+				total = parseFloat(table.rows[ab].cells[10].getElementsByTagName('input')[0].value =  total.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+				
+				getSum()
+			}
+
+			//■■■■■ GET SUM OF THE TOTAL COLUMN ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+			function getSum() {
+				// Get sum of a table column --(temporary here)----------------------
+				// ==================================================================
+				var table = document.getElementById("myTable"), sumADis = 0; sumDis = 0;
+				for(var i = 2; i < table.rows.length; i++){
+						sumADis = sumADis + parseFloat(table.rows[i].cells[10].getElementsByTagName('input')[0].value.replace(/,/g, ''));
+						sumDis = sumDis + parseFloat(table.rows[i].cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''));
+				}
+
+				document.getElementById("totBasCost").value = sumADis.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				
+				let intCost = document.getElementById("intCost").value.replace(/,/g, '');
+				let othCost = document.getElementById("othCost").value.replace(/,/g, '');
+				let speDis = document.getElementById("speDis").value.replace(/,/g, '');
+
+				let totCos = ( sumADis + parseFloat(intCost) +  parseFloat(othCost) - parseFloat(speDis) )
+				let totCost = document.getElementById("totCost").value = totCos.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+
+				//Margn and Markup Calculation----------------------------
+				var totRev = parseFloat(document.getElementById("totAftDis").value.replace(/,/g, ''))
+				let marginPer = ((totRev - totCos) / totRev) * 100
+				let markupPer = ((totRev - totCos) / totCos) * 100
+				var markupElement = document.getElementById("markup").innerHTML = "Markup: " + markupPer.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2,}) + "%"
+				var markupElement = document.getElementById("margin").innerHTML = "Margin: " + marginPer.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2,}) + "%"
+			}
+
+		//▒▒▒▒▒▒ GET TOTAL AND PROFITABILITY ON CHANGE OF ROW ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+ 
+
+
+
+
+		//▒▒▒▒▒▒ ADD RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+			//■■■■■ GET JAVASCRIPT ARRAY OF OBJECTS - BY CALLING  'tableToJson()'■■■■■■■■ 
+			function addRecord() {
+				var addData = tableToJson(document.getElementById("myTable")); // Get table  
+					//console.log(addData)
+					//console.log(addData[1][0]['description'])
+					add_Record (addData)
+			}
+		
+			//■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			function tableToJson(table) {
+					var dataA = []
+					//first row needs to be headers
+					var headers = []; //if header contain code in second row means i=1
+					for (var i=1; i<table.rows[1].cells.length; i++) {
+							headers[i] = table.rows[1].cells[i].innerHTML.toLowerCase().replace(/ /gi,'').replace(/[.]/g,'');
+					}
+					
+					//---- go through each cells of all rows -- to generate Arry of Qut Items ---
+					for (var i=2; i<table.rows.length; i++) {
+							var tableRow = table.rows[i];
+							var rowData = {};
+							for (var j=2; j<tableRow.cells.length; j++) {
+								if(j>=5){ 
+									rowData [headers[j] ] = tableRow.cells[j].getElementsByTagName('input')[0].value.replace(/,/gi,'');
+								}else{
+									rowData [headers[j] ] = tableRow.cells[j].getElementsByTagName('input')[0].value;
+								}
+									rowData ["qotRef"] = document.getElementById("qotRef").value;
+								}
+							dataA.push(rowData);
+					}
+
+					//----  Get Input field to gererate Basic Data Object ----------------------
+					SoRef = document.getElementById('soRef').value;
+					SoDat = document.getElementById('soDat').value;
+					CusCode = document.getElementById('cusCode').value;
+					CusName = document.getElementById('cusName').value;
+					SoTBD = parseFloat(document.getElementById('soTBD').value.replace(/,/g, ''));
+					SoTAD = parseFloat(document.getElementById('soTAD').value.replace(/,/g, ''));
+					SoTax = parseFloat(document.getElementById('soTax').value.replace(/,/g, ''));
+					SoTAT = parseFloat(document.getElementById('soTAT').value.replace(/,/g, ''));
+					ShipTo = document.getElementById('shipTo').value;
+					SoComm = document.getElementById('soComm').value;
+					SpName = document.getElementById('spName').value;
+					SalPer = document.getElementById('salPer').value;
+					QotRef = document.getElementById('qotRef').value;
+					QotDat = document.getElementById('qotDat').value;
+					if (SalPer == '') {SalPer = 0;	}
+					const basicData =  {  qotRef:QotRef, qotDat:QotDat, cusCode:CusCode, 
+																cusName:CusName, soTBD:SoTBD, soTAD:SoTAD, soTax:SoTax,
+												 				soTAT:SoTAT, shipTo:ShipTo,soRef:SoRef, soDat:SoDat, 
+																soComm:SoComm, salPer:SalPer, spName:SpName };
+
+					//Filter out Blank Rows
+					let data = dataA.filter(item => item.qty !== "0"); //remove the empty rows from prodeuct detail rows
+
+					//--- Get the rows deleted from previous saved PO to delete from data base while save again
+					const missingIds = [];
+					aftAddi = data
+					for (let i = 0; i < befAddi.length; i++) {
+							const id = befAddi[i].id;
+							const found = aftAddi.find(item => item.id == id);
+							if (!found) {
+								missingIds.push(id);
+							}
+					}
+
+					var allData = [basicData, data, missingIds]
+					//----  Get Input field to gererate Basic Data Object ----------------------  
+					return allData;
+			}
+		
+			//■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			const add_Record = async (data) => {
+					try {
+					//console.log(data)
+					const response = await fetch(`${basInfo.IP[0]}/sOrderAddUrl`, { 
+							method: 'POST',
+							body: JSON.stringify(data), 
+							headers: {"Content-type":"application/json; charset=UTF-8"},
+					})
+					const post = await response.json();
+							alert("Record Saved Successfully...")
+							checkbox = document.getElementById('myCheckbox');
+							checkbox.checked = false;
+							savDisable('Yes')
+					} catch (e) {  
+							console.log(e)
+					}
+			}
+
+			//■■■■■ Refresh Quotation Form ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			function addRefresh(){
+					SoRef = document.getElementById('soRef').value;
+					let num = parseInt(SoRef); // convert string to number
+					num += 1; // add 1 to the number
+					ref = String(num);
+					document.getElementById('soRef').value = ref
+					document.getElementById('qotRef').value = ""
+					document.getElementById('qotDat').value = ""
+					document.getElementById('cusCode').value = ""
+					document.getElementById('cusName').value = ""
+					document.getElementById('soTBD').value = 0
+					document.getElementById('soTAD').value = 0
+					document.getElementById('soTax').value = 0
+					document.getElementById('soTAT').value = 0
+					document.getElementById('shipTo').value = ""
+					document.getElementById('billTo').value = ""
+					document.getElementById('soComm').value = ""
+					document.getElementById('spName').value = ""
+			
+					var table = document.getElementById("myTable");   
+					var rows = table.rows; // Get all rows in the table except the first 3 lines
+					for (var i = rows.length - 1; i >= 3; i--) {
+						table.deleteRow(i);// Delete the current row
+					}
+			
+					//---- Get the last row of the table -----------------------------------
+					var lastRow = table.rows[table.rows.length - 1];
+					//---- Refresh the line with nill value --------------------------------
+					var addQty = lastRow.cells[3].getElementsByTagName('input')[0].value = ""; //add Value to new row "Quantity" 
+					var addQty = lastRow.cells[4].getElementsByTagName('input')[0].value = ""; //add Value to new row "Quantity" 
+					var addQty = parseInt(lastRow.cells[5].getElementsByTagName('input')[0].value = 0); //add Value to new row "Quantity" 
+					var addPri = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price"
+					var addid = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					
+					savDisable('Yes')  //to Disable Save option..............
+			}
+
+		//▒▒▒▒▒▒ ADD RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+		//▒▒▒▒▒▒ CANCEL RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+			function canRecord(){
+				document.getElementById('qotRef').value = newQotNum
+				document.getElementById('qotDat').value = newQotDat
+				document.getElementById('cusCode').value = ""
+				document.getElementById('cusName').value = ""
+				document.getElementById('qotTBD').value = 0
+				document.getElementById('qotTAD').value = 0
+				document.getElementById('qotTax').value = 0
+				document.getElementById('qotTAT').value = 0
+				document.getElementById('shipTo').value = ""
+				document.getElementById('billTo').value = ""
+				document.getElementById('comm').value = ""
+				document.getElementById('salPer').value = ""
+		
+				var table = document.getElementById("myTable");   
+				var rows = table.rows; // Get all rows in the table except the first 3 lines
+				for (var i = rows.length - 1; i >= 3; i--) {
+					table.deleteRow(i);// Delete the current row
+				}
+		
+				//---- Get the last row of the table -----------------------------------
+				var lastRow = table.rows[table.rows.length - 1];
+				//---- Refresh the line with nill value --------------------------------
+				var addSno = lastRow.cells[2].getElementsByTagName('input')[0].value = 1;
+				var addQty = lastRow.cells[3].getElementsByTagName('input')[0].value = ""; //add Value to new row "Quantity" 
+				var addQty = lastRow.cells[4].getElementsByTagName('input')[0].value = ""; //add Value to new row "Quantity" 
+				var addQty = parseInt(lastRow.cells[5].getElementsByTagName('input')[0].value = 0); //add Value to new row "Quantity" 
+				var addPri = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+				var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+				var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+
+				savDisable('Yes')  //to Disable Save option..............
+			}
+		//▒▒▒▒▒▒ CANCEL RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+		//▒▒▒▒▒▒ FORM VALIDATION ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+			function savDisable (elem) {
+				const subBtn = document.querySelector(".addRec");
+				if (elem == 'Yes'){
+					subBtn.disabled = true;
+					subBtn.classList.remove('addColor')
+				}else{
+					subBtn.disabled = false;
+					subBtn.classList.add('addColor')
+				}
+			}
+		//▒▒▒▒▒▒ FORM VALIDATION ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+
+	
+	</script>
+<!--.........................................................................-->
+
+
+
+<!--.........................................................................-->
+<!--==== PAGE CSS ====================================================//Start-->
+	<style>
+
+		/* ⚊⚊⚊⚊ General INPUT ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			input {
+					border: none;
+					box-sizing: border-box;
+					border-bottom: 1px solid rgb(0, 21, 255);
+					box-shadow: 1px 1px 4px #EBEBEB;
+					font-size: 13px;
+					padding: 2px 0 2px 5px;
+			}
+			input:focus { 
+					outline: none; 
+					background-color:#e8f0f5;
+			}
+
+			.cEdit{
+				width: 100px;
+			}
+			.check-box {
+					transform: scale(2);
+			}
+			input[type="checkbox"] {
+					position: relative;
+					appearance: none;
+					width: 50px;
+					height: 20px;
+					background: #ccc;
+					border-radius: 50px;
+					box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+					cursor: pointer;
+					transition: 0.4s;
+			}
+			input:checked[type="checkbox"] {
+					background: #2CBBBB;
+			}
+			input[type="checkbox"]::after {
+					position: absolute;
+					content: "";
+					width: 20px;
+					height: 20px;
+					top: 0;
+					left: 0;
+					background: #fff;
+					border-radius: 50%;
+					box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+					transform: scale(1.1);
+					transition: 0.4s;
+			}
+			input:checked[type="checkbox"]::after {
+					left: 60%;
+			}
+
+		/* ⚊⚊⚊⚊ General INPUT ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Main Container ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.mainCon { 
+					width: 95%;
+					min-width: 700px;
+					margin:3%; 
+					padding: 1% 3%; 
+					background-color: #fff;  
+					border-radius: 5px;
+					border-top: 10px solid rgb(91, 80, 104); 
+					border-bottom: 1px solid rgb(91, 80, 104); 
+					box-shadow: 0 1px 5px rgba(0,0,0,0.15); 
+					background:  url('/static/JAVA/Images/BackPng/backPng5.png') no-repeat;
+					background-size: 100%; /* Adjust the value as per your preference */
+					background-position: right top;
+			}
+		/* ⚊⚊⚊⚊ Main Container ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Heading Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.heading {
+					display:flex; 
+					flex-wrap:wrap; 
+					justify-content: space-between; 
+					width:100%; 
+					margin-bottom: 20px;
+			} 
+			.heading .span1 {
+					color:orange;
+			}
+			.heading .span2 {
+					font-weight:300;
+					letter-spacing: 3px;
+			}
+		/* ⚊⚊⚊⚊ Heading Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.top {
+					position: relative;
+					display:grid;
+					grid-template-columns: repeat(auto-fit, minmax(300px, 1fr) );
+					grid-gap: 20px;
+					align-items: center; 
+					margin-bottom: 10px; 
+			}
+			.top .boxB{
+					justify-self:end;
+			}
+			.top .inputField{
+					margin-bottom: 7px;
+					display:flex;
+					justify-content: start;
+			}
+			.top .inputFieldB{
+				margin-bottom: 7px;
+				display:flex;
+				justify-content: end;
+			}
+			.top p{
+					min-width: 170px;
+			}
+			.top .boxB img{
+				position:absolute;
+				width:100px; 
+				border-radius:10px;
+				top:0;
+				right:0;
+				transition: transform 0.3s;
+				cursor:pointer;
+			}
+			.top .boxB img:hover{
+				transform: scale(1.05);
+			}
+		/* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Table Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.Table {
+				margin-bottom: 20px;
+				max-height:250px;
+				overflow:auto;
+				border-bottom: 1px solid gray;
+				border-radius: 2px;
+			}
+			#myTable {
+				font-size: 14px;
+				background: #FFFDFF;
+				border-collapse: collapse;
+				width: 100%;    
+			}
+			#myTable th {
+				border-bottom:2px solid #FFE485;
+				background-image:linear-gradient(0deg, #354A70 15%,#8DC0EB);
+				color:white;
+				position:sticky;
+				top:0px;
+				font-weight:500;
+				padding:3px 0px;
+				border: 1px solid rgb(5, 120, 209);
+			}
+			#myTable td, tr {
+				font-weight:500;
+				border: 1px solid rgb(5, 120, 209);
+			}
+			#myTable th:first-child {
+				position:-webkit-sticky;
+				position: sticky;
+				left: -15px;
+				background:linear-gradient(0deg, #30569c 15%,#63b5f8);
+				z-index: 10;
+				color:#FFE485;
+			}
+			#myTable input {
+				border: none;
+				box-sizing: border-box;
+				box-shadow: 1px 1px 4px #EBEBEB;
+				font-size: 13px;
+				margin: 3px 0;
+				padding: 2px 0;
+				width: 100%;
+				resize: vertical;
+			}
+			#sno{
+					text-align: center;
+			}
+			.addRow{
+				cursor:pointer;
+			}
+			.remRow{
+				color: #fc6f03;
+				font-size: 18px;
+				font-weight: bold;
+				padding-left: 6px;
+			}
+		/* ⚊⚊⚊⚊ Table Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Total Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.total {
+				position: relative;
+				display:grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr) );
+				grid-gap: 20px;
+				align-items: center; 
+				margin-bottom: 10px; 
+				justify-items: end;
+			}
+			.total input{
+				width:140px; 
+				min-width:140px;
+				text-align:right;
+			}
+			.toal .boxB{
+				justify-self:end;
+			}
+			.total .inputField{
+				margin-bottom: 7px;
+				display:flex;
+				justify-content: start;
+			}
+			.total .inputField p{
+				min-width: 205px;
+			}
+			.total .boxB img{
+				position:absolute;
+				width:100px; 
+				border-radius:10px;
+				top:0;
+				right:0;
+				transition: transform 0.3s;
+				cursor:pointer;
+			}
+			.total .boxB img:hover{
+				transform: scale(1.05);
+			}
+		/* ⚊⚊⚊⚊ Total Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			#savSec {
+					display: flex;
+					justify-content:flex-end;
+					flex-wrap: wrap;
+					padding: 5px 0px 0px 40px;
+			}
+			.sBtn, .hBtn, .cBtn{
+					box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+					background-color: #AAAAAA;
+					display: inline-block;
+					cursor: pointer;
+					color: #FFFFFF;
+					font-family: 'Open Sans Condensed', sans-serif;
+					font-size: 14px;
+					padding: 4px 18px;
+					margin: 5px 10px;
+					text-decoration: none;
+					text-transform: uppercase;
+			}
+			.cBtn{
+					background-color: #1DA1F2;
+			}
+			.hBtn{
+					background-color: #3B5998;
+			}
+			.addColor{
+					background-color: #2CBBBB;
+			}
+			.cusTab3 {
+					display: flex;
+					justify-content:space-between;
+					flex-wrap: wrap;
+			}
+		/* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+	</style>
+<!--.........................................................................-->
+
+
+
+
+
+{% endblock body %}

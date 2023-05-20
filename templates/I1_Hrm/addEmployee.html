@@ -1,0 +1,690 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+
+
+<!--════ Top Section ═══════════════════════════════════════ //Start-->
+    <section id="tMenu">
+        <div class='BoxA' >
+            <div> <img src=" {% static 'Java/Images/Logo/clientLogo.png' %}" style="width:100px; margin-top:5px" alt=""> </div>
+            <!-- <span class='p1'>〄</span> <span class="basCo" ></span>  -->
+        </div>
+        <div class='BoxB'>
+            <img src="{% static 'JAVA/Images/Icon/clock.png'%}" alt="" class='img1'>
+            <img src="{% static 'JAVA/Images/Icon/folder.png'%}" alt="" class='img1'>
+            <img src="{% static '../media/iuh.jpg'%}" alt="" class='img2'> 
+        </div>
+    </section>
+<!--════ Top Section ═══════════════════════════════════════ // End -->
+
+
+
+<form id="cusForm" enctype="multipart/form-data" style="position:relative;">
+   
+  <!--════ Customer Basic Information Section ════════════════ //Start-->
+    <section id="cusBasic">
+        <!-- <h2>Add New Customer</h2> -->
+        <div><img class="word" src="static/JAVA/Images/Word/empAdd.png" alt="" ></div>
+
+        <div style="display:none;">
+            <input type="text" id="cusID" name="cusID" placeholder="cusID">  </input>
+        </div>
+
+        <div>
+            <label class="Lab1" for="fname"> <span>Employe Code <span class="required">*</span></span> 
+            <input type="text" id="empCode" name="empCode" placeholder="Code"> </label>
+        </div>
+        <div>
+            <label class="Lab1" for="fname"> <span>Employee First Name <span class="required">*</span></span> 
+            <input type="text" id="empFName" name="empFName" onkeyup="nameDisable()" > </label>
+        </div>
+        <div>
+            <label class="Lab1" for="fname"> <span>Employee Middle Name </span> 
+            <input type="text" id="empMName" name="empMName" onkeyup="nameDisable()" > </label>
+        </div>
+        <div>
+            <label class="Lab1" for="fname"> <span>Employee Last Name </span> 
+            <input type="text" id="empLName" name="empLName" onkeyup="nameDisable()" > </label>
+        </div>
+    </section>
+  <!--════ Customer Basic Information Section ════════════════ // End -->
+
+
+  <!--════ Customer Additional Information Section ═══════════ //Start-->
+
+    <!--==== < Tab > ==========================================//Start-->
+        <div class="tabs">
+            <!-- Tab Heading ========================-->
+            <div class="tabsHead">
+                <div class="tabsToggle isActive">
+                    <span class="tabsName">Additional</span>
+                </div>
+                <div class="tabsToggle">
+                    <span class="tabsName">Employment Related</span>
+                </div>
+                <div class="tabsToggle">
+                    <span class="tabsName">Personal</span>
+                </div>
+                <div class="tabsToggle">
+                    <span class="tabsName">Payment</span>
+                </div>
+                <div class="tabsToggle">
+                    <span class="tabsName">Others</span>
+                </div>
+            </div>
+    
+            <div class="tabsBody">
+                <!--Status =========================================================-->
+                <div class="tabsContent isActive">
+                    <h3 class="tabsTitle">Additional</h3>
+                    <div class="cusTab">
+
+                        <div>
+                            <label for="fname"> <span>Status </span> 
+                            <input type="text" id="empStat" name="empStat"> </label>
+                        </div>
+
+                        <div>
+                            <label for="fname"> <span>Position </span> 
+                            <input type="text" id="empPosi" name="empPosi"> </label>
+                        </div>
+          
+                        <div>
+                            <label for="fname"> <span>Date of Joining </span> 
+                                <input type="date" id="empDoj" name="empDoj" value="2000-01-01"> </label>
+                        </div>
+
+                        <div style="display:flex">
+                            <label><span>Image: </span> </label> 
+                            <input type="file" name="image" onchange="preAddImg(event)" class="empImg" id="imageRS" accept=".jpg, .jpeg, .png">  <!-- onchange="preAddImg(event)" -->
+                        </div>
+                        <img id="logoPic" src="{% static '../media/Empty.jpg' %}">
+                        <img id='addImgOutput' />
+                    </div>
+                </div>
+                
+                <!--Additional Information===========================================-->
+                <div class="tabsContent">
+                    <h3 class="tabsTitle">Employeement Related</h3>
+ 
+                    <div class="cusTab">           
+                        <div>
+                            <label for="fname"> <span>Emirates ID </span> 
+                            <input type="text" id="empEid" name="empEid"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Location </span> 
+                            <input type="text" id="empLoca" name="empLoca"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Department </span> 
+                            <input type="text" id="empDept" name="empDept"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Reporting to </span> 
+                            <input type="text" id="empRepTo" name="empRepTo"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Sponsor </span> 
+                            <input type="text" id="empSpon" name="empSpon"> </label>
+                        </div>    
+                    </div>
+                </div>
+
+                <!--Payment Settings================================================-->
+                <div class="tabsContent">
+                    <h3 class="tabsTitle">Personal</h3>
+                    <div class="cusTab">
+                        
+                        <div>
+                            <label for="fname"> <span>Nationality </span> 
+                            <input type="text" id="empNatl" name="empNatl"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Gender </span> 
+                            <input type="text" id="empGend" name="empGend"> </label>
+                        </div>
+
+                        <div>
+                            <label for="fname"> <span>Date of Birth <span class="required">*</span></span> 
+                                <input type="date" id="empDob" name="empDob" value="2000-01-01"> </label>
+                        </div>
+
+                        <div>
+                            <label for="fname"> <span>Marrid </span> 
+                            <input type="text" id="EmpMarr" name="EmpMarr"> </label>
+                        </div>
+
+
+                    </div>
+                </div>
+                
+                <!--Tax Settings====================================================-->
+                <div class="tabsContent">
+                    <h3 class="tabsTitle">Payment</h3>
+                    <div class="cusTab">
+                        
+                        <div>
+                            <label for="fname"> <span>IBAN </span> 
+                            <input type="text" id="empIban" name="empIban"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Bank </span> 
+                            <input type="text" id="empBank" name="empBank"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Account Number </span> 
+                            <input type="text" id="empAcc" name="empAcc"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>UID </span> 
+                            <input type="text" id="empUid" name="empUid"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Visa </span> 
+                            <input type="text" id="empVisa" name="empVisa"> </label>
+                        </div>
+                    
+                    </div>        
+                </div>
+    
+                <!--Other Information===============================================-->
+                <div class="tabsContent">
+                    <h3 class="tabsTitle">Other Details</h3>
+                    <div class="cusTab">
+
+                        <div>
+                            <label for="fname"> <span>Address </span> 
+                            <input type="text" id="empAdd" name="empAdd"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Phone Number </span> 
+                            <input type="text" id="empPh" name="empPh"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Email </span> 
+                            <input type="text" id="empEmail" name="empEmail"> </label>
+                        </div>
+                        <div>
+                            <label for="fname"> <span>Reference </span> 
+                            <input type="text" id="ref" name="ref"> </label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            //==== Tab Menu =========================================== //Start-->
+            let tabs = document.querySelectorAll('.tabsToggle'),
+                contents = document.querySelectorAll('.tabsContent');
+    
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    contents.forEach((content) => {
+                        content.classList.remove('isActive');
+                    });
+                    tabs.forEach((tab) => {
+                        tab.classList.remove('isActive');
+                    });
+                    contents[index].classList.add('isActive');
+                    tabs[index].classList.add('isActive');
+                });
+            });
+            //==== Tab Menu =========================================== // End -->
+        </script>
+  
+        <style>
+            .tabs {
+                display: flex;
+                flex-direction: column;
+                min-width: 600px;
+                margin: 15px 0px 0px 0px;
+                padding: 0px 20px 0px 20px;
+                font-size: 13px;
+            }
+            .tabsHead {
+                display: flex;
+                padding: 0px 5px 0 0px;
+                border-bottom: 1px solid rgb(176, 172, 172);
+                background-image: linear-gradient(to bottom, #d8d4d4, #b7b2b2, #bab5b5, #e0d6d6);
+                /* background: #cccaca; */
+                cursor: pointer;
+            }
+            .tabsToggle {
+                margin: 0 0px;
+                padding: 7px 25px;
+                border-right:1px solid #9b9999;
+                /* background: #cccaca; */
+                background-image: linear-gradient(to bottom, #d8d4d4, #b7b2b2, #bab5b5, #e0d6d6);
+                border-radius: 0 15px 0 0;
+                transition: .5s;
+            }
+            .tabsName {
+                font-weight: 600;
+                font-size: 16px;
+                color:#181919;
+
+            }
+            .tabsBody {
+                border-top: none;
+                padding: 0px 10px 0px 25px;
+                min-height:230px;
+                background: #f4f3f3;
+            }
+            .tabsTitle {
+                font-weight: 500;
+                font-size: 18px;
+                color: #2b9fd6;
+                margin: 10px 10px 25px 0px;
+                text-align: left;
+            }
+            .tabsText {
+                font-size: 13px;
+                line-height: 1.2;
+                color: #484848;
+            }
+            .tabsContent {
+                position:relative;
+                display: none;
+            }
+            .tabsToggle.isActive {
+                background-image: linear-gradient(to bottom, #aba9a9, #4D4D4D, #4D4D4D, #aba9a9);
+                /* background: #4D4D4D; */
+                color: #c4c1c1;
+                font-size: 13px;
+                font-weight: 100;
+                text-align: left;
+            }
+            .tabsToggle.isActive .tabsName {
+                color: #d8d3d3;
+                font-weight:bold;
+            }
+            .tabsContent.isActive {
+                display: block;
+            }
+        </style>
+  
+    <!--===== < Tab > ==========================================// End -->
+
+  <!--════ Customer Additional Information Section ═══════════ // End -->
+  
+
+  <!--════ Save Section ══════════════════════════════════════ //Start-->
+    <section id="savSec">
+        <div><button  onclick="event.preventDefault()" class="hBtn" type="submit"> ⚠ HELP</button></div>
+        <div><button id="cancelA" class="cBtn" type="submit"> ✂ CANCEL</button></div>
+        <div><button id="addRec"  class="addRec sBtn" type="submit" disabled=true>✚ Save</button></div>
+    </section>
+  <!--════ Save Section ══════════════════════════════════════ // End -->
+
+</from>
+
+
+<script>
+
+    //.... Get Data from Context Process and stored in Variable ...............
+        let basInfo = {{basInfo|safe}}
+        //const myCom = document.querySelector(".basCo").innerHTML = basInfo.Company[0]
+    //.... Get Data from Context Process and stored in Variable ...............
+    
+    
+    //.... resize Image .......................................................
+        let abc  
+        let num = 1
+        function uploadImg(e){abc = e} //resize Image
+    //.... resize Image .......................................................
+ 
+
+    //==== <Add Record >============================================ //Start-->
+        const form = document.getElementById('cusForm');
+
+        form.addEventListener('submit', async function(e) {e.preventDefault();
+            const formData =  await new FormData(form);
+            
+            EmpId = document.getElementById('empCode').value; 
+            
+            formData.append('empImg', 'abc') //avoid error incase of no logo selected
+            if(abc !== "" && abc !==undefined){formData.append('empImg', abc)}  //abc is the trim image file
+            
+            formData.append('id', EmpId)
+            //console.log([...formData])
+
+            fetch(`${basInfo.IP[0]}/addEmpl`, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(res => res.json())
+            .then(data => {
+                afterSave()
+            })
+        })
+
+        function afterSave(){
+            form.reset()  //reset the form after Adding Record
+            codDisable('Yes')
+            document.getElementById('addImgOutput').classList.add("hide")
+            alert('Customer Added Successfully...')
+            document.getElementById('logoPic').classList.remove("hide")
+            fetchCus()
+        }
+    //==== <Add Record >============================================ // End -->
+
+
+    //==== <Handel Show Image on Add Record Form >================== //Start-->
+        function preAddImg(event){
+            document.getElementById('logoPic').classList.add("hide")
+            document.getElementById('addImgOutput').classList.add("showAddImg") 
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('addImgOutput');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);  //console.log(event.target.files[0])
+        };
+    //==== <Handel Show Image on Add Record Form >================== // End -->
+    
+
+    //--==== Populate data to Select Option ======================== //Start-->
+        let empList=[]; // Declare a global variable to store the data
+        async function fetchCus(){
+            let Emp = "Employee";
+            const response = await fetch(`${basInfo.IP[0]}/empBasInfo`)
+            const data = await response.json()
+            empList = data  //when call showRecord() function data will save in finalData
+        }
+        fetchCus()
+    //--==== Populate data to Select Option ======================== // End -->
+
+ 
+    //--==== Form Validation ======================================= //Start-->
+        let check = ""
+        const codeInput = document.getElementById("empCode");
+        const nameInput = document.getElementById("empFName");
+        codeInput.addEventListener("blur", function() {
+            const Value = codeInput.value.trim(); //Get input value
+            const ValueB = nameInput.value.trim();
+            const result = empList.find(obj => obj.empCode == Value);
+            const yesNo = empList.some(item => item.empCode == Value);
+            check = yesNo
+
+            if (yesNo === true ) { alert("Customer Already Exist:"); codDisable('Yes')}
+            else if (Value==""){codDisable('Yes')}
+            else if (yesNo==false & ValueB==''){codDisable('Yes')}
+            else { codDisable('No')}
+        })
+    
+        function nameDisable() {
+            const Value = document.getElementById("empFName").value.trim();
+            if (check==true ) { codDisable('Yes')}
+            else if (Value == '' | check==true ) { codDisable('Yes')} 
+            else {codDisable('No') }
+        }
+
+        function codDisable (elem) {
+            const subBtn = document.querySelector(".addRec");
+            if (elem == 'Yes'){
+                subBtn.disabled = true;
+                subBtn.classList.remove('addColor')
+            }else{
+                subBtn.disabled = false;
+                subBtn.classList.add('addColor')
+            }
+        }
+    //--==== Form Validation ======================================= // End -->
+
+
+    //--==== Resize Image ===========================================//Start-->
+        const WIDTH =250
+        let input = document.getElementById("imageRS")  //target the input field with id="imageRS" there must me accept=".jpg, .jpeg, .png"
+        input.addEventListener("change", (event) => {duplicate() })
+        
+        function duplicate(){
+            let image_file = event.target.files[0]  //return the image file
+            let reader = new FileReader   // read the file and read as url
+            reader.readAsDataURL(image_file)  //i.e. url
+
+            reader.onload = (event) => {
+                let image_url = event.target.result
+                let image = document.createElement("img") //create img tag on dom
+                image.src = image_url  //we have to give img tag a source ie. src
+                //document.getElementById("test").appendChild(image)   //to show image on page through id
+                
+                image.onload = (e) => {
+                    let canvas = document.createElement("canvas")
+                    let ratio = WIDTH / e.target.width
+                    canvas.width = WIDTH
+                    canvas.height = width = e.target.height * ratio
+
+                    const context = canvas.getContext ("2d")
+                    context.drawImage(image, 0, 0, canvas.width, canvas.height)
+                    //console.log(context)
+                    
+                    let new_image_url = context.canvas.toDataURL("image/jpeg", 90)  //define the type and quality ("image/jpeg", 90) it can be ()
+                    //--- just to show image on Dom
+                    //new_image = document.createElement("img") //create img tag on dom
+                    //new_image.src = new_image_url  //we have to give img tag a source ie. src
+                    //document.getElementById("test").appendChild(new_image)   //to show image on page through id
+                    let image_file = urlToFile(new_image_url)
+                    //console.log(image_file)
+                    uploadImg (image_file) //will show image on web page
+                }
+            
+                let urlToFile = (url) => {
+                    let arr = url.split(",")
+                    let mime = arr[0].match(/:(.*?);/)[1]
+                    let data = arr[1]
+                    let dataStr = atob(data)
+                    let n = dataStr.length
+                    let dataArr = new Uint8Array(n)
+
+                    while(n--)
+                    {dataArr[n] = dataStr.charCodeAt(n)}
+                    let file = new File([dataArr], 'File.jpg', {type: mime})
+
+                    return file
+                }
+            }
+        }
+    //--==== Resize Image ===========================================// End -->
+
+
+    //==== <Cancel Record > ======================================== //Start-->
+        const myButton = document.getElementById("cancelA");
+        function showMessage(event) {
+            event.preventDefault(); // prevents the default action (form submission, etc.)
+            
+            if (confirm('Want to Cancel!')) {
+                form.reset()  //reset the form after Adding Record
+                codDisable('Yes') //disable the Save Button
+                document.getElementById('addImgOutput').classList.add("hide") //hide image
+            }
+        }
+        myButton.addEventListener("click", showMessage);
+    //==== <Cancel Record > ======================================== //Start-->
+
+</script>
+
+
+<style>
+    
+    /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        #tMenu {
+            position: relative;
+            display:grid; 
+            padding:0 25px;
+            box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.34);
+            border-bottom:#181919;
+            grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));  
+            align-items: center; 
+            background:#f2f5f8; 
+            height:35px;
+            background-image: linear-gradient(to right, #2e2436, #474053, #615e72, #7e7e92, #9b9fb3);
+        }
+        #tMenu .BoxA {
+            color:#fcf6c4; 
+            font-weight:600; 
+            font-size:20px;
+        }
+        #tMenu .BoxA .p1{
+            color:#fcbce9; 
+            font-weight:bold;
+        }
+        #tMenu .BoxB {
+            justify-self:end;
+        }
+        #tMenu .BoxB .img1{
+            position:relative; 
+            top:-2px; 
+            width:20px; 
+            height:20px; 
+            margin-right: .5rem;
+        }
+        #tMenu .BoxB .img2{
+            position:relative; 
+            top:2px;
+            border-radius:50%; 
+            width: 30px; 
+            height: 30px;
+        }       
+    /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Form Style  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        label > span{
+            width: 180px;
+            font-weight: bold;
+            float: left;
+            padding-top: 8px;
+            padding-right: 5px;
+            color: rgb(115, 114, 114);
+        }
+        input {
+            font-size: 13px;
+            min-width: 270px;
+            padding: 3px 10px;
+            margin: 4px 0;
+            box-sizing: border-box;
+            border: solid 1px rgb(210, 207, 207);
+            box-shadow: 1px 1px 4px #EBEBEB;
+        }
+        .cName{
+            width: 400px;
+        }
+        .selectfield{
+            width: 180px;	
+            font-size: 13px;
+            min-width: 5rem;;
+            padding: 3px 10px;
+            margin: 4px 0;
+            box-sizing: border-box;
+            border: solid 1px rgb(183, 182, 182);
+            border-radius: 3px;
+        }
+        .imgLogo{
+            border: none;
+            padding: 0px;
+        }
+        textarea {
+            width: 270px;	
+            font-size: 13px;
+            min-width: 5rem;;
+            padding: 3px 10px;
+            margin: 4px 0;
+            box-sizing: border-box;
+            border: solid 1px rgb(183, 182, 182);
+            border-radius: 3px;
+        }
+        #addImgOutput, #logoPic {
+            position: absolute;
+            width: 100px;
+            width: 100px;
+            left: 470px;
+            top: 40px;
+            border-radius: 5%;
+        }
+        .hide{
+          display:none;
+        }
+    /* ⚊⚊⚊⚊ Form Style  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+
+    /* ⚊⚊⚊⚊ Customer Basic Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        
+        #cusBasic {
+            font-size: 13px;
+            min-width:100%;
+            padding: 15px 15px 10px 40px;
+        }
+        #cusBasic h2{
+            text-transform: uppercase;
+            font-family: 'Open Sans Condensed', sans-serif;
+            color: #2b9fd6;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 5px 0px;
+            margin: 5px 0px 15px 0px;
+        }
+        #cusBasic .word{
+            width: min(max(150px, 15vw), 230px);
+            margin: 20px 5px 5px -5px;
+        }
+
+        #cusBasic .Lab1{
+            min-width: 200px;
+        }
+        #cusBasic span.required{
+            color:red;
+        }
+    /* ⚊⚊⚊⚊ Customer Basic Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    /* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+        #savSec {
+            display: flex;
+            justify-content:flex-end;
+            flex-wrap: wrap;
+            padding: 5px 15px 0px 40px;
+        }
+
+        .sBtn, .hBtn, .cBtn{
+            /* box-shadow: inset 0px 1px 0px 0px #45D6D6;
+               border: 1px solid #27A0A0;
+               background-color: #2CBBBB; */
+            box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+            background-color: #AAAAAA;
+            display: inline-block;
+            cursor: pointer;
+            color: #FFFFFF;
+            font-family: 'Open Sans Condensed', sans-serif;
+            font-size: 14px;
+            padding: 4px 18px;
+            margin: 5px 5px;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .cBtn{
+            background-color: #1DA1F2;
+        }
+        .hBtn{
+            background-color: #3B5998;
+        }
+        .addColor{
+            background-color: #2CBBBB;
+        }
+        .cusTab3 {
+            display: flex;
+            justify-content:space-between;
+            flex-wrap: wrap;
+        }
+
+    /* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+</style>
+
+
+{% endblock body %}

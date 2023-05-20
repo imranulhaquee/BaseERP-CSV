@@ -1,0 +1,257 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+
+<section class="conA">
+  <div class="transparent-overlay"></div>
+
+
+  <div class="pageHeading">
+    <img style="position:absolute; z-index:20px; width:65px;" src="{% static 'JAVA/Images/Icon/Employee1.png' %}" alt="">
+    <h1 style="margin-left: 70px;" > Report Module  </h1>
+    <hr style="margin-left: 60px;" class="hrHeading">
+  </div>
+
+  <div class="cardCont">
+
+    <!--=============== Transactions ============================================-->
+    <div class="product-card">
+
+      <div class="badge">
+        <img src="{% static 'JAVA/Images/Icon/register1.png' %}" alt="">
+        <span> Seles Reports </sapn>   
+      </div>
+      <div class="product-tumb">
+          <img src="{% static '/JAVA/Images/Card/card21.jpg' %}" alt="">
+          <div class="overlay"></div>
+      </div>
+      <div class="product-details">
+        <span class="product-catagory">Navigate to</span>
+        <div class="menuList"> 
+          <h4><a href="/F1_salesTargetEmp">⦿ Sales Target - by Employee</a></h4>
+          <h4><a href="/F1_salesTargetSup">⦿ Sales Target - by Supplier</a></h4>
+          <h4><a href="/addEmployee">⦿ Add New Employee</a></h4>
+        </div>
+        <p class="line"> </p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, possimus nostrum!</p>
+        <div class="product-bottom-details">
+          <div class="product-price">Sub-Menu</div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  <div>
+</section>
+
+
+
+
+
+<style>
+
+  /* ⚊⚊⚊⚊ Background Image and overlay  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+    .conA{
+      position:relative;
+      min-height: 100vh;
+      width: 100%;
+      padding: 10px 5px;
+      background: linear-gradient(180deg, rgba(232, 219, 250, 0.9), rgba(220, 204, 225, 0.8)), #c2c7f2 url('/static/JAVA/Images/Background/Img4.webp'); 
+      background-size: cover;
+      column-gap: 30px;
+      z-index:5;
+    }
+
+    .transparent-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 100%;
+      z-index: 10;
+      background: radial-gradient(rgba(183, 215, 6, 0.5) 0%, rgba(128, 156, 17, 0.4) 50%, transparent 50%, transparent 50%), radial-gradient(rgba(103, 153, 254, 0.5) 60%, rgba(82, 91, 216, 0.731) 60%, transparent 25%, transparent 100%);
+      background-size: 3.5px 3.5px;
+      background-position: 0 0, 15px 15px;
+      opacity: 0.5;
+    }
+  /* ⚊⚊⚊⚊ Background Image and overlay  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+  /* ⚊⚊⚊⚊ Page Heading ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+    .pageHeading {
+      position:relative; 
+      padding:5px 25px; 
+      z-index: 20
+    }
+
+
+    h1{
+      font-size: min(max(25px, 3vw), 35px);
+      font-weight: 500;
+      color:#ad8d00;
+    }
+    .hrHeading{
+        border-bottom: 3px solid transparent;
+        border-image: linear-gradient(0.25turn, rgb(195, 185, 3), rgb(99, 159, 3), rgba(56,2,155,0));
+        border-image-slice: 1;
+    }
+  /* ⚊⚊⚊⚊ Page Heading ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+    .cardCont{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 1rem;
+        padding: 20px 20px 20px 10px;
+        z-index:20;
+        position: relative; 
+    }
+    a{
+        text-decoration: none;
+    }
+    .product-card {
+        max-width: 350px;
+        min-width: 300px;
+        position: relative;
+        box-shadow: 0 2px 7px #555e9b;
+        background: #fafafa;
+        margin: 5px 15px;
+        border-radius: 10px;
+    }
+    .badge {
+        position: absolute;
+        left: 0;
+        top: 65px;
+        width:100%;
+        text-transform: uppercase;
+        font-size: 23px;
+        font-weight: 300;
+        background: rgba(69, 55, 16, 0.5);
+        color: #ffffff;
+        padding: 10px 10px 7px 10px;
+        z-index: 20;
+    }
+    .badge img{ 
+      position:absolute; top:7px;
+      width: 25px;
+    }
+    .badge span{
+      margin-left: 30px;
+    }
+    .product-tumb {
+        width: 100%;
+        max-height: 100px;
+        background: #f0f0f0;
+        overflow: hidden;
+        border-radius: 10px 10px 0 0;
+    }
+    
+    .product-tumb img {
+        width: 100%;
+        background-position: bottom;
+        background-size: cover;
+        border-radius: 10px 10px 0 0;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      z-index: 10;
+      background: radial-gradient(rgba(193, 100, 1, 0.9) 0%, rgba(174, 116, 0, 0.9) 90%, transparent 90%), radial-gradient(rgba(236, 146, 27, 0.5) 60%, rgba(202, 132, 2, 0.731) 60%, transparent 25%, transparent 100%);
+      background-size: 3.5px 3.5px;
+      background-position: 0 0, 15px 15px;
+      border-radius: 10px;
+      opacity: 0.5;
+    }
+    .product-details {
+        padding: 30px;
+    }
+    
+    .product-catagory {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #ccc;
+        margin-bottom: 18px;
+    }
+    .menuList{
+      min-height:130px;
+    }
+    
+    .product-details h4 a {
+        font-weight: 500;
+        display: block;
+        margin-bottom: 18px;
+        text-transform: uppercase;
+        color: #363636;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+    
+    .product-details h4 a:hover {
+        color: #fbb72c;
+    }
+    
+    .line{
+      border-top: 1px solid #e0d9d9;
+    }
+    .product-details p {
+        font-size: 15px;
+        line-height: 22px;
+        margin-bottom: 18px;
+        color: #999;
+    }
+    
+    .product-bottom-details {
+        overflow: hidden;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+    }
+    
+    .product-bottom-details div {
+        float: left;
+        width: 50%;
+    }
+    
+    .product-price {
+        font-size: 18px;
+        color: #c69306;
+        font-weight: 600;
+    }
+    
+    
+    .product-links {
+        text-align: right;
+    }
+    
+    .product-links a {
+        display: inline-block;
+        margin-left: 5px;
+        color: #e1e1e1;
+        transition: 0.3s;
+        font-size: 17px;
+    }
+    
+    .product-links a:hover {
+        color: #fbb72c;
+    }
+
+
+
+    .cardCont{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 1rem;
+        padding: 20px 20px 20px 10px;
+    }
+
+  </style>
+
+{% endblock body %}
