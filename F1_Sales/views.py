@@ -449,81 +449,133 @@ def sQuotList(request):
     return render(request, 'F1_Sales/sQuotList.html', context)
 
 
-def showQuot(request): #URL--
+def showQuot(request): #URL to fetch data--
 
-  ###---- Standard Code to load Data ----------------------------------
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
     dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
     Year = str(dfStd.loc[0, 'year'])
 
-  ###---- Read Quotation Basiv File -------------------------------------------------
-    req_cols = ['id','qotRef','qotDat','cusName', 'qotTax', 'qotTAT','spName','opnClo']
-    fPath = "Data/"+Year+"/F1_Sales/Quotations/qotBasic.csv"
-    df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+
+  ### Step 2. Read qotBasic.csv File -----------------------------------------
+  ### ========================================================================
+    req_cols = ['id','qotRef','qotDat','cusName', 'qotTax', 'qotTAT','spName','opnClo','action']
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
+    df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape').fillna('0')
+    
+    ### drop first row which is empty...
     df = df.drop(df.index[0])
 
-    ###Convert Customer Data Frame into Python List---------------------------------------
-    #dfSalA = dfSal.set_index('cusCode') # set CusCode As Index
-    #data_dict = dfSalA['cusName'].to_dict() # Convert the DataFrame to a dictionary
-    #DataA.customer = DataA.customer.map(data_dict).fillna(0) ### map to lookup data_dict
-    
-    ###Copy customer code where customer is NaN
-    #DataA.loc[DataA["customer"] == 0, ["customer"]] = DataA["cusCode"]
-    #DataA["customer"] = DataA["customer"].apply(lambda x: str(x) + '-' if isinstance(x, (int, float)) else x)
+    ### file doesn't recongnize date formate first convert into date and than strftime...
+    df['qotDat'] = pd.to_datetime(df['qotDat']).dt.strftime('%Y-%m-%d')
 
-    ### remove duplicate rows and keep only the last occurrence subequently if that customer Code added
-    ### will show because keep last record will not have 'Delete' in comment column
-    #DataA = DataA.drop_duplicates(subset=['qotRef'], keep='last')
-    #DataB = DataA.drop(DataA.loc[DataA['comment']=='Delete'].index)
+    ### Remove Duplicate Quote and Deleted Record...
+    df = df.drop_duplicates(subset=['qotRef'], keep='last')
+    df = df.drop(df.loc[df['action']=='Deleted'].index)   
 
 
-    ### Convert Data into Json Dictionary (can be access by JavaScript) .........
+  ### Step 3. Read qotStat.csv File ------------------------------------------
+  ### ========================================================================
+    statPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotStat.csv"
+    stat = pd.read_csv(statPath, index_col=False, encoding='unicode_escape')
+
+    ### Remove Duplicate and Deleted Record...
+    stat = stat.drop_duplicates(subset=['qotRefSt'], keep='last')  ##Drop Duplicate
+
+
+  ### Step 4 - Map qotBasic.csv Open/Close with qotStat.csv ------------------
+  ### ========================================================================
+    opnClo_map = dict(zip(stat['qotRefSt'], stat['opnCloSt']))
+    df['opnClo'] = df['qotRef'].map(opnClo_map).fillna(df['opnClo'])
+
+
+  ### Step 5 - Convert Data into Dictionary ----------------------------------
+  ### ========================================================================
     Data = df.to_dict(orient="records")
 
-    ### return Response data in List form i.e. [Data, page, id] we can send without [ ]
     return JsonResponse(Data, safe=False) 
 
 
-def refreshQuot(request): #URL--
-    #(Get Quotation detail from DataBase and Save into Excel file )
+def syncQuot(request): #URL to fetch data--
 
-    ###---- Qutation open/Close File to Get Last Quotation Number ---------------
-    DataA = pd.read_sql('''SELECT * FROM "F1_Sales_qotBasic" ''', con=engine).fillna(0)
-
-
-    ###---- Step 2 - Create a "Quotation" Folder inside "Data/F1_Sales" Folder --
-    data_folder = "Data/F1_Sales"
-    sales_folder = "Quotation"
-
-    if not os.path.exists(os.path.join(data_folder, sales_folder)):
-        os.makedirs(os.path.join(data_folder, sales_folder))
-    else:
-        pass
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
 
 
-    #Step 3 - Save Customer Master File as CSV File ---------------------------
-    DataA['comment'] = ''
-    DataA.to_csv('Data/F1_Sales/Quotation/salQuot2023.csv',index=False)
+  ### Step 2. Read qotBasic.csv File - to Load Data --------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfBasic = dfA.drop_duplicates(subset=['qotRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Deleted'].index)
+
+    dfBasic = dfBasic.sort_values('qotRef') #sor by qotRef
+
+    ### Save the data in qotBasic.csv File...
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
+    dfBasic.to_csv(fPath, index=False)
+
+
+  ### Step 3. Read qotAddi.csv File - to Load Data ---------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotAddi.csv"
+    dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ###---- Merge to filter out those data which Transaction Date is not matching with qotBasic
+    merged_df = pd.merge(dfB, dfBasic['traDate'], on='traDate', how='inner')
+    ###---- Rearange Column to aboid any mistake
+    merged_df = merged_df[['id','qotRef','sno','itmCod','desc','qty','price','disc','tot','traDate','action']]
+
+    ### Save the data in qotAddi.csv File...
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotAddi.csv"
+    merged_df.to_csv(fPath, index=False)
+
+
+  ### Step 4. Read qotStat.csv File - to Load Data ---------------------------
+  ### ========================================================================
+    statPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotStat.csv"
+    stat = pd.read_csv(statPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ### Remove Duplicate Quote and Deleted Record...
+    stat = stat.drop_duplicates(subset=['qotRefSt'], keep='last')
+    stat = stat.drop(stat.loc[stat['action']=='Deleted'].index)
+
+
+    ### Save the data in qotStat.csv File...
+    statPath =  "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotStat.csv"
+    stat.to_csv(statPath, index=False)
+
 
     jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
     return JsonResponse(jsonData)
 
 
 def sQuotAdd(request):
-    
-  ###---- Standard Code to load Data ----------------------------------
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
     dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
     Year = str(dfStd.loc[0, 'year'])
-  
-  ### Qutation File to Get Last Quotation Number ----------------------
+
+
+  ### Step 1. Read qotBasic.csv - to Get the last Quotation Number -----------
+  ### ========================================================================
     try: 
         req_cols = ['qotRef', 'qotDat']
-        fPath = "Data/"+ Year+"/F1_Sales/Quotations/qotBasic.csv"
+        fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
         df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
     except:
         data = {'qotRef': [0]}
         df = pd.DataFrame(data)
     
-  ### Step 1a - Get the last Quotation No make it 5 digit & add year---
+    ### Get the last Quotation Number and make it 5 digit and add year...
     lastQuot = df['qotRef'].max()
 
 
@@ -536,148 +588,153 @@ def sQuotAdd(request):
 @permission_classes([IsAuthenticated])
 def sQuotAddUrl(request):
 
-  ###---- Standard Code to load Data ----------------------------------
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
     dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
     Year = str(dfStd.loc[0, 'year'])
 
  
-  # Save Quotation Basic Data -------------------------------------------
-  # ----------------------------------------------------------------Start
+  ### Step 2. Save Data in qotBasic.csv file----------------------------------
+  ### ========================================================================
     basData = request.data[0]
-    basicData = {'ID': basData['qotRef'],       'qotRef': basData['qotRef'],
+    basicData = {'ID': basData['qotRef'],    'qotRef': basData['qotRef'],
               'qotDat': basData['qotDat'],   'cusCode': basData['cusCode'],
               'cusName': basData['cusName'], 'qotTBD':basData['qotTBD'], 
               'qotTAD': basData['qotTAD'],   'qotTax': basData['qotTax'],
               'qotTAT': basData['qotTAT'],	 'shipTo':  basData['shipTo'],	
-              'qotComm': basData['qotComm'], 'salPer': basData['salPer'],
+              'qotComm': basData['qotComm'], 'spCode': basData['spCode'],
               'spName': basData['spName'],   'opeClo': 'Open',
-              'traDate': basData['traDate'], 'comment': ''
+              'traDate': basData['traDate'], 'action': basData['action']
             }
 
     dfBasic = pd.DataFrame(basicData, index=[0])
-    fPath = fPath = "Data/"+ Year+"/F1_Sales/Quotations/qotBasic.csv"
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
     dfBasic.to_csv(fPath, index=False, header=False, mode='a')
 
 
-  # Save Quotation Additional Data --------------------------------------
-  # ----------------------------------------------------------------Start
+  ### Step 3. Save Data in qotAddi.csv file-----------------------------------
+  ### ========================================================================
     addiData = request.data[1]
-    lastN = 1
     for data in addiData:
-      if( data['id'] == '0'):
-        lastN=lastN+1
-        ID = lastN
-      else:
-        ID = data['id']
-
       addiData={'ID': basData['qotRef'], 'qotRef': basData['qotRef'], 'sno':data['sno'],
               'itmCod':data['itmcode'], 'desc':data['desc'], 'qty':data['qty'],
-              'price':data['price'], 'disc':data['price'], 'tot':data ['tot'],
+              'price':data['price'], 'disc':data['disc'], 'tot':data ['tot'],
               'traDate':basData['traDate'], 'action':'' 
               }
     
       dfAddi = pd.DataFrame(addiData, index=[0])
-      fPath = fPath = "Data/"+ Year+"/F1_Sales/Quotations/qotAddi.csv"
+      fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotAddi.csv"
       dfAddi.to_csv(fPath, index=False, header=False, mode='a')
 
-  
+
+  ### Step 4. Save Data in qotStat.csv file-----------------------------------
+  ### ========================================================================
+    basData = request.data[0]
+    QotStat =  {'qotRef':basData['qotRef'],
+                'opnClo':"Open",
+                'traDate':basData['traDate'],
+                'action':" ",
+    }
+
+    dfBasic = pd.DataFrame(QotStat, index=[0])
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotStat.csv"
+    dfBasic.to_csv(fPath, index=False, header=False, mode='a')
+
+
     jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
     return JsonResponse(jsonData)
 
 
 def sQuotEdit(request, pk):
-    print(pk)
-    #(to Show Quotation to edit)
+    pk = int(pk)
+    
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
 
-    Basic = qotBasic.objects.get(id=pk)
-    serilizerA = qotBasicSerializer(Basic, many=False) #for single record 'many=False' other wise ittiration error will come
-    # if there is 'None' cell convert into '' empty to avoid error in JS 
-    quotBasi = {k: '' if v is None else v for k, v in serilizerA.data.items()}
+ 
+  ### Step 2. Save Data in qotBasic.csv file----------------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+    dfBasic = dfA[dfA['qotRef'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
 
-    QotAddi = qotAddi.objects.filter(qotRef=pk)  ### Get all record where 'qotRef = pk (value)'
-    serilizerB = qotAddiSerializer(QotAddi, many=True) ### Serialize the selected data
-    quotAddiItems = serilizerB.data ### Get the data not attributes
-    quotAddiItems = [dict(item) for item in quotAddiItems]  ### Convert OrderedDict into (0,1,2,3,etct)
-    quotAddiItems = [{key: '' if value is None else value for key, value in dictionary.items()} for dictionary in quotAddiItems]
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    dfBasic['qotDat'] = pd.to_datetime(dfBasic['qotDat']).dt.strftime('%Y-%m-%d')
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfBasic = dfBasic.drop_duplicates(subset=['qotRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Delete'].index)
+
+    ### Convert Transaction Date to list to filter records in qotAddi
+    List = dfBasic["traDate"] #.tolist()
+
+    ### Convert Transaction Date to list to filter records in qotAddi
+    quotBasi = dfBasic.to_dict(orient="records") ### convert into dictionary
+
+
+  ### Step 3 - Read qotAddi.csv File------------------------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotAddi.csv"
+    dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+    dfAddi = dfB[dfB['qotRef'] == pk].fillna(0) ### Filter as per 'pk' selected quote
+    filtered_df = dfAddi[dfAddi['traDate'].isin(List)] ### Filter by transaction Date
+
+    ### Convert Transaction Date to list to filter records in qotAddi
+    quotAddiItems = filtered_df.to_dict(orient="records") ### convert into dictionary
+
 
     context = {'lastQuot': pk, 'qBasic':quotBasi,  'addiQuote':quotAddiItems}
     return render(request, 'F1_Sales/sQuotEdit.html', context)
-
-
-def sQuotEditFetch(request, pk):
-    Basic = qotBasic.objects.get(id=pk)
-    serilizerA = qotBasicSerializer(Basic, many=False) #for single record 'many=False' other wise ittiration error will come
-    # if there is 'None' cell convert into '' empty to avoid error in JS 
-    quotBasi = {k: '' if v is None else v for k, v in serilizerA.data.items()}
-
-    QotAddi = qotAddi.objects.filter(qotRef=pk)  ### Get all record where 'qotRef = pk (value)'
-    serilizerB = qotAddiSerializer(QotAddi, many=True) ### Serialize the selected data
-    quotAddiItems = serilizerB.data ### Get the data not attributes
-    quotAddiItems = [dict(item) for item in quotAddiItems]  ### Convert OrderedDict into (0,1,2,3,etct)
-    quotAddiItems = [{key: '' if value is None else value for key, value in dictionary.items()} for dictionary in quotAddiItems]
-
-    ### return Response data in List form i.e. [Data, page, id] we can send without [ ]
-    return JsonResponse([quotBasi, quotAddiItems], safe=False) 
 
 
 @api_view(['DELETE'])
 @authentication_classes([BasicAuthentication]) 
 @permission_classes([IsAuthenticated])
 def delQot(request, pk):
-
- #----------Delete Record -----------------------------------------------
-      QotBasic = qotBasic.objects.get(id=pk)
-      
-      pk = int(pk)
-      QotAddi = qotAddi.objects.filter(qotRef=pk)  ### Filter  'id' of all record and convert into list
-      #id_list = [record.id for record in QotAddi]  ### Get 'id' of all record and convert into list
-
-      with transaction.atomic():
-        for data in QotAddi:
-          data.delete()
-      
-      QotBasic.delete()
+    pk = int(pk)
+    
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
 
 
-      ###Variable to Save in CSV File ..........
-      tempDf = {'id': pk, 
-                'qotRef': pk,
-                'qotDat': '', 
-                'cusCode': '',
-                'qotTBD': '' , 
-                'qotTAD':'',
-                'qotTax': '',
-                'qotTAT': '',	
-                'shipTo': '',	
-                'qotComm': '',	
-                'salPer': '',
-                'opnClo': '',
-                'comment': 'Delete',
-              }
+  ### Step 2. Read qotBasic.csv File - to Get all the Sales Quotations -------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+    dfBasic = df[df['qotRef'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
 
-      df = pd.DataFrame(tempDf, index=[0])
-      df.to_csv('Data/F1_Sales/Quotation/salQuot2023.csv',index=False, header=False, mode='a')
-      
-      return Response('Items delete successfully!')
+    ### Remove Duplicate Quote and Deleted Record...
+    dfBasic = dfBasic.drop_duplicates(subset=['qotRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Delete'].index)
+
+    dfBasic['action'] = 'Deleted' ### in 'action' column add the word 'Deleted'
+
+    ### Save the record(dataframe) in csv file
+    fPath = fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
+    dfBasic.to_csv(fPath, index=False, header=False, mode='a')
 
 
-def showQuotSum(request):
-    ###---- Read Quotation File 'with Specific Column' -----------------
-    req_cols = ['qotRef','qotDat', 'cusCode', 'cusName', 'opnClo', 'comment']
-    dfSal = pd.read_csv("Data/F1_Sales/Quotation/salQuot2023.csv", usecols=req_cols).fillna(0)
+  ### Step 3.Read qotStat.csv File - to Get all the Sales Quotations ---------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotStat.csv"
+    df_Stat = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+    df_Stat = df_Stat[df_Stat['qotRefSt'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
 
-    # remove duplicate rows and keep only the last occurrence
-    DataA = dfSal.drop_duplicates(subset=['qotRef'], keep='last')
-    # remove rows where comment column have string 'Delele'
-    DataB = DataA.drop(DataA.loc[DataA['comment']=='Delete'].index)
-    DataB = DataB.drop('comment', axis=1)
+    df_Stat['action'] = "Deleted"
 
-    ### Convert Data into Json Dictionary (can be access by JavaScript) .........
-    Data = DataB.to_dict(orient="records")
+    ### Save the record(dataframe) in csv file
+    fPath = fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotStat.csv"
+    df_Stat.to_csv(fPath, index=False, header=False, mode='a')
 
-    ### return Response data in List form i.e. [Data, page, id] we can send without [ ]
-    return JsonResponse(Data, safe=False) 
 
+    return Response('Items delete successfully!')
 
 
 def sQuotPdf(request):
@@ -685,22 +742,39 @@ def sQuotPdf(request):
     pk1 = request.GET.get('query_name')
     pk = int(pk1)
 
-  ###---- Standard Code to load Data ----------------------------------
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
     dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
     Year = str(dfStd.loc[0, 'year'])
 
-  ###---- Read Quotation Basic CSV File -------------------------------
-    fPath = "Data/"+Year+"/F1_Sales/Quotations/qotBasic.csv"
+
+  ### Step 2. Read qotBasic.csv File - to Load Data --------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
     dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
-    dfA = dfA.drop(dfA.index[0])
-    dfBasic = dfA[dfA['id'] == pk].fillna(0) ### Filter
+    dfBasic = dfA[dfA['qotRef'] == pk].fillna(0) ### Filter
+
+    ###....Step 1a - Remove Duplicate Quote and Deleted Record.........
+    dfBasic = dfBasic.drop_duplicates(subset=['qotRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Deleted'].index)
+
+    ###....Step 1b - Combine Employee Code and Transaction Time.......
+    List = dfBasic["traDate"] #.tolist()
+
     quotBasi = dfBasic.to_dict(orient="records") ### convert into dictionary
 
-  ###---- Read Quotation Basic CSV File -------------------------------
-    fPath = "Data/"+Year+"/F1_Sales/Quotations/qotAddi.csv"
+
+  ### Step 3. Read qotAddi.csv File - to get Quotation Detail ----------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotAddi.csv"
     dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
-    dfAddi = dfB[dfB['qotRef'] == pk].fillna(0) ### Filter
-    quotAddiItems = dfAddi.to_dict(orient="records") ### convert into dictionary
+    dfAddi = dfB[dfB['qotRef'] == pk].fillna(0) ### Filter Record as per 'pk' selected Quote
+
+    ### Filtere the 'Qutation' by Quotation "Target List"
+    filtered_df = dfAddi[dfAddi['traDate'].isin(List)]
+    quotAddiItems = filtered_df.to_dict(orient="records") ### convert into dictionary
 
   ###--- If Want to see the Formation on Page before taking as pdf------
     #context = {"quotBasi": quotBasi, "quotAddi":quotAddiItems }
@@ -727,69 +801,92 @@ def sQuotPdf(request):
     return response
 
 
+def showQuotSum(request): ### didn't find the reason....................
+    ###---- Read Quotation File 'with Specific Column' -----------------
+    req_cols = ['qotRef','qotDat', 'cusCode', 'cusName', 'opnClo', 'comment']
+    dfSal = pd.read_csv("Data/F1_Sales/Quotation/salQuot2023.csv", usecols=req_cols).fillna(0)
+
+    # remove duplicate rows and keep only the last occurrence
+    DataA = dfSal.drop_duplicates(subset=['qotRef'], keep='last')
+    # remove rows where comment column have string 'Delele'
+    DataB = DataA.drop(DataA.loc[DataA['comment']=='Deleted'].index)
+    DataB = DataB.drop('comment', axis=1)
+
+    ### Convert Data into Json Dictionary (can be access by JavaScript) .........
+    Data = DataB.to_dict(orient="records")
+
+    ### return Response data in List form i.e. [Data, page, id] we can send without [ ]
+    return JsonResponse(Data, safe=False) 
+
+
 
 #☰☰☰☰☰☰☰☰☰☰☰☰☰☰ Sales Quotation -COST ☰☰☰☰☰☰☰☰☰☰☰☰☰☰
 
 def sQotCotAdd(request, pk):
-  ### Step 1 - Read Item Salece Price---------------------------------------------
-  ### ----------------------------------------------------------------------------
+    
+  ###---- Standard Code to load Data -----------------------------------------
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 1 - Read Item Salece Price----------------------------------------
     req_Column = ['itmCode', 'uPrice']
-    SP = pd.read_csv("Data/H1_Items/Item/ItemSalPrice.csv", usecols=req_Column ,encoding='unicode_escape').fillna(0)
+    SP = pd.read_csv("Data/" +coFolder+ "/" +Year+ "/H1_Items/Item/ItemSalPrice.csv", usecols=req_Column ,encoding='unicode_escape').fillna(0)
     SP = SP.drop_duplicates(subset=['itmCode'], keep='last')
     SP = SP.to_dict(orient="records")   ### Convert Data into Dictionary
     SPList = {item['itmCode']: item['uPrice'] for item in SP} # Extract desired values into a new dictionary
 
 
-  ### Step 2 - Read Sales Quote Basic for Employee -------------------------------
-  ### ----------------------------------------------------------------------------
-    queryBasic = f'SELECT * FROM "F1_Sales_qotBasic" WHERE qotRef = {pk}'
-    qotBasic = pd.read_sql(queryBasic, con=engine)
-    empCode = int(qotBasic['salPer'][0]) #get employee code
-    qotBasi = qotBasic.to_dict(orient="records") ### into Dictionary
+  ### Step 2 - Read Sales Quotation Basic - "F1_Sales (Sales Module)" -------
+    pk = int(pk)
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
+    dfBasic = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfBasic = dfBasic[dfBasic['qotRef'] == pk].fillna(0) ### Filter
 
-  ### Step 3 - Read Employee Cost ------------------------------------------------
-  ### ----------------------------------------------------------------------------
+    ###..Remove Duplicate Quote and Deleted Record...........................
+    dfBasic = dfBasic.drop_duplicates(subset=['qotRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Delete'].index)
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    dfBasic['qotDat'] = pd.to_datetime(dfBasic['qotDat']).dt.strftime('%Y-%m-%d')
+
+    ###..Get 'Employee Code' and 'Transaction Date...........................
+    traDate = dfBasic.loc[dfBasic['qotRef'] == pk, 'traDate'].values[0]
+    empCode = dfBasic.loc[dfBasic['qotRef'] == pk, 'spCode'].values[0]
+
+    ###..Convert into List...................................................
+    qotBasi = dfBasic.to_dict(orient="records") ### convert into dictionary
+
+
+  ### Step 3 - Read Employee Cost - "I1_Hrm (HRM Module)"--------------------
     req_Column = ['empCode', 'itemCode', 'salCostPU']
-    empCost = pd.read_csv("Data/2023/I1_Hrm/Employees/empTargetDetail.csv", usecols=req_Column ,encoding='unicode_escape').fillna(0)
+    empCost = pd.read_csv("Data/" +coFolder+ "/" +Year+ "/I1_Hrm/Employees/empTargetDetail.csv", usecols=req_Column ,encoding='unicode_escape').fillna(0)
     empCost = empCost.loc[empCost['empCode'] == empCode]
     empCost = empCost.to_dict(orient="records")   ### Convert Data into Dictionary
     empCostList = {item['itemCode']: item['salCostPU'] for item in empCost} # Extract desired values into a new dictionary
 
 
-  ### Step 4 - Read Sales Quote Additional ---------------------------------------
-  ### ----------------------------------------------------------------------------
-    DataA = pd.read_sql('''SELECT * FROM "F1_Sales_qotAddi" ''', con=engine).fillna(0)
-    query = f'SELECT * FROM "F1_Sales_qotAddi" WHERE qotRef = {pk}'
-    qotAddi = pd.read_sql(query, con=engine)
-    qotAddi['itmCode'] = qotAddi['itmCode'].astype(int)
+  ### Step 4 - Read Sales Quote Additional CSV files ------------------------
 
-    ### Step 4.1 - MAP the List to Creat Columne ---------------------------------
-    qotAddi['ItemCost'] = qotAddi['itmCode'].map(SPList).fillna(0)
-    qotAddi['EmpCost'] = qotAddi['itmCode'].map(empCostList).fillna(0)
+    ###..Read Quotation Additional CSV File .................................
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotAddi.csv"
+    dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+    dfB = dfB[dfB['qotRef'] == pk].fillna(0) ### Filter
 
-    qotAddiItems = qotAddi.to_dict(orient="records")  ### into Dictionary
+    ###..Filter the Record as per Transact Date .............................
+    dfB['ItemCost'] = dfB['itmCod'].map(SPList).fillna(0)
+    dfB['EmpCost'] = dfB['itmCod'].map(empCostList).fillna(0)
+
+    ###..Add a column 'ItemCost' and 'EmpCost' in QotAddi....................
+    dfB = dfB[dfB['traDate'] == traDate]
+    
+    ###..Convert into List...................................................
+    qotAddiItems = dfB.to_dict(orient="records") 
+
 
     context = {'lastOrder': pk, 'oBasic':qotBasi,  'addiOrder':qotAddiItems}
     return render(request, 'F1_Sales/sQotCotAdd.html', context)
-
-
-
-    # Basic = qotBasic.objects.get(id=pk)
-    # serilizerA = qotBasicSerializer(Basic, many=False) #for single record 'many=False' other wise ittiration error will come
-    # # if there is 'None' cell convert into '' empty to avoid error in JS 
-    # qotBasi = {k: '' if v is None else v for k, v in serilizerA.data.items()}
-
-    # QotAddi = qotAddi.objects.filter(qotRef=pk)  ### Get all record where 'qotRef = pk (value)'
-    # serilizerB = qotAddiSerializer(QotAddi, many=True) ### Serialize the selected data
-    # qotAddiItems = serilizerB.data ### Get the data not attributes
-    # qotAddiItems = [dict(item) for item in qotAddiItems]  ### Convert OrderedDict into (0,1,2,3,etct)
-    # qotAddiItems = [{key: '' if value is None else value for key, value in dictionary.items()} for dictionary in qotAddiItems]
-
-    # context = {'lastOrder': pk, 'oBasic':qotBasi,  'addiOrder':qotAddiItems}
-    # return render(request, 'F1_Sales/sQotCotAdd.html', context)
-
-
-
 
 
 
@@ -800,53 +897,260 @@ def sOrderList(request):
     context = {'Data':'Data' }
     return render(request, 'F1_Sales/sOrderList.html', context)
 
+
 def showOrderURL(request):
-    #(Get Sales Order Detail from DataBase)
+    #(Get All the Sales Order Detail)
 
-    ###---- Qutation open/Close File to Get Last Quotation Number -------------
-    query = '''SELECT "soRef","soDat", "cusName", "soTax", "soTAT", "spName", "opnClo" , "qotRef" FROM "F1_Sales_soBasic"'''
-    dfSal = pd.read_sql(query, con=engine)
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
 
-    ### Convert Data into Json Dictionary (can be access by JavaScript) .........
-    Data = dfSal.to_dict(orient="records")
+
+  ### Step 2. Read soBasic.csv File ------------------------------------------
+  ### ========================================================================
+    req_cols = ['id','soRef','soDat','cusName','qotRef', 'soTax', 'soTAT','spName','opnClo','action']
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+
+    ### drop first row which is empty...
+    df = df.drop(df.index[0])
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    df['soDat'] = pd.to_datetime(df['soDat']).dt.strftime('%Y-%m-%d')
+
+    ### Remove Duplicate Order and Deleted Record...
+    df = df.drop_duplicates(subset=['soRef'], keep='last')
+    df = df.drop(df.loc[df['action']=='Deleted'].index).fillna('')
+
+
+  ### Step 3. Read soStat.csv File -------------------------------------------
+  ### ========================================================================
+    statPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soStat.csv"
+    stat = pd.read_csv(statPath, index_col=False, encoding='unicode_escape')
+
+    ### Remove Duplicate and Deleted Record...
+    stat = stat.drop_duplicates(subset=['soRefSt'], keep='last')
+
+
+  ### Step 4. Map soBasic.csv Open/Close with soStat.csv ---------------------
+  ### ========================================================================
+    opnClo_map = dict(zip(stat['soRefSt'], stat['opnCloSt']))
+    df['opnClo'] = df['soRef'].map(opnClo_map).fillna(df['opnClo'])
+
+
+  ### Step 5. Convert Data into Dictionary -----------------------------------
+  ### ========================================================================
+    Data = df.to_dict(orient="records")
 
     return JsonResponse(Data, safe=False) 
+
+
+def syncOrder(request): #URL to fetch data--
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2. Read soBasic.csv File - to Load Data --------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfBasic = dfA.drop_duplicates(subset=['soRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Deleted'].index)
+
+    dfBasic = dfBasic.sort_values('soRef') #sor by qotRef
+
+    ### Save the data in qotBasic.csv File...
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    dfBasic.to_csv(fPath, index=False)
+
+
+  ### Step 3. Read soAddi.csv File - to Load Data ----------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soAddi.csv"
+    dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ###---- Merge to filter out those data which Transaction Date is not matching with qotBasic
+    merged_df = pd.merge(dfB, dfBasic['traDate'], on='traDate', how='inner')
+    ###---- Rearange Column to aboid any mistake
+    merged_df = merged_df[['id','soRef','sno','itmCod','desc','qty','price','disc','tot','traDate','action']]
+
+    ### Save the data in qotAddi.csv File...
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soAddi.csv"
+    merged_df.to_csv(fPath, index=False)
+
+
+  ### Step 4 - Read soStat.csv File - to Load Data ---------------------------
+  ### ========================================================================
+    statPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soStat.csv"
+    stat = pd.read_csv(statPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ###---- Merge to filter out those data which Transaction Date is not matching with qotBasic
+    merged_stat = pd.merge(stat, dfBasic['traDate'], on='traDate', how='inner')
+    merged_stat = merged_stat[['soRefSt','opnCloSt','traDate','action']]
+
+    ### Save the data in qotStat.csv File...
+    statPath =  "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soStat.csv"
+    merged_stat.to_csv(statPath, index=False)
+
+
+    jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
+    return JsonResponse(jsonData)
+
 
 
 def sOrderAdd(request):
     #(to Show Sales Order Addition Page)
 
-    ###---- Sales Order File to Get Last Quotation Number -------------
-    Max = '''SELECT MAX(id) FROM "F1_Sales_soBasic"'''
-    df2 = pd.read_sql(Max, con=engine)
-    val = df2.rename(columns={df2.columns[0]: 'new'})
-    val.fillna(20230000, inplace=True)
-    lastOrder= val.loc[0, 'new']
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 1. Read soBasic.csv - to Get the last Sales Order Number ----------
+  ### ========================================================================
+    try: 
+        req_cols = ['soRef', 'soDat']
+        fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+        df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+    except:
+        data = {'soRef': [0]}
+        df = pd.DataFrame(data)
+
+    ## Get the last Order Number...
+    lastOrder = df['soRef'].max()
 
 
     context = {'lastOrder': lastOrder }
     return render(request, 'F1_Sales/sOrderAdd.html', context)
 
 
-def openSalQotURL(request):
-    ###---- Get all Sales Quotation ----------------------------------------------------------------
-    query = '''SELECT "qotRef","qotDat", "cusCode", "cusName", "opnClo" FROM "F1_Sales_qotBasic"'''
-    dfSal = pd.read_sql(query, con=engine)
+def sQuotOpnList(request):
+    #(Fetch All Open Quotation Detail not already converted into Sales Order Previously)
 
-    ###---- Get all Sales Order "qotRef" -----------------------------------------------------------
-    queryB = '''SELECT "QotRef" FROM "F1_Sales_soBasic"'''
-    dfSO = pd.read_sql(queryB, con=engine)
-    soList = dfSO['qotRef'].tolist() #Convert "qotRef" column into list
 
-    ### Step 2 - Filter out Sales Order-----------------------------
-    Data = dfSal[dfSal['opnClo'] != 'Closed']
-    filterData = Data[~Data['qotRef'].isin(soList)]
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
 
-    ### Convert Data into Json Dictionary (can be access by JavaScript) .........
+
+  ### Step 2. Read qotBasic.csv - file to Load Data --------------------------
+  ### ========================================================================
+    req_cols = ["qotRef","qotDat", "cusCode", "cusName", "opnClo","action"]
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
+    df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+    df = df.drop(df.index[0]).fillna('') #drop first row which is dummy
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    df['qotDat'] = pd.to_datetime(df['qotDat']).dt.strftime('%Y-%m-%d')
+
+    ###..Remove Duplicate Quote and Deleted Record...........................
+    df = df.drop_duplicates(subset=['qotRef'], keep='last')
+    df = df.drop(df.loc[df['action']=='Deleted'].index)
+
+
+  ### Step 3. Read qotStat.csv - file to Load Data ---------------------------
+  ### ========================================================================
+    statPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotStat.csv"
+    stat = pd.read_csv(statPath, index_col=False, encoding='unicode_escape')
+
+    ### Remove Duplicate and Deleted Record...   
+    stat = stat.drop_duplicates(subset=['qotRefSt'], keep='last')  ##Drop Duplicate
+    opnClo_map = dict(zip(stat['qotRefSt'], stat['opnCloSt'])) ## Map with stat opn/clo
+    
+    
+  ### Step 4 - Map qotBasic.csv Open/Close with qotStat.csv ------------------
+  ### ========================================================================
+    df['opnClo'] = df['qotRef'].map(opnClo_map).fillna(df['opnClo']) ## Map with stat opn/clo
+    df = df[df['opnClo'] != 'Closed']  ### remove 'Closed' Quote
+
+
+  ### Step 5 - Read soBasic.csv - file to Load Data --------------------------
+  ### ========================================================================
+    soPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    soDf = pd.read_csv(soPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ### Remove Duplicate and Deleted Record...
+    soDf = soDf.drop_duplicates(subset=['soRef'], keep='last')
+    soDf = soDf.drop(soDf.loc[soDf['action']=='Deleted'].index).fillna('')
+
+    #Select a column "qotRef" and convert into list to filter
+    soList = soDf['qotRef'].tolist()
+
+    #filter out all open sales Quote which is already converted into Sales Order
+    filterData = df[~df['qotRef'].isin(soList)]
+
+
+  ### Step 6 - Convert Data into Dictionary ----------------------------------
+  ### ========================================================================
     Data = filterData.to_dict(orient="records")
+
 
     ### return Response data in List form i.e. [Data, page, id] we can send without [ ]
     return JsonResponse(Data, safe=False) 
+
+
+def sQuotDetail(request, pk):
+    #(Bring the Detail of Selected Quotation to create Sales Order)
+
+    pk = int(pk)
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2. Read qotBasic.csv - file to Load Data --------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+
+    ### Filter data based on 'pk' selected Quote
+    dfBasic = dfA[dfA['id'] == pk].fillna(0) ### Filter
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    dfBasic['qotDat'] = pd.to_datetime(dfBasic['qotDat']).dt.strftime('%Y-%m-%d')
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfBasic = dfBasic.drop_duplicates(subset=['qotRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Deleted'].index)
+
+    ###..Get 'Transaction Date' Value..................................
+    traDate = dfBasic.loc[dfBasic['qotRef'] == pk, 'traDate'].values[0]
+
+    quotBasi = dfBasic.to_dict(orient="records") ### convert into dictionary
+
+
+  ### Step 3. Read qotAddi.csv - file to Load Data ---------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotAddi.csv"
+    dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+
+    ### Filter data based on 'pk' selected Quote
+    dfB = dfB[dfB['qotRef'] == pk].fillna(0)
+
+    ###..Filter the Record as per Transact Date .............................
+    dfB = dfB[dfB['traDate'] == traDate]
+
+    ###..Convert into List...................................................
+    quotAddiItems = dfB.to_dict(orient="records") 
+
+
+    ### return Response data in List form i.e. [Data, page, id] we can send without [ ]
+    return JsonResponse([quotBasi, quotAddiItems], safe=False) 
 
 
 @api_view(['POST'])
@@ -855,132 +1159,275 @@ def openSalQotURL(request):
 def sOrderAddUrl(request):
     #(to Save Quotation into Database)
 
-    #---- Quotation Basic Information ---------------------------------------
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2. Save Data in soBasic.csv file ----------------------------------
+  ### ========================================================================
     basData = request.data[0]
-    SoBasic=soBasic(basData['soRef'], basData['soRef'], basData['soDat'],
-                    basData['cusCode'], basData['cusName'],basData['soTBD'],
-                    basData['soTAD'], basData['soTax'], basData['soTAT'], basData['shipTo'],
-                    basData['soComm'], "Open", basData['spName'], basData['salPer'],
-                    basData['qotRef'], basData['qotDat'])
-    SoBasic.save()
+    SoBasic =  {'id':basData['soRef'],
+                'soRef': basData['soRef'],
+                'soDat':basData['soDat'],
+                'cusCode':basData['cusCode'],
+                'cusName':basData['cusName'],
+                'soTBD':basData['soTBD'],
+                'soTAD':basData['soTAD'],
+                'soTax': basData['soTax'],
+                'soTAT':basData['soTAT'],
+                'shipTo':basData['shipTo'],
+                'soComm':basData['soComm'],
+                'opnClo':"Open",
+                'spName':basData['spName'],
+                'spCode':basData['spCode'],
+                'qotRef':basData['qotRef'],
+                'qotDat':basData['qotDat'],
+                'traDate':basData['traDate'],
+                'action':" ",
+    }
 
-    #---- Quotation Transaction ---------------------------------------------
+    dfBasic = pd.DataFrame(SoBasic, index=[0])
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    dfBasic.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 3. Save Data in soAddi.csv file -----------------------------------
+  ### ========================================================================
     addiData = request.data[1]
-    Max = '''SELECT MAX(id) FROM "F1_Sales_soAddi"'''
-    df2 = pd.read_sql(Max, con=engine)
-    val = df2.rename(columns={df2.columns[0]: 'new'})
-    val.fillna(0, inplace=True) # if there is no record put 0
-    lastN = val.loc[0, 'new']
-
-    with transaction.atomic():
-      for data in addiData:
-          if( data['id'] == '0'):
-            lastN=lastN+1
-            ID = lastN
-          else:
-            ID = data['id']
-
-          value = soAddi(ID, basData['soRef'], data ['sno'],data ['itmcode'], data ['desc'], data ['qty'],data ['price'], data ['disc'], data ['tot'])
-          value.save()
-
-    #-- Delete Missing IDs from DataBase ------------------------------
-    missingId = request.data[2]
-    queryset = soAddi.objects.filter(id__in=missingId)
-    queryset.delete()
+    for data in addiData:
+      Addi  = {'id': basData['soRef'],
+                'soRef': basData['soRef'],
+                'sno':data ['sno'],
+                'itmCod':data ['itmcod'],
+                'desc':data ['desc'],
+                'qty':data ['qty'],
+                'price':data ['price'],
+                'disc':data ['disc'],
+                'tot':data ['tot'],
+                'traDate':basData['traDate'],
+                'action':" " ,                             
+        }
+    
+      dfAddi = pd.DataFrame(Addi, index=[0])
+      fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soAddi.csv"
+      dfAddi.to_csv(fPath, index=False, header=False, mode='a')
 
 
-    ###---Change Sales Order Status as Closed ------------------
-    rec = basData['qotRef']
-    record = qotBasic.objects.get(id=rec)   
-    record.opnClo = 'Closed' # Update the specific field
-    record.save() # Save the changes to the database
+  ### Step 4. Save Data in qotStat.csv file -----------------------------------
+  ### ========================================================================
+    QotStat =  {'qotRefSt':basData['qotRef'],
+                'opnCloSt':"Closed",
+                'traDate':basData['traDate'],
+                'action':" ",
+    }
+
+    dfBasic = pd.DataFrame(QotStat, index=[0])
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotStat.csv"
+    dfBasic.to_csv(fPath, index=False, header=False, mode='a')
 
 
-    #Variable to Save in CSV File ..........
-    tempDf = {'ID': basData['soRef'], 
-              'soRef': basData['soRef'],
-              'soDat': basData['soDat'], 
-              'cusCode': basData['cusCode'],
-              'cusName': basData['cusName'],
-              'soTBD':basData['soTBD'], 
-              'soTAD': basData['soTAD'],
-              'soTax': basData['soTax'],
-              'soTAT': basData['soTAT'],	
-              'shipTo':  basData['shipTo'],	
-              'soComm': basData['soComm'],
-              'opnClo': 'Open',
-              'spName': basData['spName'],
-              'spCode': basData['salPer'],
-              'qotRef': basData['qotRef'],
-              'qotDat': basData['qotDat'],
-              'comment': ''
-            }
+  ### Step 5. Save Data in soStat.csv file -----------------------------------
+  ### ========================================================================
+    basData = request.data[0]
+    soStat =  {'soRefSt':basData['soRef'],
+                'opnCloSt':"Open",
+                'traDate':basData['traDate'],
+                'action':" ",
+    }
 
-    df = pd.DataFrame(tempDf, index=[0])
-    df.to_csv('Data/F1_Sales/SalesOrder/salOrder2023.csv',index=False, header=False, mode='a')
+    SoStat = pd.DataFrame(soStat, index=[0])
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soStat.csv"
+    SoStat.to_csv(fPath, index=False, header=False, mode='a')
+
 
     jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
     return JsonResponse(jsonData)
 
 
 def sOrderEdit(request, pk):
-    print(pk)
     #(to Show Quotation to edit)
+    print(pk)
 
-    Basic = soBasic.objects.get(id=pk)
-    serilizerA = soBasicSerializer(Basic, many=False) #for single record 'many=False' other wise ittiration error will come
-    # if there is 'None' cell convert into '' empty to avoid error in JS 
-    soBasi = {k: '' if v is None else v for k, v in serilizerA.data.items()}
 
-    SoAddi = soAddi.objects.filter(soRef=pk)  ### Get all record where 'qotRef = pk (value)'
-    serilizerB = soAddiSerializer(SoAddi, many=True) ### Serialize the selected data
-    soAddiItems = serilizerB.data ### Get the data not attributes
-    soAddiItems = [dict(item) for item in soAddiItems]  ### Convert OrderedDict into (0,1,2,3,etct)
-    soAddiItems = [{key: '' if value is None else value for key, value in dictionary.items()} for dictionary in soAddiItems]
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2. Read soBasic.csv File ------------------------------------------
+  ### ========================================================================
+    pk = int(pk)
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfBasic = dfA[dfA['soRef'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    dfBasic['soDat'] = pd.to_datetime(dfBasic['soDat']).dt.strftime('%Y-%m-%d')
+    dfBasic['qotDat'] = pd.to_datetime(dfBasic['qotDat']).dt.strftime('%Y-%m-%d')
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfBasic = dfBasic.drop_duplicates(subset=['soRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Delete'].index)
+
+    ### Convert Transaction Date to list to filter records in qotAddi
+    List = dfBasic["traDate"] #.tolist()
+
+    ### Convert Transaction Date to list to filter records in qotAddi
+    soBasi = dfBasic.to_dict(orient="records") ### convert into dictionary
+
+
+    ### Step 3. Read soAddi.csv File -------------------------------------------
+    ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soAddi.csv"
+    dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfAddi = dfB[dfB['soRef'] == pk].fillna(0) ### Filter as per 'pk' selected quote
+    filtered_df = dfAddi[dfAddi['traDate'].isin(List)] ### Filter by transaction Date
+
+    ### Convert Transaction Date to list to filter records in qotAddi
+    soAddiItems = filtered_df.to_dict(orient="records") ### convert into dictionary
+
 
     context = {'lastOrder': pk, 'oBasic':soBasi,  'addiOrder':soAddiItems}
     return render(request, 'F1_Sales/sOrderEdit.html', context)
-
-
-def sOrderEditFetch(request, pk):  # to Bring Quotation Detail....................
-    Basic = qotBasic.objects.get(id=pk)
-    serilizerA = qotBasicSerializer(Basic, many=False) #for single record 'many=False' other wise ittiration error will come
-    # if there is 'None' cell convert into '' empty to avoid error in JS 
-    quotBasi = {k: '' if v is None else v for k, v in serilizerA.data.items()}
-
-    QotAddi = qotAddi.objects.filter(qotRef=pk)  ### Get all record where 'qotRef = pk (value)'
-    serilizerB = qotAddiSerializer(QotAddi, many=True) ### Serialize the selected data
-    quotAddiItems = serilizerB.data ### Get the data not attributes
-    quotAddiItems = [dict(item) for item in quotAddiItems]  ### Convert OrderedDict into (0,1,2,3,etct)
-    quotAddiItems = [{key: '' if value is None else value for key, value in dictionary.items()} for dictionary in quotAddiItems]
-
-    ### return Response data in List form i.e. [Data, page, id] we can send without [ ]
-    return JsonResponse([quotBasi, quotAddiItems], safe=False) 
 
 
 @api_view(['DELETE'])
 @authentication_classes([BasicAuthentication]) 
 @permission_classes([IsAuthenticated])
 def delSOrd(request, pk, Qot):
+    pk = int(pk)
+    Qot = int(Qot)
 
- #----------Delete Record -----------------------------------------------
-      SoBasic = soBasic.objects.get(id=pk)
-      SoBasic.delete()
-      
-      pk = int(pk)
-      SoAddi = soAddi.objects.filter(soRef=pk)  ### Filter  'id' of all record and convert into list
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
 
-      with transaction.atomic():
-        for data in SoAddi:
-          data.delete()
-      
-      ###---Change Sales Quotation Status as Open on delete relevent Sales Order ------
-      record = qotBasic.objects.get(id=Qot)   
-      record.opnClo = 'Open' # Update the specific field
-      record.save() # Save the changes to the database
 
-      return Response('Items delete successfully!')
+  ### Step 2. Read soBasic.csv File ------------------------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfBasic = dfA[dfA['soRef'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
 
+    ### Remove Duplicate Quote and Deleted Record...
+    dfBasic = dfBasic.drop_duplicates(subset=['soRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Deleted'].index)
+
+    dfBasic['action'] = 'Deleted' ### in 'action' column add the word 'Deleted'
+
+    ### Save the record(dataframe) in csv file
+    fPath = fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    dfBasic.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 3. Read soBasic.csv File ------------------------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soStat.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfStat = dfA[dfA['soRefSt'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfStat = dfStat.drop_duplicates(subset=['soRefSt'], keep='last')
+    dfStat = dfStat.drop(dfStat.loc[dfStat['action']=='Deleted'].index)
+
+    dfStat['action'] = 'Deleted' ### in 'action' column add the word 'Deleted'
+
+    ### Save the record(dataframe) in csv file
+    fPath = fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soStat.csv"
+    dfStat.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 3. Read soBasic.csv File ------------------------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotStat.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfStat = dfA[dfA['qotRefSt'] == Qot].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfStat = dfStat.drop_duplicates(subset=['qotRefSt'], keep='last')
+    dfStat = dfStat.drop(dfStat.loc[dfStat['action']=='Deleted'].index)
+
+    dfStat['opnCloSt'] = 'Open' ### in 'action' column add the word 'Deleted'
+
+    ### Save the record(dataframe) in csv file
+    fPath = fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotStat.csv"
+    dfStat.to_csv(fPath, index=False, header=False, mode='a')
+
+
+    return Response('Items delete successfully!')
+
+
+
+def sOrderPdf(request):
+  #----------Get Data from html Page and convert into list---------------
+    pk1 = request.GET.get('query_name')
+    pk = int(pk1)
+
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2. Read soBasic.csv File - to Load Data ---------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+    dfBasic = dfA[dfA['soRef'] == pk].fillna(0) ### Filter
+
+    ### Remove Duplicate Order and Deleted Record...
+    dfBasic = dfBasic.drop_duplicates(subset=['soRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Delete'].index)
+
+    ### Convert Transaction Date to list to filter records in soAddi
+    List = dfBasic["traDate"] #.tolist()
+
+    soBasi = dfBasic.to_dict(orient="records") ### convert into dictionary
+
+
+  ### Step 3. Read soAddi.csv File - to get Quotation Detail -----------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soAddi.csv"
+    dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+    dfAddi = dfB[dfB['soRef'] == pk].fillna(0) ### Filter Record as per 'pk' selected Order
+    
+    ### Filtere the 'Order' by Order "Target List"
+    filtered_df = dfAddi[dfAddi['traDate'].isin(List)]
+    soAddiItems = filtered_df.to_dict(orient="records") ### convert into dictionary
+
+  ###--- If Want to see the Formation on Page before taking as pdf------
+    #context = {"soBasi": soBasi, "soAddi":soAddiItems }
+    #return render(request, 'F1_Sales/sOrderPdf.html', context)
+  ###--- If Want to see the Formation on Page before taking as pdf------
+
+    template_path = "../templates/F1_Sales/sOrderPdf.html"  #template to access
+    context = {"soBasi": soBasi, "soAddi":soAddiItems }   # context is to pass data to html page before converting to PDF
+
+    ###Create a Django response Object, and specify content_type as pdf
+    ###---------------------------------------------------------------- 
+    response = HttpResponse(content_type='application/pdf')  #normal django response
+    response['Content-Disposition'] = 'attachment; filename="report.pdf"'  #pdf to download - 'attachment' if comment out pdf will show on screen
+    #response['Content-Disposition'] = 'filename="report.pdf"'  #pdf to download - 'attachment'
+
+    ###Find the template and render it.(its a standard)..
+    template = get_template(template_path)
+    html = template.render(context)
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse('we had some errors')
+
+    return response
 
 
 

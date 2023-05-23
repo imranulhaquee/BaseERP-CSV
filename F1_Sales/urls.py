@@ -31,18 +31,18 @@ urlpatterns = [
     #═══ Sales Quotation ═════════════════════════════════════════════
     path('sQuotList', views.sQuotList, name='sQuotList'),
     path('showQuot', views.showQuot, name='showQuot'),
-    path('refreshQuot', views.refreshQuot, name='refreshQuot'),
+    path('syncQuot', views.syncQuot, name='syncQuot'),
 
     path('sQuotAdd/', views.sQuotAdd, name='sQuotAdd'),
     path('sQuotAddUrl', views.sQuotAddUrl, name='sQuotAddUrl'),
 
     path('sQuotEdit/<str:pk>/', views.sQuotEdit , name='sQuotEdit'),
-    path('sQuotEditFetch/<str:pk>/', views.sQuotEditFetch , name='sQuotEditFetch'),
     
     path('delQot/<str:pk>/', views.delQot, name='delQot'),
 
-    path('showQuotSum', views.showQuotSum, name='showQuotSum'),
     path('sQuotPdf', views.sQuotPdf, name='sQuotPdf'),
+    path('showQuotSum', views.showQuotSum, name='showQuotSum'),
+
 
 
     #═══ Sales Quotation Cost ═══════════════════════════════════════════
@@ -52,17 +52,19 @@ urlpatterns = [
 
     #═══ Sales Order ════════════════════════════════════════════════════
     path('sOrderList', views.sOrderList, name='sOrderList'),
-    path('showOrderURL', views.showOrderURL, name='showOrderURL'),  
-    path('openSalQotURL', views.openSalQotURL, name='openSalQotURL'),
+    path('showOrderURL', views.showOrderURL, name='showOrderURL'),
+    path('syncOrder', views.syncOrder, name='syncOrder'),   
 
     path('sOrderAdd', views.sOrderAdd, name='sOrderAdd'),
+    path('sQuotOpnList', views.sQuotOpnList, name='sQuotOpnList'),
+    path('sQuotDetail/<str:pk>/', views.sQuotDetail, name='sQuotDetail'),
     path('sOrderAddUrl', views.sOrderAddUrl, name='sOrderAddUrl'),
 
     path('sOrderEdit/<str:pk>/', views.sOrderEdit , name='sOrderEdit'),
-    path('sOrderEditFetch/<str:pk>/', views.sOrderEditFetch , name='sOrderEditFetch'),
 
     path('delSOrd/<str:pk>/<str:Qot>/', views.delSOrd, name='delSOrd'),
 
+    path('sOrderPdf', views.sOrderPdf, name='sOrderPdf'),
 
     #═══ Delivery Notes ══════════════════════════════════════════════════
     path('sDeliveryList', views.sDeliveryList, name='sDeliveryList'),

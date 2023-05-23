@@ -21,22 +21,26 @@
       <table style="width:100%;">
           <tr>
               <th style="text-align:left;">  <img class="imga2" src="static/Java/Images/Logo/clientLogo.png" width="200"  alt="graph"></th>
-              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Sales Quotation </th>
+              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Sales Order </th>
           </tr>
           <tr><th style="color:white; font-size:25px;">.</th><th style="color:white">.</th></tr>
           <tr>
-              <th id="qotRef" style=" text-align:left; font-size:12px">  Reference Number  <br> <span style="font-weight:100"> {{ quotBasi.0.qotRef }}  </span></th>
-              <th style=" text-align:right; font-size:12px;">  Quotaton Date <br>  <span style="font-weight:100"> {{quotBasi.0.qotDat}} </span></th>
+            <th id="qotRef" style=" text-align:left; font-size:12px">  Order #: <span style="font-weight:100"> {{ soBasi.0.soRef}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">   Quotation #:  <span style="font-weight:100"> {{ soBasi.0.qotRef}} </span></th>
+          </tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px"> Order Date: <span style="font-weight:100"> {{soBasi.0.soDat}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">  Quotation Date;  <span style="font-weight:100"> {{soBasi.0.qotDat}} </span></th>
           </tr>
           <tr><th style="color:white; font-size:15px;">.</th><th style="color:white">.</th></tr>
           <tr>
-              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{quotBasi.0.cusName}} </span></th>
+              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{soBasi.0.cusName}} </span></th>
               <th style=" text-align:right; font-size:12px;">  </th>
           </tr>
       </table>
 
       <br><br>
-      <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Sales Quotation Items </div>
+      <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Sales Order Items </div>
       <br>
 
       <!--===ITEM TABLE 1 to 15 ========================================-->
@@ -51,7 +55,7 @@
             <th colspan="2" style="text-align:right">Discount</th>
             <th colspan="2" style="text-align:right">Total</th>
           </tr>
-          {% for obj in quotAddi %}
+          {% for obj in soAddi %}
             {% if forloop.counter <= 15 %}
               <tr>
                 <td style="text-align:left">{{ obj.sno }}<br></td>
@@ -70,27 +74,32 @@
       
 
       <!--===ITEM TABLE 16 to 30 ========================================-->
-      {% if quotAddi|length > 15 %}
+      {% if soAddi|length > 15 %}
         <pdf:nextpage>
         <br><br><br><br>
         <table style="width:100%;">
           <tr>
               <th style="text-align:left;">  <img class="imga2" src="static/Java/Images/Logo/clientLogo.png" width="200"  alt="graph"></th>
-              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Sales Quotation </th>
+              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Sales Order </th>
           </tr>
           <tr><th style="color:white; font-size:25px;">.</th><th style="color:white">.</th></tr>
           <tr>
-              <th id="qotRef" style=" text-align:left; font-size:12px">  Reference Number  <br> <span style="font-weight:100"> {{ quotBasi.0.qotRef }}  </span></th>
-              <th style=" text-align:right; font-size:12px;">  Quotaton Date <br>  <span style="font-weight:100"> {{quotBasi.0.qotDat}} </span></th>
+            <th id="qotRef" style=" text-align:left; font-size:12px">  Order #: <span style="font-weight:100"> {{ soBasi.0.soRef}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">   Quotation #:  <span style="font-weight:100"> {{ soBasi.0.qotRef}} </span></th>
           </tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px"> Order Date: <span style="font-weight:100"> {{soBasi.0.soDat}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">  Quotation Date;  <span style="font-weight:100"> {{soBasi.0.qotDat}} </span></th>
+          </tr>
+
           <tr><th style="color:white; font-size:15px;">.</th><th style="color:white">.</th></tr>
           <tr>
-              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{quotBasi.0.cusName}} </span></th>
+              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{soBasi.0.cusName}} </span></th>
               <th style=" text-align:right; font-size:12px;">  </th>
           </tr>
         </table>
         <br><br>
-        <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Sales Quotation Items </div>
+        <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Sales Order Items </div>
         <br>
 
           <table id="myTable" style="text-align:right; border-bottom:1px solid gray">
@@ -103,7 +112,7 @@
               <th colspan="2" style="text-align:right">Discount</th>
               <th colspan="2" style="text-align:right">Total</th>
             </tr>
-            {% for obj in quotAddi %}
+            {% for obj in soAddi %}
               {% if forloop.counter >= 16 and forloop.counter <= 30 %}
                 <tr>
                   <td style="text-align:left">{{ obj.sno }}<br></td>
@@ -122,27 +131,32 @@
 
 
       <!--===ITEM TABLE 31 to 45 ========================================-->
-      {% if quotAddi|length > 30 %}
+      {% if soAddi|length > 30 %}
         <pdf:nextpage>
         <br><br><br><br>
         <table style="width:100%;">
           <tr>
               <th style="text-align:left;">  <img class="imga2" src="static/Java/Images/Logo/clientLogo.png" width="200"  alt="graph"></th>
-              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Sales Quotation </th>
+              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Sales Order </th>
           </tr>
           <tr><th style="color:white; font-size:25px;">.</th><th style="color:white">.</th></tr>
           <tr>
-              <th id="qotRef" style=" text-align:left; font-size:12px">  Reference Number  <br> <span style="font-weight:100"> {{ quotBasi.0.qotRef }}  </span></th>
-              <th style=" text-align:right; font-size:12px;">  Quotaton Date <br>  <span style="font-weight:100"> {{quotBasi.0.qotDat}} </span></th>
+            <th id="qotRef" style=" text-align:left; font-size:12px">  Order #: <span style="font-weight:100"> {{ soBasi.0.soRef}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">   Quotation #:  <span style="font-weight:100"> {{ soBasi.0.qotRef}} </span></th>
           </tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px"> Order Date: <span style="font-weight:100"> {{soBasi.0.soDat}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">  Quotation Date;  <span style="font-weight:100"> {{soBasi.0.qotDat}} </span></th>
+          </tr>
+
           <tr><th style="color:white; font-size:15px;">.</th><th style="color:white">.</th></tr>
           <tr>
-              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{quotBasi.0.cusName}} </span></th>
+              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{soBasi.0.cusName}} </span></th>
               <th style=" text-align:right; font-size:12px;">  </th>
           </tr>
         </table>
         <br><br>
-        <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Sales Quotation Items </div>
+        <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Sales Order Items </div>
         <br>
 
         <table id="myTable" style="text-align:right; border-bottom:1px solid gray">
@@ -155,7 +169,7 @@
             <th colspan="2" style="text-align:right">Discount</th>
             <th colspan="2" style="text-align:right">Total</th>
           </tr>
-          {% for obj in quotAddi %}
+          {% for obj in soAddi %}
             {% if forloop.counter >= 31 and forloop.counter <= 45 %}
               <tr>
                 <td style="text-align:left">{{ obj.sno }}<br></td>
@@ -174,27 +188,32 @@
 
 
       <!--===ITEM TABLE 46 to onward ========================================-->
-      {% if quotAddi|length > 45 %}
+      {% if soAddi|length > 45 %}
         <pdf:nextpage>
         <br><br><br><br>
         <table style="width:100%;">
           <tr>
               <th style="text-align:left;">  <img class="imga2" src="static/Java/Images/Logo/clientLogo.png" width="200"  alt="graph"></th>
-              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Sales Quotation </th>
+              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Sales Order </th>
           </tr>
           <tr><th style="color:white; font-size:25px;">.</th><th style="color:white">.</th></tr>
           <tr>
-              <th id="qotRef" style=" text-align:left; font-size:12px">  Reference Number  <br> <span style="font-weight:100"> {{ quotBasi.0.qotRef }}  </span></th>
-              <th style=" text-align:right; font-size:12px;">  Quotaton Date <br>  <span style="font-weight:100"> {{quotBasi.0.qotDat}} </span></th>
+            <th id="qotRef" style=" text-align:left; font-size:12px">  Order #: <span style="font-weight:100"> {{ soBasi.0.soRef}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">   Quotation #:  <span style="font-weight:100"> {{ soBasi.0.qotRef}} </span></th>
           </tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px"> Order Date: <span style="font-weight:100"> {{soBasi.0.soDat}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">  Quotation Date;  <span style="font-weight:100"> {{soBasi.0.qotDat}} </span></th>
+          </tr>
+
           <tr><th style="color:white; font-size:15px;">.</th><th style="color:white">.</th></tr>
           <tr>
-              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{quotBasi.0.cusName}} </span></th>
+              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{soBasi.0.cusName}} </span></th>
               <th style=" text-align:right; font-size:12px;">  </th>
           </tr>
         </table>
         <br><br>
-        <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Sales Quotation Items </div>
+        <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Sales Order Items </div>
         <br>
 
         <table id="myTable" style="text-align:right; border-bottom:1px solid gray">
@@ -207,7 +226,7 @@
             <th colspan="2" style="text-align:right">Discount</th>
             <th colspan="2" style="text-align:right">Total</th>
           </tr>
-          {% for obj in quotAddi %}
+          {% for obj in soAddi %}
             {% if forloop.counter >= 46 and forloop.counter <= 200 %}
               <tr>
                 <td style="text-align:left">{{ obj.sno }}<br></td>
@@ -232,27 +251,27 @@
           <tr>
               <th colspan="3" style="text-align:left;"> </th>
               <th colspan="2" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> Total Before Discount : AED </th>
-              <th colspan="1" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> {{ quotBasi.0.qotTBD|floatformat:0|intcomma }}  </th>
+              <th colspan="1" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> {{ soBasi.0.soTBD|floatformat:0|intcomma }}  </th>
           </tr>
           <tr>
               <th colspan="3" style="text-align:left;"> </th>
               <th colspan="2" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> Total After Discount : AED </th>
-              <th colspan="1" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> {{quotBasi.0.qotTAD|floatformat:0|intcomma}} </th>
+              <th colspan="1" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> {{soBasi.0.soTAD|floatformat:0|intcomma}} </th>
           </tr>
           <tr>
               <th colspan="3" style="text-align:left;"> </th>
               <th colspan="2" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> Total Tax Amount : AED </th>
-              <th colspan="1" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> {{quotBasi.0.qotTax|floatformat:0|intcomma}} </th>
+              <th colspan="1" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> {{soBasi.0.soTax|floatformat:0|intcomma}} </th>
           </tr>
           <tr>
               <th colspan="3" style="text-align:left;"> </th>
               <th colspan="2" style=" text-align:right; font-size:13px; font-weight:100px; color:#005596"> Total After Tax : AED </th>
-              <th colspan="1" style=" text-align:right; font-size:13px; font-weight:100px; color:#005596"> {{quotBasi.0.qotTAT|floatformat:0|intcomma}} </th>
+              <th colspan="1" style=" text-align:right; font-size:13px; font-weight:100px; color:#005596"> {{soBasi.0.soTAT|floatformat:0|intcomma}} </th>
           </tr>
       </table>
 
       <br><br>
-      <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Quotation Delivery Details </div>
+      <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Order Delivery Details </div>
       <br>
       
       
@@ -266,16 +285,16 @@
           </tr>
 
           <tr>
-              <th colspan="2"  style=" border: 0.5px solid gray; text-align:left; font-size:12px; font-weight:100px;"> {{quotBasi.0.shipTo}} </th>
+              <th colspan="2"  style=" border: 0.5px solid gray; text-align:left; font-size:12px; font-weight:100px;"> {{soBasi.0.shipTo}} </th>
               <th style="text-align:left;"> <br><br><br><br><br> </th>
-              <th colspan="3" style=" border: 0.5px solid gray; text-align:left; font-size:12px; font-weight:100px;background:#f5f3f2"> {{quotBasi.0.qotComm}}</th>
+              <th colspan="3" style=" border: 0.5px solid gray; text-align:left; font-size:12px; font-weight:100px;background:#f5f3f2"> {{soBasi.0.soComm}}</th>
           </tr>
 
           <tr> <th> </th> </tr>
           <tr> <th> </th> </tr>
 
           <tr> <th colspan="5" style="text-align:left; font-size:15px; font-weight:bold; color:#005596;"> Contect Person: 
-                  <span style="font-size:13px; font-weight:100; color:black;"> {{quotBasi.0.spName}} </span>
+                  <span style="font-size:13px; font-weight:100; color:black;"> {{soBasi.0.spName}} </span>
                   <span style="font-size:13px; font-weight:100; color:black;">>> enquiry@ecolab.com </span>
                   <span style="font-size:13px; font-weight:100; color:black;">>> +971 50 4681561 </span>
               </th> 
@@ -287,10 +306,10 @@
       <!--
       <p  style=" text-align:left; font-size:12px">  Total Before Discount: <span style="font-weight:100" id="TBD"> </span></p>
       <p  style=" text-align:left; font-size:12px">  Amount of Tax: <span style="font-weight:100" id="Tax"> </span></p>
-      <p  style=" text-align:left; font-size:12px">  Quotation Date: <span style="font-weight:100" id="Dat"> </span></p>
+      <p  style=" text-align:left; font-size:12px">  Order Date: <span style="font-weight:100" id="Dat"> </span></p>
       <script>
           //Javascript is not working for PDF.....................
-          let nnn ={{quotBasi|safe}}
+          let nnn ={{soBasi|safe}}
           console.log(nnn)
           document.getElementById("TBD").innerHTML = nnn[0].qotTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
           document.getElementById("Tax").innerHTML = nnn[0].qotTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});

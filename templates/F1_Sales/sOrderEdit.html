@@ -104,7 +104,7 @@
 								<th></th>
 								<th></th>
 								<th>sno</th>
-								<th>itmCode</th>
+								<th>itmCod</th>
 								<th>desc</th>
 								<th>qty</th>
 								<th>price</th>
@@ -188,7 +188,7 @@
 						<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
 							<div style="min-width:120px;">Sales Person </div>
 							<div><input type="text" id="spName" name="spName" style="min-width:220px;" disabled=true></div>
-							<div style="display:none"><input type="text" id="salPer" name="salPer" style="min-width:220px;"></div>
+							<div style="display:none"><input type="text" id="spCode" name="spCode" style="min-width:220px;"></div>
 							
 							<p1 onclick="showPop_S()" style="position:absolute; top:0; right:0; color:orange; font-weight:bold; cursor:pointer" >☰</p1>
 		
@@ -243,10 +243,12 @@
 			
 			//.... Get Data while Loading the Page  ...................................
 				let oBasic ={{oBasic|safe}}
-				let oBasicOrder = (oBasic)
+				oBasic = (oBasic[0])
+				console.log(oBasic)
 
 				let oAddi ={{addiOrder|safe}}
 				let befAddi = oAddi // data before adjustments 
+				console.log(befAddi)
 
 			//.... Get Data while Loading the Page  ...................................
 
@@ -264,7 +266,7 @@
 				document.querySelector("#soComm").value = oBasic.soComm;
 				document.querySelector("#billTo").value = oBasic.shipTo;
 				document.querySelector("#shipTo").value = oBasic.shipTo;
-				document.querySelector("#salPer").value = oBasic.spCode;
+				document.querySelector("#spCode").value = oBasic.spCode;
 				document.querySelector("#spName").value = oBasic.spName;
 
 				//console.log(finalData)
@@ -287,7 +289,7 @@
 								table.append(tr_clone);
 								var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
 								var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sno;
-								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCode;
+								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCod;
 								var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.desc;
 								var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.qty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.price.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
@@ -329,75 +331,6 @@
 
 		//▒▒▒▒▒▒ Sales Order Number and Date ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
-			{% comment %} 
-		//▒▒▒▒▒▒ SHOW DATA ON INITIAL LOAD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-
-      //---- Fetch Sales Quotation Detail Data -------------------------------
-      let qotDetailData=[];
-      async function fetchQotDetail(qRef) {
-          const response = await fetch(`${basInfo.IP[0]}/sQuotEditFetch/${qRef}`)
-          const data = await response.json()
-					qotDetailData=data
- 					showQoutDetail(data)
-      }
-
-			//■■■■■ Get Quotation Detail ■■■■■■■■■■■■■■■■■■■■■■■■
-			function showQoutDetail(data){
-				//console.log(data)
-
-				document.querySelector('#qotRef').value = data[0].qotRef;
-				document.querySelector("#qotDat").value = data[0].qotDat;
-				document.querySelector("#cusCode").value = data[0].cusCode;
-				document.querySelector("#cusName").value = data[0].cusName;
-				document.querySelector("#soTBD").value = data[0].qotTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#soTAD").value = data[0].qotTAD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#soTax").value = data[0].qotTax.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#soTAT").value = data[0].qotTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#soComm").value = data[0].qotComm;
-				document.querySelector("#billTo").value = data[0].shipTo;
-				document.querySelector("#shipTo").value = data[0].shipTo;
-				document.querySelector("#salPer").value = data[0].salPer;
-				document.querySelector("#spName").value = data[0].spName;
-
-
-				//console.log(finalData)
-				var table = document.getElementById('tBody')
-						
-				//to empty the table rows already exist...................................
-				var rows = table.rows.length;
-				if (rows >= 2) { //reset form and delete all rows
-						//formEquip.reset()  //reset form if even if there is a single 
-						for (let i = 0; i < rows-1; i++) {
-								var delRow = table.deleteRow(1)  //delete first row which is emptry
-						}
-				}
-
-				if (data[1].length!=0) { //to avoid delete first row incase of empty record that cause of error
-						data[1].map(editable).join('')  //-----MAP------------------------
-						function editable(Data){
-								last_tr   = table.lastElementChild,
-								tr_clone   = last_tr.cloneNode(true);
-								table.append(tr_clone);
-								var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
-								var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sno;
-								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCode;
-								var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.desc;
-								var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.qty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-								var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.price.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-								var Col_id = lastRow.cells[7].getElementsByTagName('input')[0].value = Data.disc.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-								var Col_id = lastRow.cells[8].getElementsByTagName('input')[0].value = Data.tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-								var Col_id = lastRow.cells[9].getElementsByTagName('input')[0].value = Data.id;
-						}
-						var delRow = table.deleteRow(0)  //delete first row which is emptry
-				}
-				//■■■■■ Get Quotation next Number and Current Date■■■■■■■■■■■■■■■■■■■■■■■■
-
-				hidePop_A()
-			}
-
-
-		//▒▒▒▒▒▒ SHOW DATA ON INITIAL LOAD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-		 	{% endcomment %}
 
 		//▒▒▒▒▒▒ ADD REMOVE RESET TABLE ROWS ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
@@ -523,6 +456,16 @@
 		
 			//■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 			function tableToJson(table) {
+
+				let currentDate = new Date();
+				const year = currentDate.getFullYear(); // get the current year
+				const month = currentDate.getMonth() + 1; // get the current month (Note: month is zero-indexed)
+				const day = currentDate.getDate(); // get the current day of the month
+				const hours = currentDate.getHours(); // get the current hour
+				const minutes = currentDate.getMinutes(); // get the current minute
+				const seconds = currentDate.getSeconds(); // get the current second
+				let CurDate = `${year}-${month}-${day} ${hours}-${minutes}-${seconds}`
+
 					var dataA = []
 					//first row needs to be headers
 					var headers = []; //if header contain code in second row means i=1
@@ -557,14 +500,15 @@
 					ShipTo = document.getElementById('shipTo').value;
 					SoComm = document.getElementById('soComm').value;
 					SpName = document.getElementById('spName').value;
-					SalPer = document.getElementById('salPer').value;
+					SpCode = document.getElementById('spCode').value;
 					QotRef = document.getElementById('qotRef').value;
 					QotDat = document.getElementById('qotDat').value;
-					if (SalPer == '') {SalPer = 0;	}
+					if (SpCode == '') {SpCode = 0;	}
 					const basicData =  {  qotRef:QotRef, qotDat:QotDat, cusCode:CusCode, 
 																cusName:CusName, soTBD:SoTBD, soTAD:SoTAD, soTax:SoTax,
 												 				soTAT:SoTAT, shipTo:ShipTo,soRef:SoRef, soDat:SoDat, 
-																soComm:SoComm, salPer:SalPer, spName:SpName };
+																soComm:SoComm, spCode:SpCode, spName:SpName,
+																traDate:CurDate, action:"" };
 
 					//Filter out Blank Rows
 					let data = dataA.filter(item => item.qty !== "0"); //remove the empty rows from prodeuct detail rows
@@ -578,8 +522,8 @@
 							if (!found) {
 								missingIds.push(id);
 							}
-					}
-
+					}	
+					console.log(data)
 					console.log(basicData)
 					var allData = [basicData, data, missingIds]
 					//----  Get Input field to gererate Basic Data Object ----------------------  
@@ -638,9 +582,9 @@
 					var addQty = lastRow.cells[4].getElementsByTagName('input')[0].value = ""; //add Value to new row "Quantity" 
 					var addQty = parseInt(lastRow.cells[5].getElementsByTagName('input')[0].value = 0); //add Value to new row "Quantity" 
 					var addPri = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
-					var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
-					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price"
-					var addid = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Discount" 
+					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Total"
+					var addid = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "id" 
 					
 					savDisable('Yes')  //to Disable Save option..............
 			}
@@ -661,7 +605,7 @@
 				document.getElementById('shipTo').value = ""
 				document.getElementById('billTo').value = ""
 				document.getElementById('comm').value = ""
-				document.getElementById('salPer').value = ""
+				document.getElementById('spCode').value = ""
 		
 				var table = document.getElementById("myTable");   
 				var rows = table.rows; // Get all rows in the table except the first 3 lines
@@ -1316,7 +1260,7 @@
 						let cName =clickVal2
 
 						document.querySelector('#spName').value = cName;
-						document.querySelector('#salPer').value = cID;
+						document.querySelector('#spCode').value = cID;
 
 						hidePop_S()
 						savDisable('No')

@@ -166,9 +166,22 @@
 						<input type="floatformat" id="qotTAD" disabled=true>
 					</div>
 
-					<div class="inputField">
+					<div class="inputField" style="position:relative">
 						<p>Total Tax Amount : AED</p>
+						<p1 onclick="showDD_A()" style="position:absolute; left:170px; bottom:2px; color:orange; font-weight:bold; cursor:pointer" >☰</p1>
 						<input type="floatformat" id="qotTax" disabled=true>
+
+						<!--=======Select Option==========================-->
+						<div style="position:absolute; left:180px; border:2px solid #527198; border-radius:5px;" class="taxDD" id="taxMenu"> 
+							<select style="padding:5px 20px;" onchange="calculateSum(this.value)">
+								<option disabled selected>Select Tax Rate</option>
+								<option value="0">Zero Rated</option>
+								<option value="0.05">5%</option>
+								<option value="0">Exempt</option>
+							</select>
+
+						</div>
+
 					</div>
 
 					<div class="inputField">     
@@ -206,7 +219,7 @@
 						<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
 							<div style="min-width:120px;">Sales Person </div>
 							<div><input type="text" id="spName" name="spName" style="min-width:220px;" disabled=true></div>
-							<div style="display:none"><input type="text" id="salPer" name="salPer" style="min-width:220px;"></div>
+							<div style="display:none"><input type="text" id="spCode" name="spCode" style="min-width:220px;"></div>
 							
 							<p1 onclick="showPop_S()" style="position:absolute; top:0; right:0; color:orange; font-weight:bold; cursor:pointer" >☰</p1>
 		
@@ -260,11 +273,18 @@
 			
 			//.... Get Data while Loading the Page  ...................................
 				let qBasic ={{qBasic|safe}}
+				qBasic = qBasic[0]
 				let qBasicQuote = (qBasic.qotRef)
+				console.log(qBasic)
+
+				{% comment %} const inputDate = qBasic.qotDat;
+				console.log(inputDate)
+				const parts = inputDate.split('/'); // Split the date into parts
+				const qotDate = parts[2] + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0'); // Rearrange the parts 
+				console.log (qotDate) {% endcomment %}
 
 				let qAddi ={{addiQuote|safe}}
 				let befAddi = qAddi // data before adjustments 
-
 			//.... Get Data while Loading the Page  ...................................
 
 			//■■■■■ Get Quotation next Number and Current Date■■■■■■■■■■■■■■■■■■■■■■■■
@@ -279,7 +299,7 @@
 				document.querySelector("#comm").value = qBasic.qotComm;
 				document.querySelector("#billTo").value = qBasic.shipTo;
 				document.querySelector("#shipTo").value = qBasic.shipTo;
-				document.querySelector("#salPer").value = qBasic.salPer;
+				document.querySelector("#spCode").value = qBasic.spCode;
 				document.querySelector("#spName").value = qBasic.spName;
 
 
@@ -303,7 +323,7 @@
 								table.append(tr_clone);
 								var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
 								var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sno;
-								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCode;
+								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCod;
 								var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.desc;
 								var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.qty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.price.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
@@ -407,12 +427,13 @@
 				var tot = (qty * price) - disc
 				tot = parseFloat(table.rows[ab].cells[8].getElementsByTagName('input')[0].value =  tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
 				//--console.log(tot)
-				getSum()
+				const taxRate = 0.05;
+				getSum(taxRate)
 			}
 		
 
 			//■■■■■ GET SUM OF THE TOTAL COLUMN ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-			function getSum() {
+			function getSum(taxRate) {
 				// Get sum of a table column --(temporary here)----------------------
 				// ==================================================================
 				var table = document.getElementById("myTable"), sumADis = 0; sumDis = 0;
@@ -423,12 +444,25 @@
 			
 				document.getElementById("qotTAD").value = sumADis.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 				var qotTBD = sumADis + sumDis
-				var VAT = sumADis*0.05
+				var VAT = sumADis*taxRate
 				var GTot = sumADis + VAT
 				document.getElementById("qotTBD").value = qotTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 				document.getElementById("qotTax").value = VAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 				document.getElementById("qotTAT").value =GTot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 			}
+
+			//■■■■■ GET SUM OF THE TOTAL COLUMN ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			function calculateSum(selectedValue) {
+				const taxRate = parseFloat(selectedValue);
+				getSum(taxRate)
+				taxDD.classList.toggle("taxDD")
+			}
+			let taxDD = document.getElementById("taxMenu");
+			function showDD_A(){
+				taxDD.classList.toggle("taxDD")
+			}
+
+
 
 		//▒▒▒▒▒▒ GET TOTAL AND GRAND TOTAL ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
@@ -446,6 +480,17 @@
 		
 			//■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 			function tableToJson(table) {
+
+					let currentDate = new Date();
+					const year = currentDate.getFullYear(); // get the current year
+					const month = currentDate.getMonth() + 1; // get the current month (Note: month is zero-indexed)
+					const day = currentDate.getDate(); // get the current day of the month
+					const hours = currentDate.getHours(); // get the current hour
+					const minutes = currentDate.getMinutes(); // get the current minute
+					const seconds = currentDate.getSeconds(); // get the current second
+					let CurDate = `${year}-${month}-${day} ${hours}-${minutes}-${seconds}`
+
+
 					var dataA = []
 					//first row needs to be headers
 					var headers = []; //if header contain code in second row means i=1
@@ -479,13 +524,13 @@
 					QotTAT = parseFloat(document.getElementById('qotTAT').value.replace(/,/g, ''));
 					ShipTo = document.getElementById('shipTo').value;
 					Comm = document.getElementById('comm').value;
-					SalPer = document.getElementById('salPer').value;
+					SpCode = document.getElementById('spCode').value;
 					SpName = document.getElementById('spName').value;
-					if (SalPer == '') {SalPer = 0;	}
+					if (SpCode == '') {SpCode = 0;	}
 					const basicData =  { qotRef:QotRef, qotDat:QotDat, cusCode:CusCode, cusName:CusName,
-												qotRef:QotRef, cusName:CusName, qotTBD:QotTBD, qotTAD:QotTAD, 
-												qotTax:QotTax, qotTAT:QotTAT, shipTo:ShipTo, qotComm:Comm,
-												salPer:SalPer, spName:SpName };
+														qotRef:QotRef, cusName:CusName, qotTBD:QotTBD, qotTAD:QotTAD, 
+														qotTax:QotTax, qotTAT:QotTAT, shipTo:ShipTo, qotComm:Comm,
+														spCode:SpCode, spName:SpName, traDate:CurDate, action:"Edited" };
 
 					//Filter out Blank Rows
 					let data = dataA.filter(item => item.qty !== "0"); //remove the empty rows from prodeuct detail rows
@@ -578,7 +623,8 @@
 				document.getElementById('shipTo').value = ""
 				document.getElementById('billTo').value = ""
 				document.getElementById('comm').value = ""
-				document.getElementById('salPer').value = ""
+				document.getElementById('spCode').value = ""
+				document.getElementById('spName').value = ""
 		
 				var table = document.getElementById("myTable");   
 				var rows = table.rows; // Get all rows in the table except the first 3 lines
@@ -851,6 +897,9 @@
 			.total .boxB img:hover{
 				transform: scale(1.05);
 			}
+			.taxDD{
+        display: none;
+      }
 		/* ⚊⚊⚊⚊ Total Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
 
 		/* ⚊⚊⚊⚊ Bottom Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
@@ -896,41 +945,41 @@
 
 		/* ⚊⚊⚊⚊ Sales Person Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
 
-	/* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
-			#savSec {
-					display: flex;
-					justify-content:flex-end;
-					flex-wrap: wrap;
-					padding: 5px 0px 0px 40px;
-			}
-			.sBtn, .hBtn, .cBtn{
-					box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
-					background-color: #AAAAAA;
-					display: inline-block;
-					cursor: pointer;
-					color: #FFFFFF;
-					font-family: 'Open Sans Condensed', sans-serif;
-					font-size: 14px;
-					padding: 4px 18px;
-					margin: 5px 10px;
-					text-decoration: none;
-					text-transform: uppercase;
-			}
-			.cBtn{
-					background-color: #1DA1F2;
-			}
-			.hBtn{
-					background-color: #3B5998;
-			}
-			.addColor{
-					background-color: #2CBBBB;
-			}
-			.cusTab3 {
-					display: flex;
-					justify-content:space-between;
-					flex-wrap: wrap;
-			}
-	/* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+		/* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+				#savSec {
+						display: flex;
+						justify-content:flex-end;
+						flex-wrap: wrap;
+						padding: 5px 0px 0px 40px;
+				}
+				.sBtn, .hBtn, .cBtn{
+						box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+						background-color: #AAAAAA;
+						display: inline-block;
+						cursor: pointer;
+						color: #FFFFFF;
+						font-family: 'Open Sans Condensed', sans-serif;
+						font-size: 14px;
+						padding: 4px 18px;
+						margin: 5px 10px;
+						text-decoration: none;
+						text-transform: uppercase;
+				}
+				.cBtn{
+						background-color: #1DA1F2;
+				}
+				.hBtn{
+						background-color: #3B5998;
+				}
+				.addColor{
+						background-color: #2CBBBB;
+				}
+				.cusTab3 {
+						display: flex;
+						justify-content:space-between;
+						flex-wrap: wrap;
+				}
+		/* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
 
 	</style>
 <!--.........................................................................-->
@@ -1468,7 +1517,7 @@
 						clickVal2 = rowSelected.cells[1].innerHTML;
 						let cName =clickVal2.replace(/\s/g, '');
 
-						document.querySelector('#salPer').value = cID;
+						document.querySelector('#spCode').value = cID;
 						document.querySelector('#spName').value = clickVal2;
 
 						hidePop_S()

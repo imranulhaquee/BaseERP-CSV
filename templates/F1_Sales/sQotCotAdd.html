@@ -216,14 +216,14 @@
 								table.append(tr_clone);
 								var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
 								var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sno;
-								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCode;
+								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCod;
 								var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.desc;
 								var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.qty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.price.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[7].getElementsByTagName('input')[0].value = Data.ItemCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[8].getElementsByTagName('input')[0].value = Data.EmpCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[9].getElementsByTagName('input')[0].value = Data.disc.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-								//var Col_id = lastRow.cells[10].getElementsByTagName('input')[0].value = Data.tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								//##var Col_id = lastRow.cells[10].getElementsByTagName('input')[0].value = Data.tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[11].getElementsByTagName('input')[0].value = Data.id;
 								getTotIni(last_tr)
 							}

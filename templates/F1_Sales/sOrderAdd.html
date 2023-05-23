@@ -122,7 +122,7 @@
 								<th></th>
 								<th></th>
 								<th>sno</th>
-								<th>itmCode</th>
+								<th>itmcod</th>
 								<th>desc</th>
 								<th>qty</th>
 								<th>price</th>
@@ -206,7 +206,7 @@
 						<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
 							<div style="min-width:120px;">Sales Person </div>
 							<div><input type="text" id="spName" name="spName" style="min-width:220px;" disabled=true></div>
-							<div style="display:none"><input type="text" id="salPer" name="salPer" style="min-width:220px;"></div>
+							<div style="display:none"><input type="text" id="spCode" name="spCode" style="min-width:220px;"></div>
 							
 							<p1 onclick="showPop_S()" style="position:absolute; top:0; right:0; color:orange; font-weight:bold; cursor:pointer" >☰</p1>
 		
@@ -235,7 +235,7 @@
 		<!--════ Sales Section ═══════════════════════════════════════ //Start-->
 		
 
-	<!--════ Save Section ══════════════════════════════════════ //Start-->
+		<!--════ Save Section ══════════════════════════════════════ //Start-->
 			<section id="savSec">
 				<div><button  onclick="event.preventDefault()" class="hBtn" type="submit"> ⚠ HELP</button></div>
 				<div><button onclick="canRecord()" id="cancelA" class="cBtn" type="submit"> ✂ CANCEL</button></div>
@@ -299,7 +299,7 @@
       //---- Fetch Sales Quotation Detail Data -------------------------------
       let qotDetailData=[];
       async function fetchQotDetail(qRef) {
-          const response = await fetch(`${basInfo.IP[0]}/sQuotEditFetch/${qRef}`)
+          const response = await fetch(`${basInfo.IP[0]}/sQuotDetail/${qRef}`)
           const data = await response.json()
 					qotDetailData=data
  					showQoutDetail(data)
@@ -308,20 +308,20 @@
 			//■■■■■ Get Quotation Detail ■■■■■■■■■■■■■■■■■■■■■■■■
 			function showQoutDetail(data){
 				//console.log(data)
-
-				document.querySelector('#qotRef').value = data[0].qotRef;
-				document.querySelector("#qotDat").value = data[0].qotDat;
-				document.querySelector("#cusCode").value = data[0].cusCode;
-				document.querySelector("#cusName").value = data[0].cusName;
-				document.querySelector("#soTBD").value = data[0].qotTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#soTAD").value = data[0].qotTAD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#soTax").value = data[0].qotTax.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#soTAT").value = data[0].qotTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#soComm").value = data[0].qotComm;
-				document.querySelector("#billTo").value = data[0].shipTo;
-				document.querySelector("#shipTo").value = data[0].shipTo;
-				document.querySelector("#salPer").value = data[0].salPer;
-				document.querySelector("#spName").value = data[0].spName;
+				qotBaic = data[0][0]
+				document.querySelector('#qotRef').value = qotBaic.qotRef;
+				document.querySelector("#qotDat").value = qotBaic.qotDat;
+				document.querySelector("#cusCode").value = qotBaic.cusCode;
+				document.querySelector("#cusName").value = qotBaic.cusName;
+				document.querySelector("#soTBD").value = qotBaic.qotTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#soTAD").value = qotBaic.qotTAD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#soTax").value = qotBaic.qotTax.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#soTAT").value = qotBaic.qotTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#soComm").value = qotBaic.qotComm;
+				document.querySelector("#billTo").value = qotBaic.shipTo;
+				document.querySelector("#shipTo").value = qotBaic.shipTo;
+				document.querySelector("#spCode").value = qotBaic.spCode;
+				document.querySelector("#spName").value = qotBaic.spName;
 
 
 				//console.log(finalData)
@@ -344,7 +344,7 @@
 								table.append(tr_clone);
 								var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
 								var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sno;
-								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCode;
+								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCod;
 								var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.desc;
 								var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.qty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.price.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
@@ -487,6 +487,16 @@
 		
 			//■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 			function tableToJson(table) {
+
+					let currentDate = new Date();
+					const year = currentDate.getFullYear(); // get the current year
+					const month = currentDate.getMonth() + 1; // get the current month (Note: month is zero-indexed)
+					const day = currentDate.getDate(); // get the current day of the month
+					const hours = currentDate.getHours(); // get the current hour
+					const minutes = currentDate.getMinutes(); // get the current minute
+					const seconds = currentDate.getSeconds(); // get the current second
+					let CurDate = `${year}-${month}-${day} ${hours}-${minutes}-${seconds}`
+
 					var dataA = []
 					//first row needs to be headers
 					var headers = []; //if header contain code in second row means i=1
@@ -521,14 +531,14 @@
 					ShipTo = document.getElementById('shipTo').value;
 					SoComm = document.getElementById('soComm').value;
 					SpName = document.getElementById('spName').value;
-					SalPer = document.getElementById('salPer').value;
+					SpCode = document.getElementById('spCode').value;
 					QotRef = document.getElementById('qotRef').value;
 					QotDat = document.getElementById('qotDat').value;
-					if (SalPer == '') {SalPer = 0;	}
+					if (SpCode == '') {SpCode = 0;	}
 					const basicData =  {  qotRef:QotRef, qotDat:QotDat, cusCode:CusCode, 
 																cusName:CusName, soTBD:SoTBD, soTAD:SoTAD, soTax:SoTax,
 												 				soTAT:SoTAT, shipTo:ShipTo,soRef:SoRef, soDat:SoDat, 
-																soComm:SoComm, salPer:SalPer, spName:SpName };
+																soComm:SoComm, spCode:SpCode, spName:SpName, traDate:CurDate, action:"" };
 
 					//Filter out Blank Rows
 					let data = dataA.filter(item => item.qty !== "0"); //remove the empty rows from prodeuct detail rows
@@ -536,6 +546,8 @@
 					//--- Get the rows deleted from previous saved PO to delete from data base while save again
 					const missingIds = [];
 
+					console.log(basicData)
+					console.log(data)
 					var allData = [basicData, data, missingIds]
 					//----  Get Input field to gererate Basic Data Object ----------------------  
 					return allData;
@@ -618,7 +630,8 @@
 				document.getElementById('shipTo').value = ""
 				document.getElementById('billTo').value = ""
 				document.getElementById('comm').value = ""
-				document.getElementById('salPer').value = ""
+				document.getElementById('spCode').value = ""
+				document.getElementById('spName').value = ""
 		
 				var table = document.getElementById("myTable");   
 				var rows = table.rows; // Get all rows in the table except the first 3 lines
@@ -986,11 +999,11 @@
 			let list_A=[]; // Declare a global variable to store the data
 			
 			async function fetchPop_A(){
-				const response = await fetch(`${basInfo.IP[0]}/openSalQotURL`)
+				const response = await fetch(`${basInfo.IP[0]}/sQuotOpnList`)
 				const data = await response.json()
 				list_A = data  //when call showRecord() function data will save in finalData
 				Table_A(list_A)
-				console.log(list_A)
+				//console.log(list_A)
 			}
 		//--==== Fetch Item Data to Select ================================= // End -->
 
@@ -1186,7 +1199,7 @@
 				var table = document.getElementById('popBody_B').innerHTML=` ${dataList.map(temList).join('')}`
 				function temList (e){
 					return`<tr">
-										<td style="color:#0464d1">${e.itmCode}</td>
+										<td style="color:#0464d1">${e.itmCod}</td>
 										<td>${e.itmName}</td>
 										<td>${e.selPrice.toLocaleString('en',{minimumFractionDigits: 0, maximumFractionDigits:0,})}</td>
 									</tr>`
@@ -1457,7 +1470,7 @@
 						let cName =clickVal2
 
 						document.querySelector('#spName').value = cName;
-						document.querySelector('#salPer').value = cID;
+						document.querySelector('#spCode').value = cID;
 
 						hidePop_S()
 						savDisable('No')

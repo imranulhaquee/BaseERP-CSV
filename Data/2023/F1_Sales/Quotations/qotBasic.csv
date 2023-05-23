@@ -1,7 +1,5 @@
-id,qotRef,qotDat,cusCode,cusName,qotTBD,qotTAD,qotTax,qotTAT,shipTo,qotComm,salPer,spName,opnClo,traDate,action
+id,qotRef,qotDat,cusCode,cusName,qotTBD,qotTAD,qotTax,qotTAT,shipTo,qotComm,spCode,spName,opnClo,traDate,action
 2300000,2300000,,,,,,,,,,,,,,
-2300001,2300001,5/19/2023,22310029,Al Jameya Pharmacy,255920,255920,12796,"268,716",Union Cooperative Society  Ghusais,Al Jameya Pharmacy,329,Sanjay Kumar Mandal,Open,2023-5-19 20-4-10,
-2300002,2300002,5/19/2023,22310093,Women's Medical Center (Dr. Ameena),350700,291510,14576,"306,086",1st Floor Office No. 7 Al Mamzar Center Near Al Mulla Plaza Dubai,Women's Medical Center (Dr. Ameena),329,Sanjay Kumar Mandal,Open,2023-5-19 20-5-6,
-2300003,2300003,5/19/2023,22310102,Health &amp; Aesthetic Medical Center,301000,281040,14052,"295,092",Buheira Corniche - Sharjah United Arab Emirates,Health &amp; Aesthetic Medical Center,418,Lucero Jackson Riconose,Open,2023-5-19 20-6-9,
-2300004,2300004,5/19/2023,22310210,Al Burg Clinic,94360,94360,4718,"99,078",Entrance 3  1st Floor Al Mazaya Center Dubai United Arab Emirates,Al Burg Clinic,366,Franco Viola Parota,Open,2023-5-19 20-8-29,
-2300005,2300005,5/19/2023,22310200,German Clinic FZ LLC,1997975,1391510,69576,1461086,Al Razi # Bldg.64 District 1 block A 2nd floor 2008 - DHCC Dubai U,,365,Allen Joseph Anora,Open,2023-5-20 3-13-29,
+2300006,2300006,5/21/2023,22310133.0,Al Samnan Clinic,233100.0,213000.0,10650.0,223650.0,Al Wasit Street Samnan Sharjah United Arab Emirates,Bruun Mci & Caviation Laser to Al Samnan Clinic,345.0,Pune Pratap Panjiyar,Open,2023-5-21 12-52-56,
+2300007,2300007,5/21/2023,22310207.0,Delta Pharmacy,271740.0,257000.0,12850.0,269850.0,Sharjah United Arab Emirates,Microneedling RF & Microneedling RF - HandPiece to Delta Pharmacy,366.0,Franco Viola Parota,Open,2023-5-22 1-22-6,Edited
+2300008,2300008,2023-05-22,22310093.0,Women's Medical Center (Dr. Ameena),338660.0,310000.0,15500.0,325500.0,1st Floor Office No. 7 Al Mamzar Center Near Al Mulla Plaza Dubai,1st Floor Office No. 7 Al Mamzar,345.0,Pune Pratap Panjiyar,Open,2023-5-22 18-25-14,
