@@ -37,17 +37,13 @@ urlpatterns = [
     path('sQuotAddUrl', views.sQuotAddUrl, name='sQuotAddUrl'),
 
     path('sQuotEdit/<str:pk>/', views.sQuotEdit , name='sQuotEdit'),
-    
     path('delQot/<str:pk>/', views.delQot, name='delQot'),
-
     path('sQuotPdf', views.sQuotPdf, name='sQuotPdf'),
     path('showQuotSum', views.showQuotSum, name='showQuotSum'),
 
 
-
     #═══ Sales Quotation Cost ═══════════════════════════════════════════
     path('sQotCotAdd/<str:pk>/', views.sQotCotAdd, name='sQotCotAdd'),
-
 
 
     #═══ Sales Order ════════════════════════════════════════════════════
@@ -61,24 +57,24 @@ urlpatterns = [
     path('sOrderAddUrl', views.sOrderAddUrl, name='sOrderAddUrl'),
 
     path('sOrderEdit/<str:pk>/', views.sOrderEdit , name='sOrderEdit'),
-
     path('delSOrd/<str:pk>/<str:Qot>/', views.delSOrd, name='delSOrd'),
-
     path('sOrderPdf', views.sOrderPdf, name='sOrderPdf'),
+
 
     #═══ Delivery Notes ══════════════════════════════════════════════════
     path('sDeliveryList', views.sDeliveryList, name='sDeliveryList'),
     path('showDeliveryURL', views.showDeliveryURL, name='showDeliveryURL'),
+    path('syncDelivery', views.syncDelivery, name='syncDelivery'),  
 
-    path('openSalDlURL', views.openSalDlURL, name='openSalDlURL'),
-    path('sOrderDetailURL/<str:pk>/', views.sOrderDetailURL , name='sOrderDetailURL'),
     path('sDeliveryAdd', views.sDeliveryAdd, name='sDeliveryAdd'),
+    path('sOrderOpnList', views.sOrderOpnList, name='sOrderOpnList'),
+    path('sOrderDetail/<str:pk>/', views.sOrderDetail , name='sOrderDetail'),
     path('sDeliveryAddURL', views.sDeliveryAddURL , name='sDeliveryAddURL'),
 
     path('sDeliveryEdit/<str:pk>/', views.sDeliveryEdit , name='sDeliveryEdit'),
-    path('sDeliveryEditFetch/<str:pk>/', views.sDeliveryEditFetch , name='sDeliveryEditFetch'),
+    path('delDelivery/<str:pk>/<str:Ord>/', views.delDelivery, name='delDelivery'),
 
-    path('delDelivery/<str:pk>/<str:So>/', views.delDelivery, name='delDelivery'),
+    path('sDeliveryPdf', views.sDeliveryPdf, name='sDeliveryPdf'),
 
 
     #═══ Sales Invoice ═════════════════════════════════════════════════════

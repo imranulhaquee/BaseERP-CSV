@@ -122,7 +122,7 @@
 								<th></th>
 								<th></th>
 								<th>sno</th>
-								<th>itmCode</th>
+								<th>itmCod</th>
 								<th>desc</th>
 								<th>qty</th>
 								<th>price</th>
@@ -206,7 +206,7 @@
 						<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
 							<div style="min-width:120px;">Sales Person </div>
 							<div><input type="text" id="spName" name="spName" style="min-width:220px;" disabled=true></div>
-							<div style="display:none"><input type="text" id="salPer" name="salPer" style="min-width:220px;"></div>
+							<div style="display:none"><input type="text" id="spCode" name="spCode" style="min-width:220px;"></div>
 							
 							<p1 onclick="showPop_S()" style="position:absolute; top:0; right:0; color:orange; font-weight:bold; cursor:pointer" >☰</p1>
 		
@@ -298,8 +298,8 @@
 
       //---- Fetch Sales Quotation Detail Data -------------------------------
       let qotDetailData=[];
-      async function fetchQotDetail(qRef) {
-          const response = await fetch(`${basInfo.IP[0]}/sOrderDetailURL/${qRef}`)
+      async function fetchQotDetail(soRef) {
+          const response = await fetch(`${basInfo.IP[0]}/sOrderDetail/${soRef}`)
           const data = await response.json()
 					qotDetailData=data
  					showQoutDetail(data)
@@ -308,20 +308,21 @@
 			//■■■■■ Get Quotation Detail ■■■■■■■■■■■■■■■■■■■■■■■■
 			function showQoutDetail(data){
 				//console.log(data)
+				soBaic = data[0][0]
 
-				document.querySelector('#soRef').value = data[0].soRef;
-				document.querySelector("#soDat").value = data[0].soDat;
-				document.querySelector("#cusCode").value = data[0].cusCode;
-				document.querySelector("#cusName").value = data[0].cusName;
-				document.querySelector("#dlTBD").value = data[0].soTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#dlTAD").value = data[0].soTAD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#dlTax").value = data[0].soTax.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#dlTAT").value = data[0].soTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#dlComm").value = data[0].soComm;
-				document.querySelector("#billTo").value = data[0].shipTo;
-				document.querySelector("#shipTo").value = data[0].shipTo;
-				document.querySelector("#salPer").value = data[0].spCode;
-				document.querySelector("#spName").value = data[0].spName;
+				document.querySelector('#soRef').value = soBaic.soRef;
+				document.querySelector("#soDat").value = soBaic.soDat;
+				document.querySelector("#cusCode").value = soBaic.cusCode;
+				document.querySelector("#cusName").value = soBaic.cusName;
+				document.querySelector("#dlTBD").value = soBaic.soTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#dlTAD").value = soBaic.soTAD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#dlTax").value = soBaic.soTax.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#dlTAT").value = soBaic.soTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#dlComm").value = soBaic.soComm;
+				document.querySelector("#billTo").value = soBaic.shipTo;
+				document.querySelector("#shipTo").value = soBaic.shipTo;
+				document.querySelector("#spCode").value = soBaic.spCode;
+				document.querySelector("#spName").value = soBaic.spName;
 
 
 				//console.log(finalData)
@@ -344,7 +345,7 @@
 								table.append(tr_clone);
 								var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
 								var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sno;
-								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCode;
+								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCod;
 								var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.desc;
 								var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.qty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.price.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
@@ -487,6 +488,16 @@
 		
 			//■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 			function tableToJson(table) {
+			
+					let currentDate = new Date();
+					const year = currentDate.getFullYear(); // get the current year
+					const month = currentDate.getMonth() + 1; // get the current month (Note: month is zero-indexed)
+					const day = currentDate.getDate(); // get the current day of the month
+					const hours = currentDate.getHours(); // get the current hour
+					const minutes = currentDate.getMinutes(); // get the current minute
+					const seconds = currentDate.getSeconds(); // get the current second
+					let CurDate = `${year}-${month}-${day} ${hours}-${minutes}-${seconds}`
+
 					var dataA = []
 					//first row needs to be headers
 					var headers = []; //if header contain code in second row means i=1
@@ -522,14 +533,15 @@
 					ShipTo = document.getElementById('shipTo').value;
 					DlComm = document.getElementById('dlComm').value;
 					SpName = document.getElementById('spName').value;
-					SalPer = document.getElementById('salPer').value;
+					SpCode = document.getElementById('spCode').value;
 					SoRef = document.getElementById('soRef').value;
 					SoDat = document.getElementById('soDat').value;
-					if (SalPer == '') {SalPer = 0;	}
+					if (SpCode == '') {SpCode = 0;	}
 					const basicData =  {  soRef:SoRef, soDat:SoDat, cusCode:CusCode, 
 																cusName:CusName, dlTBD:DlTBD, dlTAD:DlTAD, dlTax:DlTax,
 												 				dlTAT:DlTAT, shipTo:ShipTo,dlRef:DlRef, dlDat:DlDat, 
-																dlComm:DlComm, salPer:SalPer, spName:SpName };
+																dlComm:DlComm, spCode:SpCode, spName:SpName,
+																traDate:CurDate, action:""};
 
 					//Filter out Blank Rows
 					let data = dataA.filter(item => item.qty !== "0"); //remove the empty rows from prodeuct detail rows
@@ -984,14 +996,14 @@
 
 
 <!--.........................................................................-->
-<!--==== Sales Order  Deatil Popup Window ===============================//Start-->
+<!--==== Open Sales Order List =======================================//Start-->
 <!--.........................................................................-->
 	<script>
 		//--==== Fetch Item Data to Select ================================= //Start-->
 			let list_A=[]; // Declare a global variable to store the data
 			
 			async function fetchPop_A(){
-				const response = await fetch(`${basInfo.IP[0]}/openSalDlURL`)
+				const response = await fetch(`${basInfo.IP[0]}/sOrderOpnList`)
 				const data = await response.json()
 				list_A = data  //when call showRecord() function data will save in finalData
 				Table_A(list_A)
@@ -1163,7 +1175,7 @@
 		/* Customer Search Table --------------------------------------------------*/
 	</style>
 
-<!--==== Quotation Deatil Popup Window ===============================// End -->
+<!--==== Open Sales Order List =======================================// End -->
 
 
 

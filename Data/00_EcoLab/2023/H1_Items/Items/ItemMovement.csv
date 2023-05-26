@@ -1,0 +1,172 @@
+id,itmCode,itmName,traDat,qtyPU,costPU,qtyTOT,desc,Remarks,traDate,action
+100,10000000,Microneedling RF,1/1/2023,1,22475.1,10,Opening Balance,Balance,,
+100,10001000,Microneedling RF,1/1/2023,1,22475,10,Opening Balance,Balance,,
+100,10001001,Microneedling RF - HandPiece,1/1/2023,1,3375,40,Opening Balance,Balance,,
+100,10002000,Diode Laser Hair Removal Device,1/1/2023,1,36700,20,Opening Balance,Balance,,
+100,10003000,Portable Diode Laser Hair Removal Equipment,1/1/2023,1,33700,20,Opening Balance,Balance,,
+100,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,1/1/2023,1,4500,10,Opening Balance,Balance,,
+100,10004000,RF Fractional CO2 Laser,1/1/2023,1,58500,20,Opening Balance,Balance,,
+100,10004001,RF Fractional CO2 Laser - Handpiece,1/1/2023,1,5500,50,Opening Balance,Balance,,
+100,10004002,RF Fractional CO2 Laser - Accessories,1/1/2023,1,1000,100,Opening Balance,Balance,,
+100,10005000,Bruun Mci,1/1/2023,1,62000,10,Opening Balance,Balance,,
+100,10006000,Caviation Laser,1/1/2023,1,17500,20,Opening Balance,Balance,,
+100,10007000,Crio Lipo,1/1/2023,1,26000,20,Opening Balance,Balance,,
+100,10008001,DeodLeaser Hand Piece,1/1/2023,1,1500,100,Opening Balance,Balance,,
+100,10008000,DeodLeaser,1/1/2023,1,11000,30,Opening Balance,Balance,,
+100,10009001,G5 Slimming Applicators,1/1/2023,1,2000,120,Opening Balance,Balance,,
+100,10009000,G5 Slimming,1/1/2023,1,37000,30,Opening Balance,Balance,,
+100,10010000,Hiemt A,1/1/2023,1,61000,10,Opening Balance,Balance,,
+100,10011000,Hydra Fresh,1/1/2023,1,53000,20,Opening Balance,Balance,,
+100,10012000,Hydra-new,1/1/2023,1,12000,150,Opening Balance,Balance,,
+100,10013000,Jumia,1/1/2023,1,18000,60,Opening Balance,Balance,,
+100,10014000,Konmision,1/1/2023,1,28000,40,Opening Balance,Balance,,
+100,10015000,Mickcara,1/1/2023,1,31000,30,Opening Balance,Balance,,
+100,10016000,My Ultrasonic,1/1/2023,1,7000,100,Opening Balance,Balance,,
+100,10017000,SPA Slim,1/1/2023,1,6000,150,Opening Balance,Balance,,
+100,10018001,SVTA Radio Hand Pice 1,1/1/2023,1,1200,190,Opening Balance,Balance,,
+100,10018002,SVTA Radio Hand Pice 2,1/1/2023,1,1500,220,Opening Balance,Balance,,
+100,10018003,SVTA Radio Hand Pice 3,1/1/2023,1,1400,210,Opening Balance,Balance,,
+100,10018004,SVTA Radio Hand Pice 4,1/1/2023,1,1300,200,Opening Balance,Balance,,
+100,10018005,SVTA Radio Hand Pice 5,1/1/2023,1,1600,190,Opening Balance,Balance,,
+100,10018006,SVTA Radio Hand Pice 6,1/1/2023,1,1700,180,Opening Balance,Balance,,
+100,10018007,SVTA Radio Hand Pice 7,1/1/2023,1,1800,170,Opening Balance,Balance,,
+100,10018008,SVTA Radio Hand Pice 8,1/1/2023,1,1000,160,Opening Balance,Balance,,
+100,10018000,SVTA Radio,1/1/2023,1,18000,100,Opening Balance,Balance,,
+100,10019000,VCA Laser,1/1/2023,1,28000,50,Opening Balance,Balance,,
+100,10019001,VCA Leaser Hand Piece,1/1/2023,1,31000,40,Opening Balance,Balance,,
+,1090,Test Item,1-Jan-23,1,1650,13,Opening Balance,Balance,,
+,1090,Test Item,10-Jan-23,1,1800,15,Purchase of Inventory,Purchase,,
+,1090,Test Item,15-Jan-23,1,0,-9,Sales of Product,Sales,,
+,1090,Test Item,17-Jan-23,1,0,-11,Sales of Product,Sales,,
+,1090,Test Item,20-Jan-23,1,1850,20,Purchase of Inventory,Purchase,,
+,1900,Test Item,1-Jan-23,1,1650,13,Opening Balance,Balance,,
+,1900,Test Item,10-Jan-23,1,1800,15,Purchase of Inventory,Purchase,,
+,1900,Test Item,12-Jan-23,0,0,-9,Sales of Product,Sales,,
+,1900,Test Item,15-Jan-23,1,1700,11,Purchase of Inventory,Purchase,,
+,1900,Test Item,19-Jan-23,0,0,-12,Sales of Product,Sales,,
+,1900,Test Item,21-Jan-23,1,1750,14,Purchase of Inventory,Purchase,,
+,1900,Test Item,25-Jan-23,0,0,-8,Sales of Product,Sales,,
+,1900,Test Item,3-Feb-23,0,0,-12,Sales of Product,Sales,,
+,1900,Test Item,5-Feb-23,1,1800,10,Purchase of Inventory,Purchase,,
+,1900,Test Item,15-Feb-23,0,0,-15,Sales of Product,Sales,,
+2300001,10001000,Microneedling RF,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 1-55-9, 
+2300001,10001001,Microneedling RF - HandPiece,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 1-55-9, 
+2300001,10002000,Diode Laser Hair Removal Device,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 1-55-9, 
+2300001,10003000,Portable Diode Laser Hair Removal Equipment,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 1-55-9, 
+2300001,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 1-55-9, 
+2300001,10004000,RF Fractional CO2 Laser,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 1-55-9, 
+2300001,10004001,RF Fractional CO2 Laser - Handpiece,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 1-55-9, 
+2300001,10004002,RF Fractional CO2 Laser - Accessories,5/25/2023,0,0,-3,Sales of Product,Sales,2023-5-26 1-55-9, 
+2300001,10001000,Microneedling RF,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 1-56-41, 
+2300001,10001001,Microneedling RF - HandPiece,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 1-56-41, 
+2300001,10002000,Diode Laser Hair Removal Device,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 1-56-41, 
+2300001,10003000,Portable Diode Laser Hair Removal Equipment,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 1-56-41, 
+2300001,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 1-56-41, 
+2300001,10004000,RF Fractional CO2 Laser,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 1-56-41, 
+2300001,10004001,RF Fractional CO2 Laser - Handpiece,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 1-56-41, 
+2300001,10004002,RF Fractional CO2 Laser - Accessories,5/25/2023,0,0,-3,Sales of Product,Sales,2023-5-26 1-56-41, 
+2300001,10001000,Microneedling RF,5/25/2023,0,0,-3,Sales of Product,Sales,2023-5-26 2-17-7, 
+2300001,10001001,Microneedling RF - HandPiece,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 2-17-7, 
+2300001,10002000,Diode Laser Hair Removal Device,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 2-17-7, 
+2300001,10003000,Portable Diode Laser Hair Removal Equipment,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 2-17-7, 
+2300001,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 2-17-7, 
+2300001,10004000,RF Fractional CO2 Laser,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 2-17-7, 
+2300001,10004001,RF Fractional CO2 Laser - Handpiece,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 2-17-7, 
+2300001,10004002,RF Fractional CO2 Laser - Accessories,5/25/2023,0,0,-3,Sales of Product,Sales,2023-5-26 2-17-7, 
+2300001,10001000,Microneedling RF,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 3-7-40, 
+2300001,10001001,Microneedling RF - HandPiece,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 3-7-40, 
+2300001,10002000,Diode Laser Hair Removal Device,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 3-7-40, 
+2300001,10003000,Portable Diode Laser Hair Removal Equipment,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 3-7-40, 
+2300001,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 3-7-40, 
+2300001,10004000,RF Fractional CO2 Laser,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 3-7-40, 
+2300001,10004001,RF Fractional CO2 Laser - Handpiece,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 3-7-40, 
+2300001,10004002,RF Fractional CO2 Laser - Accessories,5/25/2023,0,0,-3,Sales of Product,Sales,2023-5-26 3-7-40, 
+2300001,10004002,RF Fractional CO2 Laser - Accessories,5/25/2023,0,0,-3,Sales of Product,Sales,2023-5-26 3-7-40, 
+2300001,10001000,Microneedling RF,5/25/2023,0,0,-4,Sales of Product,Sales,2023-5-26 4-41-7, 
+2300001,10001001,Microneedling RF - HandPiece,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 4-41-7, 
+2300001,10002000,Diode Laser Hair Removal Device,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 4-41-7, 
+2300001,10003000,Portable Diode Laser Hair Removal Equipment,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 4-41-7, 
+2300001,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,5/25/2023,0,0,-2,Sales of Product,Sales,2023-5-26 4-41-7, 
+2300001,10004000,RF Fractional CO2 Laser,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 4-41-7, 
+2300001,10004001,RF Fractional CO2 Laser - Handpiece,5/25/2023,0,0,-1,Sales of Product,Sales,2023-5-26 4-41-7, 
+2300001,10004002,RF Fractional CO2 Laser - Accessories,5/25/2023,0,0,-3,Sales of Product,Sales,2023-5-26 4-41-7, 
+2300001.0,10001000,Microneedling RF,5/25/2023,0,0.0,-4,Sales of Product,Sales,2023-5-26 4-41-7,Deleted
+2300001.0,10001001,Microneedling RF - HandPiece,5/25/2023,0,0.0,-2,Sales of Product,Sales,2023-5-26 4-41-7,Deleted
+2300001.0,10002000,Diode Laser Hair Removal Device,5/25/2023,0,0.0,-1,Sales of Product,Sales,2023-5-26 4-41-7,Deleted
+2300001.0,10003000,Portable Diode Laser Hair Removal Equipment,5/25/2023,0,0.0,-1,Sales of Product,Sales,2023-5-26 4-41-7,Deleted
+2300001.0,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,5/25/2023,0,0.0,-2,Sales of Product,Sales,2023-5-26 4-41-7,Deleted
+2300001.0,10004000,RF Fractional CO2 Laser,5/25/2023,0,0.0,-1,Sales of Product,Sales,2023-5-26 4-41-7,Deleted
+2300001.0,10004001,RF Fractional CO2 Laser - Handpiece,5/25/2023,0,0.0,-1,Sales of Product,Sales,2023-5-26 4-41-7,Deleted
+2300001.0,10004002,RF Fractional CO2 Laser - Accessories,5/25/2023,0,0.0,-3,Sales of Product,Sales,2023-5-26 4-41-7,Deleted
+2300002,10019000,VCA Laser,2023-05-25,0,0,-1,Sales of Product,Sales,2023-5-26 4-49-53, 
+2300002,10019001,VCA Leaser Hand Piece,2023-05-25,0,0,-3,Sales of Product,Sales,2023-5-26 4-49-53, 
+2300002,10015000,Mickcara,2023-05-25,0,0,-2,Sales of Product,Sales,2023-5-26 4-49-53, 
+2300002,10016000,My Ultrasonic,2023-05-25,0,0,-5,Sales of Product,Sales,2023-5-26 4-49-53, 
+2300002,10017000,SPA Slim,2023-05-25,0,0,-2,Sales of Product,Sales,2023-5-26 4-49-53, 
+2300002.0,10019000,VCA Laser,2023-05-25,0,0.0,-1,Sales of Product,Sales,2023-5-26 4-49-53,Deleted
+2300002.0,10019001,VCA Leaser Hand Piece,2023-05-25,0,0.0,-3,Sales of Product,Sales,2023-5-26 4-49-53,Deleted
+2300002.0,10015000,Mickcara,2023-05-25,0,0.0,-2,Sales of Product,Sales,2023-5-26 4-49-53,Deleted
+2300002.0,10016000,My Ultrasonic,2023-05-25,0,0.0,-5,Sales of Product,Sales,2023-5-26 4-49-53,Deleted
+2300002.0,10017000,SPA Slim,2023-05-25,0,0.0,-2,Sales of Product,Sales,2023-5-26 4-49-53,Deleted
+2300003,10001000,Microneedling RF,2023-05-25,0,0,-1,Sales of Product,Sales,2023-5-26 4-51-24, 
+2300003,10001001,Microneedling RF - HandPiece,2023-05-25,0,0,-2,Sales of Product,Sales,2023-5-26 4-51-24, 
+2300003,10002000,Diode Laser Hair Removal Device,2023-05-25,0,0,-1,Sales of Product,Sales,2023-5-26 4-51-24, 
+2300003,10003000,Portable Diode Laser Hair Removal Equipment,2023-05-25,0,0,-1,Sales of Product,Sales,2023-5-26 4-51-24, 
+2300003,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,2023-05-25,0,0,-2,Sales of Product,Sales,2023-5-26 4-51-24, 
+2300003,10004000,RF Fractional CO2 Laser,2023-05-25,0,0,-1,Sales of Product,Sales,2023-5-26 4-51-24, 
+2300003,10004001,RF Fractional CO2 Laser - Handpiece,2023-05-25,0,0,-1,Sales of Product,Sales,2023-5-26 4-51-24, 
+2300003,10004002,RF Fractional CO2 Laser - Accessories,2023-05-25,0,0,-3,Sales of Product,Sales,2023-5-26 4-51-24, 
+2300003.0,10001000,Microneedling RF,2023-05-25,0,0.0,-1,Sales of Product,Sales,2023-5-26 4-51-24,Deleted
+2300003.0,10001001,Microneedling RF - HandPiece,2023-05-25,0,0.0,-2,Sales of Product,Sales,2023-5-26 4-51-24,Deleted
+2300003.0,10002000,Diode Laser Hair Removal Device,2023-05-25,0,0.0,-1,Sales of Product,Sales,2023-5-26 4-51-24,Deleted
+2300003.0,10003000,Portable Diode Laser Hair Removal Equipment,2023-05-25,0,0.0,-1,Sales of Product,Sales,2023-5-26 4-51-24,Deleted
+2300003.0,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,2023-05-25,0,0.0,-2,Sales of Product,Sales,2023-5-26 4-51-24,Deleted
+2300003.0,10004000,RF Fractional CO2 Laser,2023-05-25,0,0.0,-1,Sales of Product,Sales,2023-5-26 4-51-24,Deleted
+2300003.0,10004001,RF Fractional CO2 Laser - Handpiece,2023-05-25,0,0.0,-1,Sales of Product,Sales,2023-5-26 4-51-24,Deleted
+2300003.0,10004002,RF Fractional CO2 Laser - Accessories,2023-05-25,0,0.0,-3,Sales of Product,Sales,2023-5-26 4-51-24,Deleted
+2300001,10001000,Microneedling RF,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 16-17-18, 
+2300001,10001001,Microneedling RF - HandPiece,2023-05-26,0,0,-2,Sales of Product,Sales,2023-5-26 16-17-18, 
+2300001,10002000,Diode Laser Hair Removal Device,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 16-17-18, 
+2300001,10003000,Portable Diode Laser Hair Removal Equipment,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 16-17-18, 
+2300001,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,2023-05-26,0,0,-2,Sales of Product,Sales,2023-5-26 16-17-18, 
+2300001,10004000,RF Fractional CO2 Laser,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 16-17-18, 
+2300001,10004001,RF Fractional CO2 Laser - Handpiece,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 16-17-18, 
+2300001,10004002,RF Fractional CO2 Laser - Accessories,2023-05-26,0,0,-3,Sales of Product,Sales,2023-5-26 16-17-18, 
+2300002,10007000,Crio Lipo,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 16-17-42, 
+2300002,10008001,DeodLeaser Hand Piece,2023-05-26,0,0,-4,Sales of Product,Sales,2023-5-26 16-17-42, 
+2300002,10008000,DeodLeaser,2023-05-26,0,0,-2,Sales of Product,Sales,2023-5-26 16-17-42, 
+2300001.0,10001000,Microneedling RF,2023-05-26,0,0.0,-1,Sales of Product,Sales,2023-5-26 16-17-18,Deleted
+2300001.0,10001001,Microneedling RF - HandPiece,2023-05-26,0,0.0,-2,Sales of Product,Sales,2023-5-26 16-17-18,Deleted
+2300001.0,10002000,Diode Laser Hair Removal Device,2023-05-26,0,0.0,-1,Sales of Product,Sales,2023-5-26 16-17-18,Deleted
+2300001.0,10003000,Portable Diode Laser Hair Removal Equipment,2023-05-26,0,0.0,-1,Sales of Product,Sales,2023-5-26 16-17-18,Deleted
+2300001.0,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,2023-05-26,0,0.0,-2,Sales of Product,Sales,2023-5-26 16-17-18,Deleted
+2300001.0,10004000,RF Fractional CO2 Laser,2023-05-26,0,0.0,-1,Sales of Product,Sales,2023-5-26 16-17-18,Deleted
+2300001.0,10004001,RF Fractional CO2 Laser - Handpiece,2023-05-26,0,0.0,-1,Sales of Product,Sales,2023-5-26 16-17-18,Deleted
+2300001.0,10004002,RF Fractional CO2 Laser - Accessories,2023-05-26,0,0.0,-3,Sales of Product,Sales,2023-5-26 16-17-18,Deleted
+2300002.0,10007000,Crio Lipo,2023-05-26,0,0.0,-1,Sales of Product,Sales,2023-5-26 16-17-42,Deleted
+2300002.0,10008001,DeodLeaser Hand Piece,2023-05-26,0,0.0,-4,Sales of Product,Sales,2023-5-26 16-17-42,Deleted
+2300002.0,10008000,DeodLeaser,2023-05-26,0,0.0,-2,Sales of Product,Sales,2023-5-26 16-17-42,Deleted
+2300001,10001000,Microneedling RF,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 17-9-55, 
+2300001,10001001,Microneedling RF - HandPiece,2023-05-26,0,0,-2,Sales of Product,Sales,2023-5-26 17-9-55, 
+2300001,10002000,Diode Laser Hair Removal Device,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 17-9-55, 
+2300001,10003000,Portable Diode Laser Hair Removal Equipment,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 17-9-55, 
+2300001,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,2023-05-26,0,0,-2,Sales of Product,Sales,2023-5-26 17-9-55, 
+2300001,10004000,RF Fractional CO2 Laser,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 17-9-55, 
+2300001,10004001,RF Fractional CO2 Laser - Handpiece,2023-05-26,0,0,-1,Sales of Product,Sales,2023-5-26 17-9-55, 
+2300001,10004002,RF Fractional CO2 Laser - Accessories,2023-05-26,0,0,-3,Sales of Product,Sales,2023-5-26 17-9-55, 
+2300002,10019001,VCA Leaser Hand Piece,2023-05-15,0,0,-2,Sales of Product,Sales,2023-5-26 17-10-9, 
+2300002,10018008,SVTA Radio Hand Pice 8,2023-05-15,0,0,-4,Sales of Product,Sales,2023-5-26 17-10-9, 
+2300002,10018006,SVTA Radio Hand Pice 6,2023-05-15,0,0,-3,Sales of Product,Sales,2023-5-26 17-10-9, 
+2300002,10018004,SVTA Radio Hand Pice 4,2023-05-15,0,0,-2,Sales of Product,Sales,2023-5-26 17-10-9, 
+2300002,10018001,SVTA Radio Hand Pice 1,2023-05-15,0,0,-5,Sales of Product,Sales,2023-5-26 17-10-9, 
+2300003,10019000,VCA Laser,2023-05-15,0,0,-1,Sales of Product,Sales,2023-5-26 17-10-17, 
+2300003,10019001,VCA Leaser Hand Piece,2023-05-15,0,0,-3,Sales of Product,Sales,2023-5-26 17-10-17, 
+2300003,10015000,Mickcara,2023-05-15,0,0,-2,Sales of Product,Sales,2023-5-26 17-10-17, 
+2300003,10016000,My Ultrasonic,2023-05-15,0,0,-5,Sales of Product,Sales,2023-5-26 17-10-17, 
+2300003,10017000,SPA Slim,2023-05-15,0,0,-2,Sales of Product,Sales,2023-5-26 17-10-17, 
+2300004,10004000,RF Fractional CO2 Laser,2023-05-01,0,0,-1,Sales of Product,Sales,2023-5-26 17-10-35, 
+2300004,10004001,RF Fractional CO2 Laser - Handpiece,2023-05-01,0,0,-3,Sales of Product,Sales,2023-5-26 17-10-35, 
+2300004,10004002,RF Fractional CO2 Laser - Accessories,2023-05-01,0,0,-4,Sales of Product,Sales,2023-5-26 17-10-35, 
+2300004,10005000,Bruun Mci,2023-05-01,0,0,-1,Sales of Product,Sales,2023-5-26 17-10-35, 
+2300004,10006000,Caviation Laser,2023-05-01,0,0,-1,Sales of Product,Sales,2023-5-26 17-10-35, 
+2300004,10007000,Crio Lipo,2023-05-01,0,0,-1,Sales of Product,Sales,2023-5-26 17-10-35, 

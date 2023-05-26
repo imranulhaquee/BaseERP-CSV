@@ -47,7 +47,7 @@
                 <a href="/sDeliveryAdd"> <span class="open-modal bBtn bAdd" onclick="addPopup()"> ✚ New </span> </a>
                 <img src="static/JAVA/Images/Icon/setup.png" alt="" style="position:relative; top:4px; width:20px">
                 <span class="mBtn">☰</span> 
-                <img src="static/JAVA/Images/Icon/refresh.png" alt="" style="position:relative; top:4px; width:20px; cursor:pointer;">
+                <img src="static/JAVA/Images/Icon/refresh.png" alt="" onclick="dataSync()" style="position:relative; top:4px; width:20px; cursor:pointer;">
             </div>
         </div>
         <div class="tDiv">
@@ -142,7 +142,7 @@
                     <td style="text-align:left; padding-left:15px;">${e.opnClo}</td>
                     <td style="text-align:center">
                         <a style="margin-right: 1px;" href="/sDeliveryEdit/${e.dlRef}"><button class="open-modalB mBtn" > <img src="static/JAVA/Images/Icon/edit.png" alt="" style=" width:15px; cursor:pointer"> </button></a>
-                        <a style="margin-right: 1px;" href="/sQuotPdf?query_name= ${e.dlRef}"><button class="open-modalB mBtn" > <img src="static/JAVA/Images/Icon/history1.png" alt="" style=" width:15px; cursor:pointer"> </button></a>
+                        <a style="margin-right: 1px;" href="/sDeliveryPdf?query_name= ${e.dlRef}"><button class="open-modalB mBtn" > <img src="static/JAVA/Images/Icon/history1.png" alt="" style=" width:15px; cursor:pointer"> </button></a>
                         <button class="open-modal mBtn" onclick="delRecrod(this)"> <img src="static/JAVA/Images/Icon/trash.png" alt="" style=" width:15px; cursor:pointer"> </button>
                     </td>
                     </tr>`
@@ -218,6 +218,19 @@
 
     //--===================== Filter Records ===================== // End -->
 
+
+    //▒▒▒▒▒▒ Refresh Excel File ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+        async function dataSync(){
+            const response = await fetch(`${basInfo.IP[0]}/syncDelivery`)
+            const data = await response.json()
+            finalData = data  //when call showRecord() function data will save in finalData
+            temData = finalData
+            alert('Data Synchronized Successfully......')
+            console.log(temData)
+        }
+
+    //▒▒▒▒▒▒ Refresh Excel File ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
 
 

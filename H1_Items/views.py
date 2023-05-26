@@ -399,26 +399,67 @@ def sItemLedger(request):
 
 def sItemLedgerURL(request, pk):
     pk = int(pk)
-    queryBasic = f'SELECT * FROM "H1_Items_itmLedger" WHERE itmCode = "{pk}"'
-    #queryBasic = f'SELECT * FROM "H1_Items_itmLedger" WHERE itmCode = {pk}'
-    ledger = pd.read_sql(queryBasic, con=engine)
+    
 
-    ledger['traDat'] = pd.to_datetime(ledger['traDat'])
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 2. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/H1_Items/Items/ItemMovement.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna(0)
+
+
+    #pk = 1900
+    df = df[df['itmCode'] == pk]
+    df['traDat'] = pd.to_datetime(df['traDat']).dt.strftime('%Y-%m-%d')
+    ledger = df
     ledger = ledger.sort_values('traDat')  # Sort by date in ascending order
-    ledger['traDat'] = ledger['traDat'].astype(str)
 
-    ledger['costTOT'] = ledger['costPU'] * ledger['qtyTOT']
+    ### Remove Duplicate Quote and Deleted Record...
+    ledger = ledger.drop_duplicates(subset=['id'], keep='last')
+    ledger = ledger.drop(ledger.loc[ledger['action']=='Deleted'].index)
+
+    ledger['totCost'] = ledger['costPU'] * ledger['qtyTOT']
     ledger['cumQty'] = ledger['qtyTOT'].cumsum()
-    ledger['totValue'] = ledger['costTOT'].cumsum()
-    ledger['WAC'] = ledger['totValue'] / ledger['cumQty']
-    ledger['WAC'] = ledger['WAC'].replace(np.inf, 0)
 
-    Data = ledger.to_dict(orient="records")     
 
-    #(Supplier Main Page)
-    context = {'Data': Data }
+  ### Step 2. to Calculate Horizontal - through iterrows ---------------------
+  ### ========================================================================
+    wac_list = []
+    for index, row in ledger.iterrows():
+        if row['Remarks'] == 'Balance':
+            wac = row['costPU']
+        elif row['Remarks'] == 'Purchase':
+            wac = ((wac_list[-1] * (row['cumQty']-row['qtyTOT'])) + (row['totCost']))/ (row['cumQty'])
+        elif row['Remarks'] == 'Sales':
+            wac = (((wac_list[-1] * (row['cumQty']-row['qtyTOT'])) + (row['totCost'])) + (row['qtyTOT'] * wac_list[-1])) / (row['cumQty'])
+        else:
+            wac = 0
+        wac_list.append(wac)
+
+    ledger['WAC'] = wac_list
+
+
+  ### Step 3. Change Transaction date format--- ------------------------------
+  ### ========================================================================
+    ledger['Balance'] = ledger['WAC']*ledger['cumQty']
+
+    ledger.loc[ledger['Remarks'] == 'Sales', 'totCost'] = ledger.loc[ledger['Remarks'] == 'Sales', 'qtyTOT'] * ledger.loc[ledger['Remarks'] == 'Sales', 'WAC']
+    ledger['costPU'] = ledger['totCost'] / ledger['qtyTOT']
+
+    ledgerA = ledger[['itmCode','itmName','traDat','desc','costPU','qtyTOT','totCost','cumQty','WAC','Balance']]
+
+    Data = ledgerA.to_dict(orient="records")
 
     return JsonResponse(Data, safe=False) 
+
+
+
 
 #☰☰☰ UPLOAD ITEMS MASTER DATA ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
 

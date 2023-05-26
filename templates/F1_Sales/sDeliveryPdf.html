@@ -1,0 +1,308 @@
+{% load static%}
+{% load humanize %}  <!--for Number formating-->
+
+<!--  <pdf:nextpage> -->
+<html>
+  <head>
+      <meta charset='utf-8'>
+  </head>
+  <body margin-left="30px;">
+
+      <style>
+          #myTable {
+              border: 0.5px solid lightgray;
+              padding: 5px 5px 0px 5px;
+          }
+      </style>
+
+      <br><br>
+
+      <!--=== INVOICE HEADING============================================-->
+      <table style="width:100%;">
+          <tr>
+              <th style="text-align:left;">  <img class="imga2" src="static/Java/Images/Logo/clientLogo.png" width="200"  alt="graph"></th>
+              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Delivery Note </th>
+          </tr>
+          <tr><th style="color:white; font-size:25px;">.</th><th style="color:white">.</th></tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px">  Delivery #: <span style="font-weight:100"> {{ dlBasi.0.dlRef}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">   Order #:  <span style="font-weight:100"> {{ dlBasi.0.soRef}} </span></th>
+          </tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px"> Delivery Date: <span style="font-weight:100"> {{dlBasi.0.dlDat}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">  Order Date;  <span style="font-weight:100"> {{dlBasi.0.soDat}} </span></th>
+          </tr>
+          <tr><th style="color:white; font-size:15px;">.</th><th style="color:white">.</th></tr>
+          <tr>
+              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{dlBasi.0.cusName}} </span></th>
+              <th style=" text-align:right; font-size:12px;">  </th>
+          </tr>
+      </table>
+
+      <br><br>
+      <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Delivery Items </div>
+      <br>
+
+      <!--===ITEM TABLE 1 to 15 ========================================-->
+      <table id="myTable" style="text-align:right; border-bottom:1px solid gray">
+        <tbody>
+          <tr style="background:lightgray; font-size:12px; font-weight:bold;">
+            <th style="text-align:left">S.No.</th>
+            <th colspan="2" style="text-align:left" >Item Code</th> 
+            <th colspan="4" style="text-align:left">Description</th>
+            <th colspan="1" style="text-align:right">Qty</th>
+            <th colspan="2" style="text-align:right">Price</th>
+            <th colspan="2" style="text-align:right">Discount</th>
+            <th colspan="2" style="text-align:right">Total</th>
+          </tr>
+          {% for obj in dlAddi %}
+            {% if forloop.counter <= 15 %}
+              <tr>
+                <td style="text-align:left">{{ obj.sno }}<br></td>
+                <td colspan="2" style="text-align:left">{{ obj.itmCod }}</td>
+                <td colspan="4" style="text-align:left">{{ obj.desc }}</td>
+                <td colspan="1">{{ obj.qty|floatformat:0|intcomma }}</td>
+                <td colspan="2">{{ obj.price|floatformat:0|intcomma }}</td>
+                <td colspan="2">{{ obj.disc|floatformat:0|intcomma }}</td>
+                <td colspan="2">{{ obj.tot|floatformat:0|intcomma }}</td> 
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+      <div style="text-align:right;border:none;">Page - 1 </div>
+      
+
+      <!--===ITEM TABLE 16 to 30 ========================================-->
+      {% if dlAddi|length > 15 %}
+        <pdf:nextpage>
+        <br><br><br><br>
+        <table style="width:100%;">
+          <tr>
+              <th style="text-align:left;">  <img class="imga2" src="static/Java/Images/Logo/clientLogo.png" width="200"  alt="graph"></th>
+              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Delivery Note </th>
+          </tr>
+          <tr><th style="color:white; font-size:25px;">.</th><th style="color:white">.</th></tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px">  Delivery #: <span style="font-weight:100"> {{ dlBasi.0.dlRef}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">   Order #:  <span style="font-weight:100"> {{ dlBasi.0.soRef}} </span></th>
+          </tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px"> Delivery Date: <span style="font-weight:100"> {{dlBasi.0.dlDat}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">  Order Date;  <span style="font-weight:100"> {{dlBasi.0.soDat}} </span></th>
+          </tr>
+          <tr><th style="color:white; font-size:15px;">.</th><th style="color:white">.</th></tr>
+          <tr>
+              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{dlBasi.0.cusName}} </span></th>
+              <th style=" text-align:right; font-size:12px;">  </th>
+          </tr>
+      </table>
+
+      <br><br>
+      <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Delivery Items </div>
+      <br>
+
+
+          <table id="myTable" style="text-align:right; border-bottom:1px solid gray">
+            <tr style="background:lightgray; font-size:12px; font-weight:bold;">
+              <th style="text-align:left">S.No.</th>
+              <th colspan="2" style="text-align:left" >Item Code</th> 
+              <th colspan="4" style="text-align:left">Description</th>
+              <th colspan="1" style="text-align:right">Qty</th>
+              <th colspan="2" style="text-align:right">Price</th>
+              <th colspan="2" style="text-align:right">Discount</th>
+              <th colspan="2" style="text-align:right">Total</th>
+            </tr>
+            {% for obj in dlAddi %}
+              {% if forloop.counter >= 16 and forloop.counter <= 30 %}
+                <tr>
+                  <td style="text-align:left">{{ obj.sno }}<br></td>
+                  <td colspan="2" style="text-align:left">{{ obj.itmCod }}</td>
+                  <td colspan="4" style="text-align:left">{{ obj.desc }}</td>
+                  <td colspan="1">{{ obj.qty|floatformat:0|intcomma }}</td>
+                  <td colspan="2">{{ obj.price|floatformat:0|intcomma }}</td>
+                  <td colspan="2">{{ obj.disc|floatformat:0|intcomma }}</td>
+                  <td colspan="2">{{ obj.tot|floatformat:0|intcomma }}</td> 
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </table>
+          <div style="text-align:right;border:none;">Page - 2 </div>
+      {% endif %}
+
+
+      <!--===ITEM TABLE 31 to 45 ========================================-->
+      {% if dlAddi|length > 30 %}
+        <pdf:nextpage>
+        <br><br><br><br>
+        <table style="width:100%;">
+          <tr>
+              <th style="text-align:left;">  <img class="imga2" src="static/Java/Images/Logo/clientLogo.png" width="200"  alt="graph"></th>
+              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Delivery Note </th>
+          </tr>
+          <tr><th style="color:white; font-size:25px;">.</th><th style="color:white">.</th></tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px">  Delivery #: <span style="font-weight:100"> {{ dlBasi.0.dlRef}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">   Order #:  <span style="font-weight:100"> {{ dlBasi.0.soRef}} </span></th>
+          </tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px"> Delivery Date: <span style="font-weight:100"> {{dlBasi.0.dlDat}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">  Order Date;  <span style="font-weight:100"> {{dlBasi.0.soDat}} </span></th>
+          </tr>
+          <tr><th style="color:white; font-size:15px;">.</th><th style="color:white">.</th></tr>
+          <tr>
+              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{dlBasi.0.cusName}} </span></th>
+              <th style=" text-align:right; font-size:12px;">  </th>
+          </tr>
+      </table>
+
+      <br><br>
+      <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Delivery Items </div>
+      <br>
+
+
+        <table id="myTable" style="text-align:right; border-bottom:1px solid gray">
+          <tr style="background:lightgray; font-size:12px; font-weight:bold;">
+            <th style="text-align:left">S.No.</th>
+            <th colspan="2" style="text-align:left" >Item Code</th> 
+            <th colspan="4" style="text-align:left">Description</th>
+            <th colspan="1" style="text-align:right">Qty</th>
+            <th colspan="2" style="text-align:right">Price</th>
+            <th colspan="2" style="text-align:right">Discount</th>
+            <th colspan="2" style="text-align:right">Total</th>
+          </tr>
+          {% for obj in dlAddi %}
+            {% if forloop.counter >= 31 and forloop.counter <= 45 %}
+              <tr>
+                <td style="text-align:left">{{ obj.sno }}<br></td>
+                <td colspan="2" style="text-align:left">{{ obj.itmCod }}</td>
+                <td colspan="4" style="text-align:left">{{ obj.desc }}</td>
+                <td colspan="1">{{ obj.qty|floatformat:0|intcomma }}</td>
+                <td colspan="2">{{ obj.price|floatformat:0|intcomma }}</td>
+                <td colspan="2">{{ obj.disc|floatformat:0|intcomma }}</td>
+                <td colspan="2">{{ obj.tot|floatformat:0|intcomma }}</td> 
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </table>
+        <div style="text-align:right;border:none;">Page - 3 </div>
+      {% endif %}
+
+
+      <!--===ITEM TABLE 46 to onward ========================================-->
+      {% if dlAddi|length > 45 %}
+        <pdf:nextpage>
+        <br><br><br><br>
+        <table style="width:100%;">
+          <tr>
+              <th style="text-align:left;">  <img class="imga2" src="static/Java/Images/Logo/clientLogo.png" width="200"  alt="graph"></th>
+              <th style=" text-align:right; font-size:23px; font-weight:bold; color:#005596"><span style="color:orange;">|</span> Delivery Note </th>
+          </tr>
+          <tr><th style="color:white; font-size:25px;">.</th><th style="color:white">.</th></tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px">  Delivery #: <span style="font-weight:100"> {{ dlBasi.0.dlRef}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">   Order #:  <span style="font-weight:100"> {{ dlBasi.0.soRef}} </span></th>
+          </tr>
+          <tr>
+            <th id="qotRef" style=" text-align:left; font-size:12px"> Delivery Date: <span style="font-weight:100"> {{dlBasi.0.dlDat}}  </span></th>
+            <th style=" text-align:right; font-size:12px;">  Order Date;  <span style="font-weight:100"> {{dlBasi.0.soDat}} </span></th>
+          </tr>
+          <tr><th style="color:white; font-size:15px;">.</th><th style="color:white">.</th></tr>
+          <tr>
+              <th style=" text-align:left; font-size:12px">  Customer Name <br> <span style="font-weight:100"> {{dlBasi.0.cusName}} </span></th>
+              <th style=" text-align:right; font-size:12px;">  </th>
+          </tr>
+      </table>
+
+      <br><br>
+      <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Delivery Items </div>
+      <br>
+
+
+        <table id="myTable" style="text-align:right; border-bottom:1px solid gray">
+          <tr style="background:lightgray; font-size:12px; font-weight:bold;">
+            <th style="text-align:left">S.No.</th>
+            <th colspan="2" style="text-align:left" >Item Code</th> 
+            <th colspan="4" style="text-align:left">Description</th>
+            <th colspan="1" style="text-align:right">Qty</th>
+            <th colspan="2" style="text-align:right">Price</th>
+            <th colspan="2" style="text-align:right">Discount</th>
+            <th colspan="2" style="text-align:right">Total</th>
+          </tr>
+          {% for obj in dlAddi %}
+            {% if forloop.counter >= 46 and forloop.counter <= 200 %}
+              <tr>
+                <td style="text-align:left">{{ obj.sno }}<br></td>
+                <td colspan="2" style="text-align:left">{{ obj.itmCod }}</td>
+                <td colspan="4" style="text-align:left">{{ obj.desc }}</td>
+                <td colspan="1">{{ obj.qty|floatformat:0|intcomma }}</td>
+                <td colspan="2">{{ obj.price|floatformat:0|intcomma }}</td>
+                <td colspan="2">{{ obj.disc|floatformat:0|intcomma }}</td>
+                <td colspan="2">{{ obj.tot|floatformat:0|intcomma }}</td> 
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </table>
+        <div style="text-align:right;border:none;">Page - 4 </div>
+      {% endif %}
+
+
+
+      <br><br>
+      <!--=== INVOICE TOTAL ============================================-->  
+      <table style="width:100%; padding:2px;">
+          <tr>
+              <th colspan="3" style="text-align:left;"> </th>
+              <th colspan="2" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> Total Before Discount : AED </th>
+              <th colspan="1" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> {{ dlBasi.0.dlTBD|floatformat:0|intcomma }}  </th>
+          </tr>
+          <tr>
+              <th colspan="3" style="text-align:left;"> </th>
+              <th colspan="2" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> Total After Discount : AED </th>
+              <th colspan="1" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> {{dlBasi.0.dlTAD|floatformat:0|intcomma}} </th>
+          </tr>
+          <tr>
+              <th colspan="3" style="text-align:left;"> </th>
+              <th colspan="2" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> Total Tax Amount : AED </th>
+              <th colspan="1" style=" text-align:right; font-size:12px; font-weight:100px; color:#005596"> {{dlBasi.0.dlTax|floatformat:0|intcomma}} </th>
+          </tr>
+          <tr>
+              <th colspan="3" style="text-align:left;"> </th>
+              <th colspan="2" style=" text-align:right; font-size:13px; font-weight:100px; color:#005596"> Total After Tax : AED </th>
+              <th colspan="1" style=" text-align:right; font-size:13px; font-weight:100px; color:#005596"> {{dlBasi.0.dlTAT|floatformat:0|intcomma}} </th>
+          </tr>
+      </table>
+
+      <br><br>
+      <div style=" text-align:left; font-size:15px; font-weight:bold; color:#005596; border-bottom:1px solid gray;"> Order Delivery Details </div>
+      <br>
+      
+      
+
+      <table style="width:100%; padding:2px;">
+
+          <tr>
+              <th colspan="2"  style="text-align:left; font-size:12px;"> Ship To </th>
+              <th style="text-align:left;"> </th>
+              <th colspan="3" style="text-align:right; font-size:12px;"> Comments</th>
+          </tr>
+
+          <tr>
+              <th colspan="2"  style=" border: 0.5px solid gray; text-align:left; font-size:12px; font-weight:100px;"> {{dlBasi.0.shipTo}} </th>
+              <th style="text-align:left;"> <br><br><br><br><br> </th>
+              <th colspan="3" style=" border: 0.5px solid gray; text-align:left; font-size:12px; font-weight:100px;background:#f5f3f2"> {{dlBasi.0.dlComm}}</th>
+          </tr>
+
+          <tr> <th> </th> </tr>
+          <tr> <th> </th> </tr>
+
+          <tr> <th colspan="5" style="text-align:left; font-size:15px; font-weight:bold; color:#005596;"> Contect Person: 
+                  <span style="font-size:13px; font-weight:100; color:black;"> {{dlBasi.0.spName}} </span>
+                  <span style="font-size:13px; font-weight:100; color:black;">>> enquiry@ecolab.com </span>
+                  <span style="font-size:13px; font-weight:100; color:black;">>> +971 50 4681561 </span>
+              </th> 
+          </tr>
+      </table>
+
+  </body>
+</html>

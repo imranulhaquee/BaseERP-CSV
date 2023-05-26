@@ -19,7 +19,7 @@
 
 
 <!--====================== TABLE ================================= //Start-->
-    <div class="conA">
+    <div class="conA" style="padding:50px 100px;">
         <div class="topBar" >
             <div style="position:relative"> 
                 <span class="Search">
@@ -64,18 +64,21 @@
                 <img src="static/JAVA/Images/Icon/qMark1.png" alt="" onclick="supRefresh()" style="position:relative; top:4px; width:20px; cursor:pointer;">
             </div>
         </div>
+
+        <span id="ledNo">. </span>
+        <span id="ledName">. </span>
         <div class="tDiv">
-            <table id="Table">
+            <table id="Table" >
                 <tr class="topLine" >
                     <th style="display:none"></th>
-                    <th>Code</th>
-                    <th>Item Name</th>
-                    <th>Transactions Date</th>
+                    <th style="width:100px;" >Date</th>
                     <th>Description</th>
-                    <th>Quantity</th>
-                    <th>Cum. Qty</th>
-                    <th>Total Value</th>
-                    <th></th>
+                    <th style="text-align:right;width:100px;">Cost PU</th>
+                    <th style="text-align:right;width:70px;">Qty</th>
+                    <th style="text-align:right;width:120px;">Total Cost</th>
+                    <th style="text-align:right;width:70px;">Cum.Qty</th>
+                    <th style="text-align:right;width:100px;">WAC</th>
+                    <th style="text-align:right;width:100px;">Balance</th>
                 </tr>
                 <tbody id="tableBody">
                 </tbody>
@@ -106,8 +109,6 @@
     //const myCom = document.querySelector(".basCo").innerHTML = basInfo.Company[0]
 
 
-    //let ledgerData = {{Data|safe}}
-    //console.log(ledgerData)
 
     //======================Show Records ========================== //Start-->
         let finalData = []
@@ -118,7 +119,7 @@
         async function renderTable(Id) {
             const response = await fetch(`${basInfo.IP[0]}/sItemLedgerURL/${Id}`)
             const data = await response.json()
-            //console.log(data)
+            console.log(data)
             dataTable(data)
         }
 
@@ -135,7 +136,10 @@
 
         //----Render Table ------------------------------------
         function dataTable(Data){
-            //console.log(Data)
+
+            document.getElementById("ledNo").innerHTML = Data[0].itmCode
+            document.getElementById("ledName").innerHTML = Data[0].itmName
+
             //show number of item     
             let tItem = document.querySelector(".tItem").innerHTML = Data.length
 
@@ -147,20 +151,16 @@
         
             var table = document.getElementById('tableBody').innerHTML=` ${fD.map(itmList).join('')}`
             function itmList (e){
-                return`<tr>
-                    <td style="display:none">${e.id}</td> 
-                    <td style="height: 40px; color:#600360;">${e.itmCode} </td>
-                    <td>${e.itmName} </td>
-                    <td>${e.traDat}</td>
+                return`<tr style="font-size:13px">
+                    <td style="display:none;min-height:25px;">${e.id}</td> 
+                    <td style="height:25px">${e.traDat}</td>
                     <td>${e.desc}</td>
-                    <td>${e.qtyTOT}</td>
-                    <td>${e.cumQty}</td>
-                    <td>${e.totValue}</td>  
-
-                    <td style="text-align:center">
-                        <button class="open-modal mBtn" onclick="delRecrod(this)"> <img src="static/JAVA/Images/Icon/trash.png" alt="" style=" width:15px; cursor:pointer"> </button>
-                        <a style="margin-right: 30px;" href="/aEditItem/${e.id}"><button class="open-modalB mBtn" > <img src="static/JAVA/Images/Icon/edit.png" alt="" style=" width:15px; cursor:pointer"> </button></a>
-                    </td>
+                    <td style="text-align:right;">${e.costPU.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>  
+                    <td style="text-align:right;">${e.qtyTOT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td style="text-align:right;">${e.totCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>  
+                    <td style="text-align:right;">${e.cumQty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td style="text-align:right;">${e.WAC.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                    <td style="text-align:right;">${e.Balance.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>  
                     </tr>`
             }
             var cp = currentPage
@@ -300,7 +300,7 @@
 
 
 
-  </script>
+</script>
 
 
 
@@ -387,7 +387,7 @@
         }
         .word{
             position:absolute;
-            width: min(max(150px, 17vw), 180px);
+            width: min(max(130px, 17vw), 130px);
             top: 10px;
             left: 40%;
         }

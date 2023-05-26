@@ -104,7 +104,7 @@
 								<th></th>
 								<th></th>
 								<th>sno</th>
-								<th>itmCode</th>
+								<th>itmCod</th>
 								<th>desc</th>
 								<th>qty</th>
 								<th>price</th>
@@ -188,7 +188,7 @@
 						<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
 							<div style="min-width:120px;">Sales Person </div>
 							<div><input type="text" id="spName" name="spName" style="min-width:220px;" disabled=true></div>
-							<div style="display:none"><input type="text" id="salPer" name="salPer" style="min-width:220px;"></div>
+							<div style="display:none"><input type="text" id="spCode" name="spCode" style="min-width:220px;"></div>
 							
 							<p1 onclick="showPop_S()" style="position:absolute; top:0; right:0; color:orange; font-weight:bold; cursor:pointer" >☰</p1>
 		
@@ -243,29 +243,33 @@
 			
 			//.... Get Data while Loading the Page  ...................................
 				let oBasic ={{dlBasic|safe}}
-				let oBasicOrder = (oBasic)
+				let dataBaic = (oBasic[0])
 
 				let oAddi ={{dlAddiItems|safe}}
 				let befAddi = oAddi // data before adjustments 
 
 			//.... Get Data while Loading the Page  ...................................
 
+				console.log(dataBaic)
+				console.log(befAddi)
+
+
 			//■■■■■ Get Quotation next Number and Current Date■■■■■■■■■■■■■■■■■■■■■■■■
-				document.querySelector('#dlRef').value = oBasic.dlRef;
-				document.querySelector("#dlDat").value = oBasic.dlDat;
-				document.querySelector('#soRef').value = oBasic.soRef;
-				document.querySelector("#soDat").value = oBasic.soDat;
-				document.querySelector("#cusCode").value = oBasic.cusCode;
-				document.querySelector("#cusName").value = oBasic.cusName;
-				document.querySelector("#dlTBD").value = oBasic.dlTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#dlTAD").value = oBasic.dlTAD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#dlTax").value = oBasic.dlTax.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#dlTAT").value = oBasic.dlTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.querySelector("#dlComm").value = oBasic.dlComm;
-				document.querySelector("#billTo").value = oBasic.shipTo;
-				document.querySelector("#shipTo").value = oBasic.shipTo;
-				document.querySelector("#salPer").value = oBasic.spCode;
-				document.querySelector("#spName").value = oBasic.spName;
+				document.querySelector('#dlRef').value = dataBaic.dlRef;
+				document.querySelector("#dlDat").value = dataBaic.dlDat;
+				document.querySelector('#soRef').value = dataBaic.soRef;
+				document.querySelector("#soDat").value = dataBaic.soDat;
+				document.querySelector("#cusCode").value = dataBaic.cusCode;
+				document.querySelector("#cusName").value = dataBaic.cusName;
+				document.querySelector("#dlTBD").value = dataBaic.dlTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#dlTAD").value = dataBaic.dlTAD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#dlTax").value = dataBaic.dlTax.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#dlTAT").value = dataBaic.dlTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.querySelector("#dlComm").value = dataBaic.dlComm;
+				document.querySelector("#billTo").value = dataBaic.shipTo;
+				document.querySelector("#shipTo").value = dataBaic.shipTo;
+				document.querySelector("#spCode").value = dataBaic.spCode;
+				document.querySelector("#spName").value = dataBaic.spName;
 
 				//console.log(finalData)
 				var table = document.getElementById('tBody')
@@ -287,7 +291,7 @@
 								table.append(tr_clone);
 								var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
 								var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sno;
-								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCode;
+								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCod;
 								var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.desc;
 								var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.qty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.price.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
@@ -455,6 +459,16 @@
 		
 			//■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 			function tableToJson(table) {
+				
+				let currentDate = new Date();
+				const year = currentDate.getFullYear(); // get the current year
+				const month = currentDate.getMonth() + 1; // get the current month (Note: month is zero-indexed)
+				const day = currentDate.getDate(); // get the current day of the month
+				const hours = currentDate.getHours(); // get the current hour
+				const minutes = currentDate.getMinutes(); // get the current minute
+				const seconds = currentDate.getSeconds(); // get the current second
+				let CurDate = `${year}-${month}-${day} ${hours}-${minutes}-${seconds}`
+
 					var dataA = []
 					//first row needs to be headers
 					var headers = []; //if header contain code in second row means i=1
@@ -489,14 +503,15 @@
 					ShipTo = document.getElementById('shipTo').value;
 					DlComm = document.getElementById('dlComm').value;
 					SpName = document.getElementById('spName').value;
-					SalPer = document.getElementById('salPer').value;
+					SpCode = document.getElementById('spCode').value;
 					SoRef = document.getElementById('soRef').value;
 					SoDat = document.getElementById('soDat').value;
-					if (SalPer == '') {SalPer = 0;	}
+					if (SpCode == '') {SpCode = 0;	}
 					const basicData =  {  soRef:SoRef, soDat:SoDat, cusCode:CusCode, 
 																cusName:CusName, dlTBD:DlTBD, dlTAD:DlTAD, dlTax:DlTax,
 												 				dlTAT:DlTAT, shipTo:ShipTo,dlRef:DlRef, dlDat:DlDat, 
-																dlComm:DlComm, salPer:SalPer, spName:SpName };
+																dlComm:DlComm, spCode:SpCode, spName:SpName,
+																traDate:CurDate, action:"Edited" };
 
 					//Filter out Blank Rows
 					let data = dataA.filter(item => item.qty !== "0"); //remove the empty rows from prodeuct detail rows
@@ -593,7 +608,7 @@
 				document.getElementById('shipTo').value = ""
 				document.getElementById('billTo').value = ""
 				document.getElementById('dlComm').value = ""
-				document.getElementById('salPer').value = ""
+				document.getElementById('spCode').value = ""
 		
 				var table = document.getElementById("myTable");   
 				var rows = table.rows; // Get all rows in the table except the first 3 lines
@@ -1248,7 +1263,7 @@
 						let cName =clickVal2
 
 						document.querySelector('#spName').value = cName;
-						document.querySelector('#salPer').value = cID;
+						document.querySelector('#spCode').value = cID;
 
 						hidePop_S()
 						savDisable('No')
