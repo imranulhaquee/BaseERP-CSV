@@ -5,33 +5,31 @@ urlpatterns = [
     path('a1_hrmSetup', views.a1_hrmSetup, name='a1_hrmSetup'),
     path('a1_hrmSetupURL', views.a1_hrmSetupURL, name='a1_hrmSetupURL'),
 
-    path('aEmployeeModule', views.aEmployeeModule, name='aEmployeeModule'),
+    path('a3_EmployeeModule', views.a3_EmployeeModule, name='a3_EmployeeModule'),
     path('zUploadEmpData', views.zUploadEmpData, name='zUploadEmpData'),
-    
-    path('aEmployeeList', views.aEmployeeList, name='aEmployeeList'),
-    path('aEmpRefresh', views.aEmpRefresh, name='aEmpRefresh'),
-    path('showEmp', views.showEmp, name='showEmp'),
+
+
+    #═══ EMPLOYEE MASTER DATA ════════════════════════════════════════════
+    path('mEmpMasterList', views.mEmpMasterList, name='mEmpMasterList'),
+    path('mEmpMasterShow', views.mEmpMasterShow, name='mEmpMasterShow'),
+    path('syncEmpMaster', views.syncEmpMaster, name='syncEmpMaster'),
+    path('mEmpMasterAdd', views.mEmpMasterAdd, name='mEmpMasterAdd'),
+    path('mEmpMasterAddUrl', views.mEmpMasterAddUrl, name='mEmpMasterAddUrl'),
+    path('mEmpMasterEdit/<str:pk>/', views.mEmpMasterEdit , name='mEmpMasterEdit'),
+    path('mEmpMasterDelete/<str:pk>/', views.mEmpMasterDelete, name='mEmpMasterDelete'),
 
     path('empBasInfo', views.empBasInfo, name='empBasInfo'),
 
-    path('addEmployee', views.addEmployee, name='addEmployee'),
-    path('addEmpl', views.addEmpl, name='addEmpl'),
-    
-    path('editEmployee/<str:pk>/', views.editEmployee , name='editEmployee'),
-    path('editEmp', views.editEmp , name='editEmp'),
-
-    path('delEmp/<str:pk>/', views.delEmp, name='delEmp'),
-
-
-    #------- EMPLOYEE TARGET ---------------------------------------------
-    path('tEmpTarget', views.tEmpTarget, name='tEmpTarget'),
+    #═══ EMPLOYEE TARGET ═════════════════════════════════════════════════
+    path('tEmpTargetList', views.tEmpTargetList, name='tEmpTargetList'),
+    path('syncEmpTarget', views.syncEmpTarget, name='syncEmpTarget'),
+    path('tEmpTargetAdd', views.tEmpTargetAdd, name='tEmpTargetAdd'),
     path('tEmpTargetURL', views.tEmpTargetURL, name='tEmpTargetURL'), 
-    
-    path('tEmpTargetEdit', views.tEmpTargetEdit, name='tEmpTargetEdit'), 
-    path('tEmpTargetFetchURL/<str:pk>/', views.tEmpTargetFetchURL, name='tEmpTargetFetchURL'), 
+    path('tEmpTargetEdit/<str:pk>/', views.tEmpTargetEdit, name='tEmpTargetEdit'), 
+    path('tEmpTargetDelete/<str:pk>/', views.tEmpTargetDelete, name='tEmpTargetDelete'),
 
 
-    #------- EMPLOYEE SALARY ---------------------------------------------
+    #═══ EMPLOYEE SALARY ═════════════════════════════════════════════════
     path('empSalary', views.empSalary, name='empSalary'),
 
 

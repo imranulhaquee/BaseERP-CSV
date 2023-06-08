@@ -45,7 +45,7 @@
 
 					<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
 						<div style="min-width:120px;">Sales Person </div>
-						<div><input type="text" id="spName" name="spName" style="min-width:220px;" disabled=true></div>
+						<div><input type="text" id="spCName" name="spCName" style="min-width:220px;" disabled=true></div>
 					</div>
 				</div>
 			</div>
@@ -194,7 +194,7 @@
 				document.querySelector("#soDat").value = oBasic[0].qotDat;
 				document.querySelector("#cusCode").value = oBasic[0].cusCode;
 				document.querySelector("#cusName").value = oBasic[0].cusName;
-				document.querySelector("#spName").value = oBasic[0].spName;
+				document.querySelector("#spCName").value = oBasic[0].spCName;
 
 				//console.log(finalData)
 				var table = document.getElementById('tBody')
@@ -291,7 +291,7 @@
 				document.querySelector("#billTo").value = data[0].shipTo;
 				document.querySelector("#shipTo").value = data[0].shipTo;
 				document.querySelector("#salPer").value = data[0].salPer;
-				document.querySelector("#spName").value = data[0].spName;
+				document.querySelector("#spCName").value = data[0].spCName;
 
 
 				//console.log(finalData)
@@ -558,7 +558,7 @@
 					SoTAT = parseFloat(document.getElementById('soTAT').value.replace(/,/g, ''));
 					ShipTo = document.getElementById('shipTo').value;
 					SoComm = document.getElementById('soComm').value;
-					SpName = document.getElementById('spName').value;
+					spCName = document.getElementById('spCName').value;
 					SalPer = document.getElementById('salPer').value;
 					QotRef = document.getElementById('qotRef').value;
 					QotDat = document.getElementById('qotDat').value;
@@ -566,7 +566,7 @@
 					const basicData =  {  qotRef:QotRef, qotDat:QotDat, cusCode:CusCode, 
 																cusName:CusName, soTBD:SoTBD, soTAD:SoTAD, soTax:SoTax,
 												 				soTAT:SoTAT, shipTo:ShipTo,soRef:SoRef, soDat:SoDat, 
-																soComm:SoComm, salPer:SalPer, spName:SpName };
+																soComm:SoComm, salPer:SalPer, spCName:spCName };
 
 					//Filter out Blank Rows
 					let data = dataA.filter(item => item.qty !== "0"); //remove the empty rows from prodeuct detail rows
@@ -624,7 +624,7 @@
 					document.getElementById('shipTo').value = ""
 					document.getElementById('billTo').value = ""
 					document.getElementById('soComm').value = ""
-					document.getElementById('spName').value = ""
+					document.getElementById('spCName').value = ""
 			
 					var table = document.getElementById("myTable");   
 					var rows = table.rows; // Get all rows in the table except the first 3 lines

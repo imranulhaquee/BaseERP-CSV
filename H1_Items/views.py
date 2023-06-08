@@ -397,6 +397,7 @@ def sItemLedger(request):
     return render(request, 'H1_Items/sItemLedger.html', context)
 
 
+
 def sItemLedgerURL(request, pk):
     pk = int(pk)
     
@@ -432,6 +433,9 @@ def sItemLedgerURL(request, pk):
   ### ========================================================================
     wac_list = []
     for index, row in ledger.iterrows():
+        if row['cumQty'] == 0:  #if cumQty become 0 will give error to avoid the error
+          row['cumQty'] = 1
+    
         if row['Remarks'] == 'Balance':
             wac = row['costPU']
         elif row['Remarks'] == 'Purchase':
@@ -455,6 +459,71 @@ def sItemLedgerURL(request, pk):
     ledgerA = ledger[['itmCode','itmName','traDat','desc','costPU','qtyTOT','totCost','cumQty','WAC','Balance']]
 
     Data = ledgerA.to_dict(orient="records")
+
+    return JsonResponse(Data, safe=False) 
+
+
+
+def syncItemLeger(request): #URL to fetch data--
+
+  ### Get Company and Year - to Load Data ------------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 2 - Read dlBasic.csv - to Get the last Delivery Number ------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/H1_Items/Items/ItemMovement.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna(0)
+
+    ### create a unique Column to Merge Id and Item Code........
+    df['unique'] = df['id'].astype(str)+ '-' +df['itmCode'].astype(str)
+
+    ### Remove Duplicate Quote and Deleted Record...
+    ledger = df.drop_duplicates(subset=['unique'], keep='last')
+    ledger = ledger.drop(ledger.loc[ledger['action']=='Deleted'].index)
+
+    ledger = ledger.drop('unique', axis=1)
+
+    ### Save the data in qotBasic.csv File...
+    fPath = "Data/" +coFolder+ "/" +Year+ "/H1_Items/Items/ItemMovement.csv"
+    ledger.to_csv(fPath, index=False)
+
+
+    jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
+    return JsonResponse(jsonData)
+
+
+
+
+def singleLedger(request, pk): #URL to fetch data--
+    pk = int(pk)
+
+  ### Get Company and Year - to Load Data ------------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 2 - Read dlBasic.csv - to Get the last Delivery Number ------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna(0)
+
+    ### create a unique Column to Merge Id and Item Code........
+    dfA  = df[df['accCode'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### Remove Duplicate Quote and Deleted Record...
+    ledgerA = dfA[['Date','accCode','accHead','Ref','Type','Amount']]
+
+    ledgerB = ledgerA.copy()
+
+    ledgerB['Balance'] = ledgerB['Amount'].cumsum()
+
+    Data = ledgerB.to_dict(orient="records")
 
     return JsonResponse(Data, safe=False) 
 

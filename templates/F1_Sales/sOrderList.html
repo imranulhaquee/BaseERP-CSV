@@ -138,7 +138,7 @@
                     <td style="color:#0464d1">${e.qotRef} </td>
                     <td style="text-align:right; padding-right:15px;">${e.soTax.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
                     <td style="text-align:right; padding-right:15px;">${e.soTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
-                    <td style="text-align:left; padding-left:15px;">${e.spName}</td>
+                    <td style="text-align:left; padding-left:15px;">${e.spCName}</td>
                     <td style="text-align:left; padding-left:15px;">${e.opnClo}</td>
                     <td style="text-align:center">
                         <a style="margin-right: 1px;" href="/sOrderEdit/${e.soRef}"><button class="open-modalB mBtn" > <img src="static/JAVA/Images/Icon/edit.png" alt="" style=" width:15px; cursor:pointer"> </button></a>
@@ -255,34 +255,27 @@
                 const response = await fetch (`${basInfo.IP[0]}/delSOrd/${id}/${Qot}`, {
                     method: "DELETE",
                 });
-
-                if (response.ok) {
-                    alert('Record deleted successfully.');
-                } else {
-                    alert('Unable to Delete there might be some transaction')
-                    throw new Error('Unable to Delete there might be some transaction'); //for console
-                }
-                
-            } catch (error) {
-                console.log(error);
-            }
+                const jsonResponse = await response.json();
+                if (jsonResponse.result == 'No'){ alert('Unable to Delete there might be Delivery against it..! ') }
+                else { delRec() } 
+            } catch (error) { console.log(error); }
         };
 
         async function delRecrod(td) {
             row = td.parentElement.parentElement
             recID = row.cells[1].innerHTML
             Qot = row.cells[4].innerHTML
-
             if (confirm('Do you want to delete this record?')) {
                 const deletedPost = await deletPost(recID, Qot); //Run 'deletPost' function with id of record selected 
-                const filteredData = finalData.filter(record => record.soRef != recID);
-                finalData = filteredData
-                dataTable(filteredData)
-
-                //finalData.splice(finalData.findIndex(a => a.id === recID) , 1) // Remove the deleted record from Final Data its a temporary to show
-                //dataTable(finalData)
             }
         };
+
+        function delRec(){
+            alert('Record deleted successfully.');
+            const filteredData = finalData.filter(record => record.soRef != recID);
+            finalData = filteredData
+            dataTable(finalData)
+        }
 
     //--===================== Delete Records ====================== // End -->
 

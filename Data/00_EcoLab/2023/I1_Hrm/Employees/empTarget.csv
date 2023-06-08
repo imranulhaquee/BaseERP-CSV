@@ -1,7 +1,0 @@
-id,empCode,empName,empImg,empPosi,anSalary,anTarget,empStat,targetSet,traDate,comment
-329,329,Sanjay Kumar Mandal,images/empImg/File_kmMF4fs.jpg,Sales Manager,240000,2000285,Active,Yes,2023-5-9 1-1-9,
-345,345,Pune Pratap Panjiyar,images/empImg/File_E9fuhq6.jpg,Sales Executive,216000,1799455,Active,Yes,2023-5-9 1-17-45,
-365,365,Allen Joseph Anora,images/empImg/File_fMvBOgS.jpg,Sales Executive,180000,1500275,Active,Yes,2023-5-9 3-20-21,
-366,366,Franco Viola Parota,images/empImg/File_jysMEvM.jpg,Sales Executive,132000,1000160,Active,Yes,2023-5-9 3-25-25,
-370,370,Ariel Abapo Naciogoyo,images/empImg/File_HQZALPl.jpg,Sales Executive,120000,1001000,Active,Yes,2023-5-9 3-28-0,
-415,415,Tampos Antonio Magalona,images/empImg/File_LB6b9wl.jpg,Sales Executive,150000,1400245,Active,Yes,2023-5-10 20-34-31,

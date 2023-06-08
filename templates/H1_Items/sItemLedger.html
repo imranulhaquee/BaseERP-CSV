@@ -61,7 +61,7 @@
                 
                 <img src="static/JAVA/Images/Icon/setup.png" alt="" style="position:relative; top:4px; width:20px">
                 <span class="mBtn">☰</span> 
-                <img src="static/JAVA/Images/Icon/qMark1.png" alt="" onclick="supRefresh()" style="position:relative; top:4px; width:20px; cursor:pointer;">
+                <img src="static/JAVA/Images/Icon/refresh.png" alt="" onclick="dataSync()" style="position:relative; top:4px; width:20px; cursor:pointer;">
             </div>
         </div>
 
@@ -227,9 +227,11 @@
     //--===================== Filter Records ===================== // End -->
 
 
+
+
     //--===================== Refresh Excel File ================= //Start-->
-        async function supRefresh(){
-            const response = await fetch(`${basInfo.IP[0]}/aItmRefresh`)
+        async function dataSync(){
+            const response = await fetch(`${basInfo.IP[0]}/syncItemLeger`)
             const data = await response.json()
             finalData = data  //when call showRecord() function data will save in finalData
             temData = finalData

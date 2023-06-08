@@ -47,7 +47,7 @@
                 <a href="/sInvoiceAdd"> <span class="open-modal bBtn bAdd" onclick="addPopup()"> ✚ New </span> </a>
                 <img src="static/JAVA/Images/Icon/setup.png" alt="" style="position:relative; top:4px; width:20px">
                 <span class="mBtn">☰</span> 
-                <img src="static/JAVA/Images/Icon/refresh.png" alt="" style="position:relative; top:4px; width:20px; cursor:pointer;">
+                <img src="static/JAVA/Images/Icon/refresh.png" alt="" onclick="dataSync()" style="position:relative; top:4px; width:20px; cursor:pointer;">
             </div>
         </div>
         <div class="tDiv">
@@ -89,8 +89,10 @@
 
 
 <script>
-    let basInfo = {{basInfo|safe}}
-    //const myCom = document.querySelector(".basCo").innerHTML = basInfo.Company[0]
+
+	//.... Get Data from Context Process and General Functions ...............
+        let basInfo = {{basInfo|safe}}
+	//.... Get Data from Context Process and General Functions ...............
 
 
     //======================Show Records ========================== //Start-->
@@ -138,7 +140,7 @@
                     <td style="color:#0464d1">${e.dlRef} </td>
                     <td style="text-align:right; padding-right:15px;">${e.siTax.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
                     <td style="text-align:right; padding-right:15px;">${e.siTAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
-                    <td style="text-align:left; padding-left:15px;">${e.spName}</td>
+                    <td style="text-align:left; padding-left:15px;">${e.spCName}</td>
                     <td style="text-align:left; padding-left:15px;">${e.opnClo}</td>
                     <td style="text-align:center">
                         <a style="margin-right: 1px;" href="/sInvoiceEdit/${e.siRef}"><button class="open-modalB mBtn" > <img src="static/JAVA/Images/Icon/edit.png" alt="" style=" width:15px; cursor:pointer"> </button></a>
@@ -219,6 +221,20 @@
     //--===================== Filter Records ===================== // End -->
 
 
+    
+    //▒▒▒▒▒▒ Refresh Excel File ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+        async function dataSync(){
+            const response = await fetch(`${basInfo.IP[0]}/syncInvoice`)
+            const data = await response.json()
+            finalData = data  //when call showRecord() function data will save in finalData
+            temData = finalData
+            alert('Data Synchronized Successfully......')
+            console.log(temData)
+        }
+
+    //▒▒▒▒▒▒ Refresh Excel File ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
 
 
     //--===================== Edit Records ======================= //Start-->
@@ -265,7 +281,8 @@
 
             if (confirm('Do you want to delete this record?')) {
                 const deletedPost = await deletPost(recID, Qot); //Run 'deletPost' function with id of record selected 
-                finalData.splice(finalData.findIndex(a => a.id === recID) , 1) // Remove the deleted record from Final Data its a temporary to show
+                const filteredData = finalData.filter(record => record.siRef != recID);
+                finalData = filteredData
                 dataTable(finalData)
             }
         };
@@ -292,7 +309,7 @@
 
 
 
-  </script>
+</script>
 
 
 

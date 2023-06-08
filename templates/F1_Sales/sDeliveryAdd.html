@@ -114,8 +114,19 @@
 								<th width="80px;">Quantity</th>
 								<th width="80px;">Price</th>
 								<th width="80px;">Discunt</th>
-								<th width="120px;">Total</th>
-								<th style="display:none">ID</th>
+								<th style="width:80px; text-align:right">VAT
+										<!--=======Select Option==========================-->
+										<div style="position:absolute; left:-160px; top:18px; border:2px solid #adb7c4; border-radius:5px; box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.5);" class="taxDD" id="taxMenu"> 
+											<select id="vatOpt"style="padding:5px 20px; background-image:linear-gradient(180deg, #E9F3F5 15%,#AAC8EB);" onchange="calculateSum(this.value)">
+												<option disabled value="" style="background:#C8C8C8;color:white;">Select Tex Rate</option>
+												<option value="0">Zero Rated</option>
+												<option value="0.05">5%</option>
+												<option value="0">Exempt</option>
+											</select>
+										</div>
+								</th>
+								<th style="width:120px; text-align:right">Total</th>
+								<th style="width:50px; display:none">WAC</th>
 							</tr>
 						<!--== Table Second Heading (Hidden) for field name ===============-->
 							<tr style="display:none">
@@ -127,20 +138,27 @@
 								<th>qty</th>
 								<th>price</th>
 								<th>disc</th>
+								<th>vat</th>
 								<th>tot</th>
-								<th style="display:none">id</th>
+								<th style="display:none">wac</th>
 							</tr>
 						<!--== Table Body (Input) to get value =============================-->
 							<tbody id="tBody">
 								<tr>
 									<td><button class="remRow" onclick="remove_tr(this)"> 🗑 </button></td>
-									<td style="text-align:center;"><button onclick="getRowAndCellIndex(this)" style="border-radius:5px; color:orange; font-size: 15px; font-weight:bold; padding: 0px 2px 2px 2px; cursor:pointer">☰</button></td>                     
+									<td style="text-align:center; display:flex;" >
+											<button onclick="getRowAndCellIndex(this)" style="border-radius:5px; color:orange; font-size: 15px; font-weight:bold; padding: 0px 2px 2px 2px; cursor:pointer">☰</button>
+											<input onclick="itemWAC(this)" type="checkbox" class="myCheckbox" value="10">
+									</td>                     
 									<td><input type="number" id="sno" class="input" value=1 disabled=true></td>
 									<td><input  id="itmCod" type="text" disabled=true></td>
 									<td ><input  id="desc" type="text" disabled=true></td>
 									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
 									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
 									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
+									<td style="position:relative"><input type="floatformat" step="0.01" class="input numInput" disabled=true value=0 onkeyup="getTot(this)"  style="text-align:right"> 
+										<button onclick="getRowAndCell(this)" style="position:absolute; left:5px; border-radius:5px; color:#527198; font-size: 15px; cursor:pointer">☰</button>
+									</td>
 									<td><input type="floatformat" step="0.01" class="input numInput" value=0 disabled=true  style="text-align:right"> </td>
 									<td><input type="number"  class="input" value=0 disabled=true  style="text-align:right; display:none" disabled> </td>
 								</tr>
@@ -180,68 +198,215 @@
 	  <!--════ Total Section ═══════════════════════════════════════════ //Start-->
 
 
-		<!--════ Bottom Section ═══════════════════════════════════════ //Start-->
-			<div class="Bottom">
-				<div>
-					<label> <span>Ship To </span> 
-					<textarea type="text" id="shipTo" name="shipTo" class="tabA" id="addShip" rows="3"></textarea> </label>
-				</div>
-				<div>
-					<label> <span>Invoice / Bill To </span> 
-					<textarea type="text" id="billTo" name="billTo" class="tabA" id="addBill" rows="3"></textarea> </label>
-				</div>
-			</div>
-		<!--════ Bottom Section ═══════════════════════════════════════ //Start-->
+				<!--════ Customer Additional Information Section ═══════════ //Start-->
 
-
-		<!--════ Sales Section ═══════════════════════════════════════ //Start-->
-			<div class="salSec">
-					<div class="boxA">
-						<div>
-							<div>Description</div>
-							<textarea type="text" id="dlComm" name="dlComm" class="tabA" id="addComm" rows="3"></textarea>
-						</div>
-					</div>
-					<div class="boxB"> 
-						<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
-							<div style="min-width:120px;">Sales Person </div>
-							<div><input type="text" id="spName" name="spName" style="min-width:220px;" disabled=true></div>
-							<div style="display:none"><input type="text" id="spCode" name="spCode" style="min-width:220px;"></div>
-							
-							<p1 onclick="showPop_S()" style="position:absolute; top:0; right:0; color:orange; font-weight:bold; cursor:pointer" >☰</p1>
-		
-							<!--━━━━ Employee Code (Search Table Pop) ━━━━━━━━━━━━━━━━━━━━━-->
-								<div  id="Pop_S"  onmouseleave="hidePop_S()" > 
-									<div class="sDiv">
-										<div class="Sear">
-											<img onclick="fetchPop_S()" style="cursor:pointer " class="Icon iA" src="{% static "JAVA/Images/Icon/search.png" %}" alt="" width="15px" >
-											<span  class="Icon iB">🞃 |</span>
-											<input id="filter_S" onkeyup="filter_S()" type="text" placeholder="Search Employee" >
+							<!--==== < Tab > ==========================================//Start-->
+							<div class="tabs">
+								<!-- Tab Heading ========================-->
+								<div class="tabsHead">
+										<div class="tabsToggle isActive">
+												<span class="tabsName">Shipment</span>
 										</div>
-		
-										<div onclick="hidePop_S()" class="closeBtn"> X </div>
-									</div>
-									<table id="table_S">
-										<tr class="tableHead"> <th style="width:80px"> Employee #</th>  <th>Employee Name</th> </tr>
-										<tbody id="popBody_S"> </tbody>
-									</table>
+										<div class="tabsToggle">
+												<span class="tabsName">Payment Term</span>
+										</div>
+										<div class="tabsToggle">
+												<span class="tabsName">Others</span>
+										</div>
 								</div>
-							<!--━━━━ Employee Code (Search Table Pop_S) ━━━━━━━━━━━━━━━━━━━-->
-		
-						</div>
-					</div>
 
-			</div><br>	
-		<!--════ Sales Section ═══════════════════════════════════════ //Start-->
-		
+								<div class="tabsBody">
+										<!--Status =========================================================-->
+										<div class="tabsContent isActive">
+												<h3 class="tabsTitle">Shipment</h3>
+												<div class="cusTab">
 
-		<!--════ Save Section ══════════════════════════════════════ //Start-->
-			<section id="savSec">
-				<div><button  onclick="event.preventDefault()" class="hBtn" type="submit"> ⚠ HELP</button></div>
-				<div><button onclick="canRecord()" id="cancelA" class="cBtn" type="submit"> ✂ CANCEL</button></div>
-				<div><button onclick="addRecord()" id="addRec"  class="addRec sBtn" type="submit" disabled=true>✚ Save</button></div>
-			</section>
-		<!--════ Save Section ══════════════════════════════════════ // End -->
+													<!--════ Bottom Section ════════════════════════════ //Start-->
+														<div class="Bottom">
+															<div>
+																<label> <span>Ship To </span> 
+																<textarea type="text" id="shipTo" name="shipTo" class="tabA" id="addShip" rows="3"></textarea> </label>
+															</div>
+															<div>
+																<label> <span>Invoice / Bill To </span> 
+																<textarea type="text" id="billTo" name="billTo" class="tabA" id="addBill" rows="3"></textarea> </label>
+															</div>
+														</div>
+													<!--════ Bottom Section ════════════════════════════ //Start-->
+
+
+													<!--════ Sales Section ═════════════════════════════ //Start-->
+															<div class="salSec">
+																<div class="boxA">
+																	<div>
+																		<div>Description</div>
+																		<textarea type="text" id="dlComm" name="dlComm" class="tabA" id="addComm" rows="3"></textarea>
+																	</div>
+																</div>
+																<div class="boxB"> 
+																	<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
+																		<div style="min-width:120px;">Sales Person </div>
+																		<div><input type="text" id="spCName" name="spCName" style="min-width:220px;" disabled=true></div>
+																		<div style="display:none"><input type="text" id="spCode" name="spCode" style="min-width:220px;"></div>
+																	</div>
+																</div>
+
+														</div><br>	
+													<!--════ Sales Section ═════════════════════════════ //Start-->
+
+												</div>
+										</div>
+										
+										<!--Additional Information===========================================-->
+										<div class="tabsContent">
+												<h3 class="tabsTitle">Payment Term</h3>
+
+												<div class="cusTab">
+
+													<!--════ Sales Section ═════════════════════════════ //Start-->
+														<div class="cusLimit">
+																<div class="boxA">
+																	<div style="position:relative; display:flex; flex-wrap:wrap;">
+																		<div style="min-width:120px;">Legal Name</div>
+																		<div><input type="text" id="cusLegName" name="cusLegName" style="min-width:220px;" disabled=true></div>
+																	</div>
+																	<br>
+																	<div style="position:relative; display:flex; flex-wrap:wrap;">
+																		<div style="min-width:120px;">Customer TRN </div>
+																		<div><input type="text" id="cusTRN" name="cusTRN" style="min-width:220px;" disabled=true></div>
+																	</div>
+
+																</div>
+																<div class="boxB"> 
+																	<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
+																		<div style="min-width:120px;">Credit Term </div>
+																		<div><input type="text" id="cusPytTerm" name="cusPytTerm" style="min-width:220px;" disabled=true></div>
+																	</div>
+																	<br>
+																	<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
+																		<div style="min-width:120px;">Credit Limit </div>
+																		<div><input type="text" id="cusCrLim" name="cusCrLim" style="min-width:220px;" disabled=true></div>
+																	</div>
+																</div>
+
+														</div><br>	
+													<!--════ Sales Section ═════════════════════════════ //Start-->
+
+												</div>
+										</div>
+
+										<!--Payment Settings================================================-->
+										<div class="tabsContent">
+												<h3 class="tabsTitle">Others</h3>
+
+										</div>
+										
+								</div>
+							</div>
+
+							<script>
+									//==== Tab Menu =========================================== //Start-->
+									let tabs = document.querySelectorAll('.tabsToggle'),
+											contents = document.querySelectorAll('.tabsContent');
+
+									tabs.forEach((tab, index) => {
+											tab.addEventListener('click', () => {
+													contents.forEach((content) => {
+															content.classList.remove('isActive');
+													});
+													tabs.forEach((tab) => {
+															tab.classList.remove('isActive');
+													});
+													contents[index].classList.add('isActive');
+													tabs[index].classList.add('isActive');
+											});
+									});
+									//==== Tab Menu =========================================== // End -->
+							</script>
+
+							<style>
+									.tabs {
+											display: flex;
+											flex-direction: column;
+											min-width: 600px;
+											margin: 0px 0px 0px 0px;
+											padding: 0px 0px 0px 0px;
+											font-size: 13px;
+									}
+									.tabsHead {
+											display: flex;
+											padding: 0px 5px 0 0px;
+											border-bottom: 1px solid rgb(208, 222, 237);
+											background-image: linear-gradient(to bottom, #f4f5fa, #e6e8f5, #d3dbe7, #b5b5d3);
+											/* background: #cccaca; */
+											cursor: pointer;
+									}
+									.tabsToggle {
+											margin: 0 0px;
+											padding: 3px 25px;
+											border-right:1px solid #525158;
+											/* background: #cccaca; */
+											background-image: linear-gradient(to bottom, #f4f5fa, #e6e8f5, #d3dbe7, #b5b5d3);
+											border-radius: 0 15px 0 0;
+											transition: .5s;
+									}
+									.tabsName {
+											font-weight: 600;
+											font-size: 16px;
+											color:#292961;
+
+									}
+									.tabsBody {
+											border-top: none;
+											padding: 0px 10px 0px 25px;
+											min-height:280px;
+											background: #ffff;
+									}
+									.tabsTitle {
+											font-weight: 500;
+											font-size: 18px;
+											color: #2b9fd6;
+											margin: 10px 10px 25px 0px;
+											text-align: left;
+									}
+									.tabsText {
+											font-size: 13px;
+											line-height: 1.2;
+											color: #484848;
+									}
+									.tabsContent {
+											position:relative;
+											display: none;
+									}
+									.tabsToggle.isActive {
+											background-image: linear-gradient(to bottom, #e5e7f0, #d5d8e7, #bac1ce, #b7b7ce);
+											/* background: #4D4D4D; */
+											color: #34284b;
+											font-size: 13px;
+											font-weight: 100;
+											text-align: left;
+									}
+									.tabsToggle.isActive .tabsName {
+											color: #454751;
+											font-weight:bold;
+									}
+									.tabsContent.isActive {
+											display: block;
+									}
+							</style>
+
+						<!--===== < Tab > ==========================================// End -->
+
+				<!--════ Customer Additional Information Section ═══════════ // End -->
+
+
+				<!--════ Save Section ══════════════════════════════════════ //Start-->
+					<section id="savSec">
+						<div><button  onclick="event.preventDefault()" class="hBtn" type="submit"> ⚠ HELP</button></div>
+						<div><button onclick="canRecord()" id="cancelA" class="cBtn" type="submit"> ✂ CANCEL</button></div>
+						<div><button onclick="addRecord()" id="addRec"  class="addRec sBtn" type="submit" disabled=true>✚ Save</button></div>
+					</section>
+				<!--════ Save Section ══════════════════════════════════════ // End -->
 
 	</div><br><br>
 <!--==== Main Container ==============================================// End -->
@@ -322,7 +487,7 @@
 				document.querySelector("#billTo").value = soBaic.shipTo;
 				document.querySelector("#shipTo").value = soBaic.shipTo;
 				document.querySelector("#spCode").value = soBaic.spCode;
-				document.querySelector("#spName").value = soBaic.spName;
+				document.querySelector("#spCName").value = soBaic.spCName;
 
 
 				//console.log(finalData)
@@ -344,14 +509,17 @@
 								tr_clone   = last_tr.cloneNode(true);
 								table.append(tr_clone);
 								var lastRow = table.rows[ table.rows.length -1 ]   //get the last row of the table
+								var inputElement = lastRow.cells[1].getElementsByTagName('input')[0];
+										inputElement.checked = false;
 								var Col_id = lastRow.cells[2].getElementsByTagName('input')[0].value = Data.sno;
 								var Col_id = lastRow.cells[3].getElementsByTagName('input')[0].value = Data.itmCod;
 								var Col_id = lastRow.cells[4].getElementsByTagName('input')[0].value = Data.desc;
 								var Col_id = lastRow.cells[5].getElementsByTagName('input')[0].value = Data.qty.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[6].getElementsByTagName('input')[0].value = Data.price.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[7].getElementsByTagName('input')[0].value = Data.disc.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-								var Col_id = lastRow.cells[8].getElementsByTagName('input')[0].value = Data.tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-								var Col_id = lastRow.cells[9].getElementsByTagName('input')[0].value = 0 //Data.id;
+								var Col_id = lastRow.cells[8].getElementsByTagName('input')[0].value = Data.vat.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[9].getElementsByTagName('input')[0].value = Data.tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+								var Col_id = lastRow.cells[10].getElementsByTagName('input')[0].value = 0 //Data.id;
 						}
 						var delRow = table.deleteRow(0)  //delete first row which is emptry
 				}
@@ -363,6 +531,7 @@
 
 		//▒▒▒▒▒▒ SHOW DATA ON INITIAL LOAD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 	
+
 	
 		//▒▒▒▒▒▒ ADD REMOVE RESET TABLE ROWS ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
@@ -405,7 +574,12 @@
 			function resetNo (Numb){
 				var lastRow = tBody.rows[ tBody.rows.length - 1 ] //get the last row of the table
 				var addColNo = parseInt(lastRow.cells[2].getElementsByTagName('input')[0].value); //get the value of the last row 1st cell
-				var sno = addColNo + 1 //add 1 to Last Column Value
+
+				var number = tBody.rows[ tBody.rows.length - 2 ]
+				var Number = parseInt(number.cells[2].getElementsByTagName('input')[0].value); //get the value of the last row 1st cell
+				console.log(Number)
+
+				var sno = Number + 1 //add 1 to Last Column Value
 				var addSO = lastRow.cells[2].getElementsByTagName('input')[0].value = sno;
 				//---Loop Throgh Table length to reset number from begning---------------
 				
@@ -423,18 +597,20 @@
 					var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					var addID = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addID = parseInt(lastRow.cells[10].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 				}
 			}
 
 		//▒▒▒▒▒▒ ADD REMOVE RESET TABLE ROWS ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
 
+
 		//▒▒▒▒▒▒ GET TOTAL AND GRAND TOTAL ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
 			//■■■■■ GET SUM OF THE ITEM SOLD ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 			function getTot(abc) {
+				//console.log(abc)
 				var table = document.getElementById("myTable")
-				
 				const ab = (abc.closest('tr').rowIndex)  //get the row number of the cell where entering the data
 				const closestCell = abc.closest('td').cellIndex; //just for info (to find out cell number)
 				
@@ -446,11 +622,14 @@
 				var qty = parseFloat(table.rows[ab].cells[5].getElementsByTagName('input')[0].value.replace(/,/g, ''))
 				var price = parseFloat(table.rows[ab].cells[6].getElementsByTagName('input')[0].value.replace(/,/g, ''))
 				var disc = parseFloat(table.rows[ab].cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				//var Rate = parseFloat(table.rows[ab].cells[10].getElementsByTagName('input')[0].value.replace(/,/g, ''))
 
-				var tot = (qty * price) - disc
-				tot = parseFloat(table.rows[ab].cells[8].getElementsByTagName('input')[0].value =  tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
-				//--console.log(tot)
-				getSum()
+				var vat = ((qty * price) - disc) * 0.05 //Rate
+				parseFloat(table.rows[ab].cells[8].getElementsByTagName('input')[0].value = vat.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+				var tot = (qty * price) - disc + vat
+				parseFloat(table.rows[ab].cells[9].getElementsByTagName('input')[0].value =  tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+
+				getSum(abc)
 			}
 		
 
@@ -458,22 +637,69 @@
 			function getSum() {
 				// Get sum of a table column --(temporary here)----------------------
 				// ==================================================================
-				var table = document.getElementById("myTable"), sumADis = 0; sumDis = 0;
+				var table = document.getElementById("myTable"), sumADis = 0; sumDis = 0; sumTot = 0; sumVat = 0;
 				for(var i = 2; i < table.rows.length; i++){
-						sumADis = sumADis + parseFloat(table.rows[i].cells[8].getElementsByTagName('input')[0].value.replace(/,/g, ''));
 						sumDis = sumDis + parseFloat(table.rows[i].cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''));
-				}
-			
-				document.getElementById("soTAD").value = sumADis.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				var qotTBD = sumADis + sumDis
-				var VAT = sumADis*0.05
-				var GTot = sumADis + VAT
-				document.getElementById("soTBD").value = qotTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.getElementById("soTax").value = VAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.getElementById("soTAT").value =GTot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+						sumVat = sumVat + parseFloat(table.rows[i].cells[8].getElementsByTagName('input')[0].value.replace(/,/g, ''));
+						sumTot = sumTot + parseFloat(table.rows[i].cells[9].getElementsByTagName('input')[0].value.replace(/,/g, ''));				
+					}
+				
+				var GTot = sumTot
+				var VAT = sumVat
+				var sumADis = GTot - VAT
+				var dlTBD = sumADis + sumDis
+				document.getElementById("dlTAT").value =GTot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.getElementById("dlTax").value = VAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.getElementById("dlTAD").value = sumADis.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.getElementById("dlTBD").value = dlTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 			}
 
 		//▒▒▒▒▒▒ GET TOTAL AND GRAND TOTAL ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+		//▒▒▒▒▒▒ VAT CALCULATION ON SELECT ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+			//------ Get Clicked Row and Cell Index ---------------------------- //Start-->
+				var rIndex
+				var clkRow
+				function getRowAndCell(button) {
+					var selectElement = document.getElementById("vatOpt");
+					selectElement.value = "";
+
+					var row = button.parentNode.parentNode; // Get the row index
+					var rowIndex = row.rowIndex;   
+					rIndex = rowIndex       
+					showDD_A()
+				}
+			//------ Get Clicked Row and Cell Index ---------------------------- // End -->
+	
+			//■■■■■ GET SUM OF THE TOTAL COLUMN ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			function calculateSum(texPer) {
+				taxDD.classList.toggle("taxDD") //to display select option box
+				var table = document.getElementById('tBody')
+				var lastRow = table.rows[rIndex-2]  //-2 because of two heading rows...
+
+				var qty = parseFloat(lastRow.cells[5].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var price = parseFloat(lastRow.cells[6].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var disc = parseFloat(lastRow.cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				//var Rate = parseFloat(lastRow.cells[10].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var Rate = texPer
+
+				var vat = ((qty * price) - disc) * Rate
+				parseFloat(lastRow.cells[8].getElementsByTagName('input')[0].value = vat.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+				var tot = (qty * price) - disc + vat
+				parseFloat(lastRow.cells[9].getElementsByTagName('input')[0].value =  tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+
+				getSum()
+			}
+
+			let taxDD = document.getElementById("taxMenu");
+			function showDD_A(){
+				taxDD.classList.toggle("taxDD")
+			}
+
+		//▒▒▒▒▒▒ VAT CALCULATION ON SELECT ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
 
 
 		//▒▒▒▒▒▒ ADD RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
@@ -532,7 +758,7 @@
 					DlTAT = parseFloat(document.getElementById('dlTAT').value.replace(/,/g, ''));
 					ShipTo = document.getElementById('shipTo').value;
 					DlComm = document.getElementById('dlComm').value;
-					SpName = document.getElementById('spName').value;
+					SpCName = document.getElementById('spCName').value;
 					SpCode = document.getElementById('spCode').value;
 					SoRef = document.getElementById('soRef').value;
 					SoDat = document.getElementById('soDat').value;
@@ -540,7 +766,7 @@
 					const basicData =  {  soRef:SoRef, soDat:SoDat, cusCode:CusCode, 
 																cusName:CusName, dlTBD:DlTBD, dlTAD:DlTAD, dlTax:DlTax,
 												 				dlTAT:DlTAT, shipTo:ShipTo,dlRef:DlRef, dlDat:DlDat, 
-																dlComm:DlComm, spCode:SpCode, spName:SpName,
+																dlComm:DlComm, spCode:SpCode, spCName:SpCName,
 																traDate:CurDate, action:""};
 
 					//Filter out Blank Rows
@@ -597,7 +823,7 @@
 					document.getElementById('shipTo').value = ""
 					document.getElementById('billTo').value = ""
 					document.getElementById('dlComm').value = ""
-					document.getElementById('spName').value = ""
+					document.getElementById('spCName').value = ""
 			
 					var table = document.getElementById("myTable");   
 					var rows = table.rows; // Get all rows in the table except the first 3 lines
@@ -614,7 +840,8 @@
 					var addPri = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price"
-					var addid = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addTot = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price"
+					var addid = parseInt(lastRow.cells[10].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					
 					savDisable('Yes')  //to Disable Save option..............
 			}
@@ -674,7 +901,6 @@
 
 
 
-	
 	</script>
 <!--.........................................................................-->
 
@@ -703,36 +929,6 @@
 			}
 			.check-box {
 					transform: scale(2);
-			}
-			input[type="checkbox"] {
-					position: relative;
-					appearance: none;
-					width: 50px;
-					height: 20px;
-					background: #ccc;
-					border-radius: 50px;
-					box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-					cursor: pointer;
-					transition: 0.4s;
-			}
-			input:checked[type="checkbox"] {
-					background: #2CBBBB;
-			}
-			input[type="checkbox"]::after {
-					position: absolute;
-					content: "";
-					width: 20px;
-					height: 20px;
-					top: 0;
-					left: 0;
-					background: #fff;
-					border-radius: 50%;
-					box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-					transform: scale(1.1);
-					transition: 0.4s;
-			}
-			input:checked[type="checkbox"]::after {
-					left: 60%;
 			}
 
 		/* ⚊⚊⚊⚊ General INPUT ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
@@ -908,6 +1104,9 @@
 			.total .boxB img:hover{
 				transform: scale(1.05);
 			}
+			.taxDD{
+        display: none;
+      }
 		/* ⚊⚊⚊⚊ Total Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
 
 		/* ⚊⚊⚊⚊ Bottom Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
@@ -952,6 +1151,21 @@
 			}
 
 		/* ⚊⚊⚊⚊ Sales Person Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+		/* ⚊⚊⚊⚊ Customer Limit  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.cusLimit {
+				display:flex;  
+				flex-wrap:wrap; 
+				color:gray;  
+				font-size:14px;
+			}
+			.cusLimit .boxA, .cusLimit .boxB {		
+				min-width:50%; 
+			}
+
+		/* ⚊⚊⚊⚊ Sales Person Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
 
 		/* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
 			#savSec {
@@ -1220,6 +1434,8 @@
 									iName = rowSelected.cells[1].innerHTML;
 									sPrice = rowSelected.cells[2].innerHTML;
 
+									console.log(iID, iName, sPrice)
+
 									// Get the table row and cell elements
 									var tableA = document.getElementById('myTable')                      
 									ccd = tableA.rows[clickRow].cells[clickCell+2].getElementsByTagName('input')[0].value = iID
@@ -1434,6 +1650,50 @@
 
 
 
+
+<!--.........................................................................-->
+<!--==== GET ITEM WAC Value ==========================================//Start-->
+<!--.........................................................................-->
+	<script>
+
+		//------ Get Clicked Row and Cell Index ---------------------------- //Start-->
+
+		async function itemWAC(test) {
+			var table = document.getElementById("myTable")
+			var row = test.parentNode.parentNode; // Get the row index
+			var ab = row.rowIndex; 
+			var checkbox = table.rows[ab].cells[1].getElementsByTagName('input')[0];
+
+			if (checkbox.checked) {
+				var itemCode = parseFloat(table.rows[ab].cells[3].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var qty = parseFloat(table.rows[ab].cells[5].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+
+				if (isNaN(itemCode)){
+					console.log('there is NaN')
+				}else{
+					const response = await fetch(`${basInfo.IP[0]}/sItemLedgerURL/${itemCode}`)
+					const data = await response.json()
+					var lastRecord = data[data.length - 1]; //to select last record
+					var lastWAC = lastRecord.WAC;	
+					var totalCost = lastWAC * qty					//to select last record WAC Value
+					totCost = table.rows[ab].cells[10].getElementsByTagName('input')[0].value =  totalCost
+					console.log(totalCost)
+					console.log(lastWAC)
+				}
+			}
+
+			//------ Get Clicked Row and Cell Index ---------------------------- // End -->
+		}
+
+	</script>
+
+
+
+<!--==== GET ITEM WAC Value ==========================================//Start-->
+
+
+
+
 <!--.........................................................................-->
 <!--==== Employee Deatil Popup Window ================================//Start-->
 <!--.........................................................................-->
@@ -1473,7 +1733,7 @@
 						clickVal2 = rowSelected.cells[1].innerHTML;
 						let cName =clickVal2
 
-						document.querySelector('#spName').value = cName;
+						document.querySelector('#spCName').value = cName;
 						document.querySelector('#salPer').value = cID;
 
 						hidePop_S()
@@ -1641,7 +1901,7 @@
 		/* Customer Search Table --------------------------------------------------*/
 	</style>
 
-<!--==== Customer Deatil Popup Window ================================// End -->
+<!--==== Employee Deatil Popup Window ================================// End -->
 
 
 

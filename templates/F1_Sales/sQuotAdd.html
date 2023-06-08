@@ -108,8 +108,9 @@
 								<th width="80px;">Quantity</th>
 								<th width="80px;">Price</th>
 								<th width="80px;">Discunt</th>
-								<th width="120px;">Total</th>
-								<th style="display:none">ID</th>
+								<th style="width:80px; text-align:right">VAT</th>
+								<th style="width:120px; text-align:right">Total</th>
+								<th style="width:50px; display:none">ID</th>
 							</tr>
 						<!--== Table Second Heading (Hidden) for field name ===============-->
 							<tr style="display:none">
@@ -121,6 +122,7 @@
 								<th>qty</th>
 								<th>price</th>
 								<th>disc</th>
+								<th>vat</th>
 								<th>tot</th>
 								<th style="display:none">id</th>
 							</tr>
@@ -135,8 +137,20 @@
 									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
 									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
 									<td><input type="floatformat" step="0.01" class="input numInput" value=0 onkeyup="getTot(this)" style="text-align:right"> </td>
+									<td style="position:relative"><input type="floatformat" step="0.01" class="input numInput" disabled=true value=0 onkeyup="getTot(this)"  style="text-align:right"> 
+											<button onclick="getRowAndCell(this)" style="position:absolute; left:5px; border-radius:5px; color:#527198; font-size: 15px; cursor:pointer">☰</button>
+											<!--=======Select Option==========================-->
+											<div style="position:absolute; left:-160px; top:0px; border:2px solid #adb7c4; border-radius:5px; box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.5);" class="taxDD" id="taxMenu"> 
+												<select id="vatOpt"style="padding:5px 20px; background-image:linear-gradient(180deg, #E9F3F5 15%,#AAC8EB);" onchange="calculateSum(this.value)">
+													<option disabled value="" style="background:#C8C8C8;color:white;">Select Tex Rate</option>
+													<option value="0">Zero Rated</option>
+													<option value="0.05">5%</option>
+													<option value="0">Exempt</option>
+												</select>
+											</div>
+									</td>
 									<td><input type="floatformat" step="0.01" class="input numInput" value=0 disabled=true  style="text-align:right"> </td>
-									<td><input type="number"  class="input" value=0 disabled=true  style="text-align:right; display:none" disabled> </td>
+									<td><input type="number"  class="input" value=0 disabled=true style="text-align:right; width:50px; display:none"> </td>
 								</tr>
 							</tbody>
 					</table>
@@ -162,19 +176,7 @@
 
 					<div class="inputField" style="position:relative">
 						<p>Total Tax Amount : AED</p>
-						<p1 onclick="showDD_A()" style="position:absolute; left:170px; bottom:2px; color:orange; font-weight:bold; cursor:pointer" >☰</p1>
 						<input type="floatformat" id="qotTax" disabled=true>
-
-						<!--=======Select Option==========================-->
-						<div style="position:absolute; left:180px; border:2px solid #527198; border-radius:5px;" class="taxDD" id="taxMenu"> 
-							<select style="padding:5px 20px;" onchange="calculateSum(this.value)">
-								<option disabled selected>Select Tax Rate</option>
-								<option value="0">Zero Rated</option>
-								<option value="0.05">5%</option>
-								<option value="0">Exempt</option>
-							</select>
-						</div>
-
 					</div>
 
 					<div class="inputField">     
@@ -211,7 +213,7 @@
 					<div class="boxB"> 
 						<div style="position:relative; display:flex; flex-wrap:wrap; justify-content:end">
 							<div style="min-width:120px;">Sales Person </div>
-							<div><input type="text" id="spName" name="spName" style="min-width:220px;" disabled=true></div>
+							<div><input type="text" id="spCName" name="spCName" style="min-width:220px;" disabled=true></div>
 							<div style="display:none"><input type="text" id="spCode" name="spCode" style="min-width:220px;"></div>
 							
 							<p1 onclick="showPop_S()" style="position:absolute; top:0; right:0; color:orange; font-weight:bold; cursor:pointer" >☰</p1>
@@ -352,8 +354,8 @@
 
 			//■■■■■ GET SUM OF THE ITEM SOLD ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 			function getTot(abc) {
+				//console.log(abc)
 				var table = document.getElementById("myTable")
-				
 				const ab = (abc.closest('tr').rowIndex)  //get the row number of the cell where entering the data
 				const closestCell = abc.closest('td').cellIndex; //just for info (to find out cell number)
 				
@@ -366,47 +368,81 @@
 				var price = parseFloat(table.rows[ab].cells[6].getElementsByTagName('input')[0].value.replace(/,/g, ''))
 				var disc = parseFloat(table.rows[ab].cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''))
 
-				var tot = (qty * price) - disc
-				tot = parseFloat(table.rows[ab].cells[8].getElementsByTagName('input')[0].value =  tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
-				//--console.log(tot)
-				const taxRate = 0.05;
-				getSum(taxRate)
+				//var vat = ((qty * price) - disc) * 0.05 // if want to calculate VAT Automatically but has but not recommended
+				var vat = 0
+				parseFloat(table.rows[ab].cells[8].getElementsByTagName('input')[0].value = vat.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+				var tot = (qty * price) - disc + vat
+				parseFloat(table.rows[ab].cells[9].getElementsByTagName('input')[0].value =  tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+
+				getSum(abc)
 			}
 		
 
 			//■■■■■ GET SUM OF THE TOTAL COLUMN ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
-			function getSum(taxRate) {
+			function getSum() {
 				// Get sum of a table column --(temporary here)----------------------
 				// ==================================================================
-				var table = document.getElementById("myTable"), sumADis = 0; sumDis = 0;
+				var table = document.getElementById("myTable"), sumADis = 0; sumDis = 0; sumTot = 0; sumVat = 0;
 				for(var i = 2; i < table.rows.length; i++){
-						sumADis = sumADis + parseFloat(table.rows[i].cells[8].getElementsByTagName('input')[0].value.replace(/,/g, ''));
 						sumDis = sumDis + parseFloat(table.rows[i].cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''));
-				}
-			
-				document.getElementById("qotTAD").value = sumADis.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+						sumVat = sumVat + parseFloat(table.rows[i].cells[8].getElementsByTagName('input')[0].value.replace(/,/g, ''));
+						sumTot = sumTot + parseFloat(table.rows[i].cells[9].getElementsByTagName('input')[0].value.replace(/,/g, ''));				
+					}
+				
+				var GTot = sumTot
+				var VAT = sumVat
+				var sumADis = GTot - VAT
 				var qotTBD = sumADis + sumDis
-				var VAT = sumADis*taxRate
-				var GTot = sumADis + VAT
-				document.getElementById("qotTBD").value = qotTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-				document.getElementById("qotTax").value = VAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 				document.getElementById("qotTAT").value =GTot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.getElementById("qotTax").value = VAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.getElementById("qotTAD").value = sumADis.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.getElementById("qotTBD").value = qotTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 			}
 
+		//▒▒▒▒▒▒ GET TOTAL AND GRAND TOTAL ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+		//▒▒▒▒▒▒ VAT CALCULATION ON SELECT ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+			//------ Get Clicked Row and Cell Index ---------------------------- //Start-->
+				var rIndex
+				var clkRow
+				function getRowAndCell(button) {
+					var selectElement = document.getElementById("vatOpt");
+					selectElement.value = "";
+
+					var row = button.parentNode.parentNode; // Get the row index
+					var rowIndex = row.rowIndex;   
+					rIndex = rowIndex       
+					showDD_A()
+				}
+			//------ Get Clicked Row and Cell Index ---------------------------- // End -->
+	
 			//■■■■■ GET SUM OF THE TOTAL COLUMN ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-			function calculateSum(selectedValue) {
-				const taxRate = parseFloat(selectedValue);
-				getSum(taxRate)
-				taxDD.classList.toggle("taxDD")
+			function calculateSum(texPer) {
+				taxDD.classList.toggle("taxDD") //to display select option box
+				var table = document.getElementById('tBody')
+				var lastRow = table.rows[rIndex-2]  //-2 because of two heading rows...
+
+				var qty = parseFloat(lastRow.cells[5].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var price = parseFloat(lastRow.cells[6].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var disc = parseFloat(lastRow.cells[7].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				//var Rate = parseFloat(lastRow.cells[10].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var Rate = texPer
+
+				var vat = ((qty * price) - disc) * Rate
+				parseFloat(lastRow.cells[8].getElementsByTagName('input')[0].value = vat.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+				var tot = (qty * price) - disc + vat
+				parseFloat(lastRow.cells[9].getElementsByTagName('input')[0].value =  tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+
+				getSum()
 			}
+
 			let taxDD = document.getElementById("taxMenu");
 			function showDD_A(){
 				taxDD.classList.toggle("taxDD")
 			}
 
-
-		//▒▒▒▒▒▒ GET TOTAL AND GRAND TOTAL ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-
+		//▒▒▒▒▒▒ VAT CALCULATION ON SELECT ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
 
 		//▒▒▒▒▒▒ ADD RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
@@ -466,12 +502,12 @@
 							ShipTo = document.getElementById('shipTo').value;
 							Comm = document.getElementById('comm').value;
 							SpCode = document.getElementById('spCode').value;
-							spName = document.getElementById('spName').value;
+							spCName = document.getElementById('spCName').value;
 							if (spCode == '') {spCode = 0;	}
 							const basicData =  { qotRef:QotRef, qotDat:QotDat, cusCode:CusCode, cusName:CusName,
 														qotRef:QotRef, cusName:CusName, qotTBD:QotTBD, qotTAD:QotTAD, 
 														qotTax:QotTax, qotTAT:QotTAT, shipTo:ShipTo, qotComm:Comm,
-														spCode:SpCode, spName:spName, traDate:CurDate, action:"" };
+														spCode:SpCode, spCName:spCName, traDate:CurDate, action:"" };
         
 							let data = dataA.filter(item => item.qty !== "0"); //remove the empty rows from prodeuct detail rows
 
@@ -518,7 +554,7 @@
 					document.getElementById('billTo').value = ""
 					document.getElementById('comm').value = ""
 					document.getElementById('spCode').value = ""
-					document.getElementById('spName').value = ""
+					document.getElementById('spCName').value = ""
 			
 					var table = document.getElementById("myTable");   
 					var rows = table.rows; // Get all rows in the table except the first 3 lines
@@ -535,7 +571,7 @@
 					var addPri = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
-					
+					var addTot = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					savDisable('Yes')  //to Disable Save option..............
 			}
 
@@ -1385,7 +1421,7 @@
 				function temList (e){
 					return`<tr">
 											<td style="color:#0464d1">${e.empCode}</td>
-											<td>${e.empName}</td>
+											<td>${e.empCName}</td>
 									</tr>`
 				}
 				//-- on click select the row -------------------------
@@ -1402,7 +1438,7 @@
 						let cName =clickVal2.replace(/\s/g, '');
 
 						document.querySelector('#spCode').value = cID;
-						document.querySelector('#spName').value = clickVal2;
+						document.querySelector('#spCName').value = clickVal2;
 
 						hidePop_S()
 						savDisable('No')

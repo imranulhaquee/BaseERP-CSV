@@ -146,7 +146,144 @@ def CoAEdit(request, pk):
 
 
 
+#☰☰☰☰☰☰☰☰☰☰☰☰☰☰ Journal Ledger ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
+def TrialBalance(request):
+    
 
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Read Journals.csv to get the transaction detail ------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    transaction = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna(0)
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    transaction['Date'] = pd.to_datetime(transaction['Date']).dt.strftime('%Y-%m-%d')
+    transaction = transaction.sort_values(['Date'], ascending = [True])
+
+
+    ### Read mergeTB.csv to get to merge transactio with mergeTB...................
+    fPath = "Data/" +coFolder+ "/C1_Gl/mergeTB.csv"
+    mergeTB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna(0)
+
+
+  ### Step 3 - Create Pivot Table - to Create TB -----------------------------
+  ### ========================================================================
+    pTransaction = pd.pivot_table(transaction,index=["accCode","accHead"],values=["Amount"],aggfunc=[np.sum],fill_value=0)
+
+    pTransaction.columns = pTransaction.columns.droplevel(0)
+    pTransaction.reset_index(inplace=True)
+
+
+  ### Step 4 - Merge pTransaction with mergeTB- to Create TB -----------------
+  ### ========================================================================
+    merged_df = pTransaction.merge(mergeTB[['head', 'level1', 'level2', 'level3', 'level4']], left_on='accHead', right_on='head', how='left')
+    merged_df = merged_df.drop('head', axis=1).fillna('')  # Drop the 'head' column from the merged DataFrame
+
+
+  ### Step 5 - Create Pivot Table - to Create TB -----------------------------
+  ### ========================================================================
+    final = pd.pivot_table(merged_df,index=["level4","accHead","accCode"],values=["Amount"],aggfunc=[np.sum],fill_value=0)
+
+    final.columns = final.columns.droplevel(0)
+    final.reset_index(inplace=True)
+
+    finalGBy = final.groupby(['level4']).agg({'Amount': 'sum'}) 
+    finalGBy.loc['z. Grand Total'] = finalGBy.sum()
+    finalGBy.reset_index(inplace=True)
+
+    tbConcat = pd.concat([final, finalGBy])
+
+    tbSort = tbConcat.sort_values(['level4','accHead'], ascending = [True,True], na_position ='last')
+    tbSort['accHead'] = tbSort['accHead'].fillna('Total')
+
+    ### to Hide and Show----------------------------
+    tbSort['Department'] = tbSort['level4']
+    tbSort['Vertical'] = tbSort['level4']
+    tbSort.loc[tbSort["accHead"] != "Total", ["Vertical"]] = '---' #  rlSort["status"]    tbSort = tbSort.fillna('')
+    tbSort = tbSort.fillna('')
+
+
+    Data = tbSort.to_dict(orient="records")
+
+
+    #(Supplier Main Page)
+    context = {'Data':Data }
+
+    return render(request, 'C1_Gl/TrialBalance.html', context)
+
+
+
+def syncGenLeger(request): #URL to fetch data--
+
+  ### Get Company and Year - to Load Data ------------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 2 - Read Journals.csv - to Refresh the data -----------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna(0)
+
+    ### create a unique Column to Merge Id and Item Code........
+    df['unique'] = df['Ref'].astype(str)+ '-' +df['Type'].astype(str)+ '-' +df['accCode'].astype(str)
+
+    ### Remove Duplicate Quote and Deleted Record...
+    ledger = df.drop_duplicates(subset=['unique'], keep='last')
+    ledger = ledger.drop(ledger.loc[ledger['action']=='Deleted'].index)
+
+    ledger = ledger.drop('unique', axis=1)
+
+    ### Save the data in qotBasic.csv File...
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    ledger.to_csv(fPath, index=False)
+
+
+    jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
+    return JsonResponse(jsonData)
+
+
+def sLedger(request, pk):
+    pk = int(pk)
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 2 - Read dlBasic.csv - to Get the last Delivery Number ------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna(0)   
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
+    df = df.sort_values(['Date'], ascending = [True])
+
+    dfA  = df[df['accCode'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ledgerA = dfA[['Date','accCode','accHead','Ref','Type','Amount','Comm']]
+    ledgerB = ledgerA.copy()
+    ledgerB['Balance'] = ledgerB['Amount'].cumsum()
+    
+    Data = ledgerB.to_dict(orient="records")
+
+    print(Data)
+
+    #(Supplier Main Page)
+    context = {'Data':Data }
+
+    return render(request, 'C1_Gl/sLedger.html', context)
 
 
 
@@ -175,3 +312,11 @@ def zUploadTbData(request):
 
     return render(request, 'C1_Gl/zUploadTbData.html')
 
+
+
+
+#☰☰☰☰☰☰☰☰☰☰☰☰☰☰ Upload Trial Balance ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
+
+def expend(request):
+    context = {'abc':'abc', }
+    return render(request, 'C1_Gl/expend.html', context)

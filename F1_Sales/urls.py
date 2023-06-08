@@ -2,6 +2,8 @@ from django.urls import path
 from .import views
 
 urlpatterns = [
+    path('a2_salesDB', views.a2_salesDB, name='a2_salesDB'),
+
 
     #═══ Customer Master File ════════════════════════════════════
     path('a1_salSetup', views.a1_salSetup, name='a1_salSetup'),
@@ -80,15 +82,23 @@ urlpatterns = [
     #═══ Sales Invoice ═════════════════════════════════════════════════════
     path('sInvoiceList', views.sInvoiceList, name='sInvoiceList'),
     path('showInvoiceURL', views.showInvoiceURL, name='showInvoiceURL'),
+    path('syncInvoice', views.syncInvoice, name='syncInvoice'),  
 
-    path('openSalSiURL', views.openSalSiURL, name='openSalSiURL'),
-    path('sInvoiceDetailURL/<str:pk>/', views.sInvoiceDetailURL , name='sInvoiceDetailURL'),
     path('sInvoiceAdd', views.sInvoiceAdd, name='sInvoiceAdd'),
+    path('sDeliveryOpnList', views.sDeliveryOpnList, name='sDeliveryOpnList'),
+    path('sDeliveryDetail/<str:pk>/', views.sDeliveryDetail , name='sDeliveryDetail'),
     path('sInvoiceAddURL', views.sInvoiceAddURL , name='sInvoiceAddURL'),
 
     path('sInvoiceEdit/<str:pk>/', views.sInvoiceEdit , name='sInvoiceEdit'),
 
-    path('delInvoice/<str:pk>/<str:So>/', views.delInvoice, name='delInvoice'),
+    path('delInvoice/<str:pk>/<str:dl>/', views.delInvoice, name='delInvoice'),
+
+
+
+    #═══ Sales Analysis ═════════════════════════════════════════════════
+    path('tInvoiceDD/<str:pk>/', views.tInvoiceDD, name='tInvoiceDD'),
+
+
 
     #═══ Sales Analysis ═════════════════════════════════════════════════
     path('f1_SalesAnalysis', views.f1_SalesAnalysis, name='f1_SalesAnalysis'),

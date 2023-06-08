@@ -40,60 +40,51 @@ def aReportModule(request):
 #☰☰☰ F1 Sales Report ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
 def F1_salesTargetEmp(request):
     
-  ##--Step 1 - Read CSV files - "Employee Target" ------------------------
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ##--Step 2 - Read Employee- salesTarget.csv File -----------------------
   ##----------------------------------------------------------------------
-    df = pd.read_csv("Data/2023/I1_Hrm/Employees/empTarget.csv", index_col=False ,encoding='unicode_escape').fillna(0)
+    fPath = "Data/" +coFolder+ "/" +Year+ "/I1_Hrm/Targets/salesTarget.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
 
-    ##--Step 1a - Remove Duplicate Line and Deleted Record----------------
-    DataA = df.drop_duplicates(subset=['empCode'], keep='last')
-    DataB = DataA.drop(DataA.loc[DataA['comment']=='Delete'].index)
+    df['unique'] = df['empCode'].astype(str)+" "+df['sNo'].astype(str) ### create a unique column
 
-    ##--Step 1b - Combine Employee Code and Transaction Time--------------
-    DataB['combined'] = DataB['empCode'].astype(str)+" "+DataB['traDate']
+    DataA = df.drop_duplicates(subset=['unique'], keep='last')  ### drop duplicate value
+    DataB = DataA.drop(DataA.loc[DataA['action']=='Deleted'].index) ### drop deleted record
 
 
-    ##--Step 1c- Select the Combine Column and convert it into a "LIST"---
-    List = DataB["combined"] #.tolist()
-
-  ##--Step 2 - Read CSV files - " Employee Target Detail" ----------------
+  ##--Step 3 - Create Pivot Table - sby Employee-- -----------------------
   ##----------------------------------------------------------------------
-    df2 = pd.read_csv("Data/2023/I1_Hrm/Employees/empTargetDetail.csv", index_col=False ,encoding='unicode_escape').fillna(0)
-    ### Combine Employee Code and Transaction Time.................
-    df2['combined'] = df2['empCode'].astype(str)+" "+df2['traDate']
-
-
-    ##--Step 3a- Filtere the 'Employee Target Detail' by Employee "Target List"---
-    filtered_df = df2[df2['combined'].isin(List)]
-
-    ### Convert 'salesTarget' astype to "FLOAT" to avoid error if any numaric value contain float type.
-    filtered_df = filtered_df.astype({'salesTarget':'float'})
-
-
-  ##--Step 3 - Create Pivot Table - by Employee --------------------------
-  ##----------------------------------------------------------------------
-
-    ### PIVOT BY EMPLOYEE-------------------------------------------------
-    empPT = pd.pivot_table(filtered_df,index=["empName","itemDesc"],values=["salesTarget","qty"],aggfunc=np.sum)
+    empPT = pd.pivot_table(DataB,index=["empCName","itemDesc"],values=["salesTarget","qty"],aggfunc=np.sum)
     empPT = empPT.reset_index()
-    empGBy = empPT.groupby(['empName']).agg({'salesTarget': 'sum', 'qty': 'sum'}) 
+    empGBy = empPT.groupby(['empCName']).agg({'salesTarget': 'sum', 'qty': 'sum'}) 
     empGBy.loc['z. Grand Total'] = empGBy.sum()
     empGBy.reset_index(inplace=True)
     empConcat = pd.concat([empPT, empGBy])
-    empSort = empConcat.sort_values(['empName', 'itemDesc'], ascending = [True, True], na_position ='last')
+    empSort = empConcat.sort_values(['empCName', 'itemDesc'], ascending = [True, True], na_position ='last')
     empSort['itemDesc'] = empSort['itemDesc'].fillna('Total')
 
-    ##--Step 3c- Employee Traget Percentager by Item---------------------
+
+  ##--Step 3 - Create Pivot Table - sby Employee-- -----------------------
+  ##----------------------------------------------------------------------
     ### Convert into Dictionary--------------------
-    empGBy = empGBy[['empName','salesTarget']]
+    empGBy = empGBy[['empCName','salesTarget']]
     t1List = empGBy.values.tolist() ##Convert into List
     mapDic1 = {code: name for code, name in t1List}
-    empSort['Total'] = empSort['empName'].map(mapDic1)
+    empSort['Total'] = empSort['empCName'].map(mapDic1)
     empSort['Percentage'] = (empSort['salesTarget'] / empSort['Total'])*100
 
     ### to Hide and Show----------------------------
-    empSort['Department'] = empSort['empName']
-    empSort['Vertical'] = empSort['empName']
+    empSort['Department'] = empSort['empCName']
+    empSort['Vertical'] = empSort['empCName']
     empSort.loc[empSort["itemDesc"] != "Total", ["Vertical"]] = '---' #  rlSort["status"]
+
 
     empData=[]
     for i in range(empSort.shape[0]):

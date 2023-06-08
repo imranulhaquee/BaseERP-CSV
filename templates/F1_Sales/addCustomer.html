@@ -322,14 +322,16 @@
 
         form.addEventListener('submit', async function(e) {e.preventDefault();
             const formData =  await new FormData(form);
-            
+            //console.log([...formData])
+
+
             CusId = document.getElementById('cusCode').value; 
             
             formData.append('cusLogo', 'abc') //avoid error incase of no logo selected
             if(abc !== "" && abc !==undefined){formData.append('cusLogo', abc)}  //abc is the trim image file
             
             formData.append('id', CusId)
-            //console.log([...formData])
+
 
             fetch(`${basInfo.IP[0]}/addCust`, {
                 method: 'POST',

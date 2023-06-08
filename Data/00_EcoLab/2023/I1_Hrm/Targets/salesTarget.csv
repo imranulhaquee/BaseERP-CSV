@@ -1,0 +1,71 @@
+id,empCode,empCName,empImg,empPosi,anSalary,anTarget,empStat,targetSet,sNo,itemCode,itemDesc,titemSelPrice,qty,salesTarget,totalSalCost,salCostPU,traDate,action,unique
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,1,10001000,Microneedling RF ,31465,10,314650,37753,3775,2023-5-9 1-1-9,,329 1
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,2,10001001,Microneedling RF - HandPiece ,4725,15,70875,8504,567,2023-5-9 1-1-9,,329 2
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,3,10002000,Diode Laser Hair Removal Device ,51380,5,256900,30824,6165,2023-5-9 1-1-9,,329 3
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,4,10003000,Portable Diode Laser Hair Removal Equipment ,47180,7,330260,39626,5661,2023-5-9 1-1-9,,329 4
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,5,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece ,6300,19,119700,14362,756,2023-5-9 1-1-9,,329 5
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,6,10004000,RF Fractional CO2 Laser ,81900,4,327600,39306,9827,2023-5-9 1-1-9,,329 6
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,7,10004001,RF Fractional CO2 Laser - Handpiece ,7700,11,84700,10163,924,2023-5-9 1-1-9,,329 7
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,8,10004002,RF Fractional CO2 Laser - Accessories ,1400,20,28000,3360,168,2023-5-9 1-1-9,,329 8
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,9,10005000,Bruun Mci ,86800,3,260400,31244,10415,2023-5-9 1-1-9,,329 9
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,10,10006000,Caviation Laser ,24500,4,98000,11758,2940,2023-5-9 1-1-9,,329 10
+329,329,Sanjay Kumar Mandal,images/empImg/329 Sanjay.jpg,Sales Manager,240000,2000285,Active,Yes,11,10007000,Crio Lipo ,36400,3,109200,13102,4367,2023-5-9 1-1-9,,329 11
+345,345,Pune Pratap Panjiyar,images/empImg/345 Pune.jpg,Sales Executive,216000,2056355,Active,Yes,1,10001000,Microneedling RF ,31465,7,220255,23136,3305,2023-5-30 20-13-26,,345 1
+345,345,Pune Pratap Panjiyar,images/empImg/345 Pune.jpg,Sales Executive,216000,2056355,Active,Yes,2,10001001,Microneedling RF - HandPiece ,4725,12,56700,5956,496,2023-5-30 20-13-26,,345 2
+345,345,Pune Pratap Panjiyar,images/empImg/345 Pune.jpg,Sales Executive,216000,2056355,Active,Yes,3,10004000,RF Fractional CO2 Laser ,81900,3,245700,25808,8603,2023-5-30 20-13-26,,345 3
+345,345,Pune Pratap Panjiyar,images/empImg/345 Pune.jpg,Sales Executive,216000,2056355,Active,Yes,4,10004001,RF Fractional CO2 Laser - Handpiece ,7700,18,138600,14559,809,2023-5-30 20-13-26,,345 4
+345,345,Pune Pratap Panjiyar,images/empImg/345 Pune.jpg,Sales Executive,216000,2056355,Active,Yes,5,10005000,Bruun Mci ,86800,4,347200,36470,9118,2023-5-30 20-13-26,,345 5
+345,345,Pune Pratap Panjiyar,images/empImg/345 Pune.jpg,Sales Executive,216000,2056355,Active,Yes,6,10006000,Caviation Laser ,24500,6,147000,15441,2574,2023-5-30 20-13-26,,345 6
+345,345,Pune Pratap Panjiyar,images/empImg/345 Pune.jpg,Sales Executive,216000,2056355,Active,Yes,7,10011000,Hydra Fresh ,74200,8,593600,62352,7794,2023-5-30 20-13-26,,345 7
+345,345,Pune Pratap Panjiyar,images/empImg/345 Pune.jpg,Sales Executive,216000,2056355,Active,Yes,8,10012000,Hydra-new ,16800,3,50400,5294,1765,2023-5-30 20-13-26,,345 8
+345,345,Pune Pratap Panjiyar,images/empImg/345 Pune.jpg,Sales Executive,216000,2056355,Active,Yes,9,10002000,Diode Laser Hair Removal Device ,51380,5,256900,26985,5397,2023-5-30 20-13-26,,345 9
+365,365,Allen Joseph Anora,images/empImg/365 Allen.jpg,Sales Executive,180000,1500275,Active,Yes,1,10001000,Microneedling RF ,31465,10,314650,37751,3775,2023-5-9 3-20-21,,365 1
+365,365,Allen Joseph Anora,images/empImg/365 Allen.jpg,Sales Executive,180000,1500275,Active,Yes,2,10001001,Microneedling RF - HandPiece ,4725,41,193725,23243,567,2023-5-9 3-20-21,,365 2
+365,365,Allen Joseph Anora,images/empImg/365 Allen.jpg,Sales Executive,180000,1500275,Active,Yes,3,10005000,Bruun Mci ,86800,6,520800,62485,10414,2023-5-9 3-20-21,,365 3
+365,365,Allen Joseph Anora,images/empImg/365 Allen.jpg,Sales Executive,180000,1500275,Active,Yes,4,10018000,SVTA Radio ,25200,8,201600,24188,3024,2023-5-9 3-20-21,,365 4
+365,365,Allen Joseph Anora,images/empImg/365 Allen.jpg,Sales Executive,180000,1500275,Active,Yes,5,10018001,SVTA Radio Hand Pice 1 ,1680,15,25200,3023,202,2023-5-9 3-20-21,,365 5
+365,365,Allen Joseph Anora,images/empImg/365 Allen.jpg,Sales Executive,180000,1500275,Active,Yes,6,10018002,SVTA Radio Hand Pice 2 ,2100,20,42000,5039,252,2023-5-9 3-20-21,,365 6
+365,365,Allen Joseph Anora,images/empImg/365 Allen.jpg,Sales Executive,180000,1500275,Active,Yes,7,10018003,SVTA Radio Hand Pice 3 ,1960,25,49000,5879,235,2023-5-9 3-20-21,,365 7
+365,365,Allen Joseph Anora,images/empImg/365 Allen.jpg,Sales Executive,180000,1500275,Active,Yes,8,10018004,SVTA Radio Hand Pice 4 ,1820,35,63700,7643,218,2023-5-9 3-20-21,,365 8
+365,365,Allen Joseph Anora,images/empImg/365 Allen.jpg,Sales Executive,180000,1500275,Active,Yes,9,10018005,SVTA Radio Hand Pice 5 ,2240,40,89600,10750,269,2023-5-9 3-20-21,,365 9
+366,366,Franco Viola Parota,images/empImg/366 Franco.jpg,Sales Executive,132000,1000160,Active,Yes,1,10002000,Diode Laser Hair Removal Device ,51380,3,154140,20343,6781,2023-5-9 3-25-25,,366 1
+366,366,Franco Viola Parota,images/empImg/366 Franco.jpg,Sales Executive,132000,1000160,Active,Yes,2,10003000,Portable Diode Laser Hair Removal Equipment ,47180,4,188720,24907,6227,2023-5-9 3-25-25,,366 2
+366,366,Franco Viola Parota,images/empImg/366 Franco.jpg,Sales Executive,132000,1000160,Active,Yes,3,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece ,6300,16,100800,13303,831,2023-5-9 3-25-25,,366 3
+366,366,Franco Viola Parota,images/empImg/366 Franco.jpg,Sales Executive,132000,1000160,Active,Yes,4,10004000,RF Fractional CO2 Laser ,81900,4,327600,43236,10809,2023-5-9 3-25-25,,366 4
+366,366,Franco Viola Parota,images/empImg/366 Franco.jpg,Sales Executive,132000,1000160,Active,Yes,5,10004001,RF Fractional CO2 Laser - Handpiece ,7700,25,192500,25406,1016,2023-5-9 3-25-25,,366 5
+366,366,Franco Viola Parota,images/empImg/366 Franco.jpg,Sales Executive,132000,1000160,Active,Yes,6,10004002,RF Fractional CO2 Laser - Accessories ,1400,26,36400,4804,185,2023-5-9 3-25-25,,366 6
+370,370,Ariel Abapo Naciogoyo,images/empImg/370 Ariel.jpg,Sales Executive,120000,1001000,Active,Yes,1,10004000,RF Fractional CO2 Laser ,81900,2,163800,19636,9818,2023-5-9 3-28-0,,370 1
+370,370,Ariel Abapo Naciogoyo,images/empImg/370 Ariel.jpg,Sales Executive,120000,1001000,Active,Yes,2,10004001,RF Fractional CO2 Laser - Handpiece ,7700,12,92400,11077,923,2023-5-9 3-28-0,,370 2
+370,370,Ariel Abapo Naciogoyo,images/empImg/370 Ariel.jpg,Sales Executive,120000,1001000,Active,Yes,3,10004002,RF Fractional CO2 Laser - Accessories ,1400,22,30800,3692,168,2023-5-9 3-28-0,,370 3
+370,370,Ariel Abapo Naciogoyo,images/empImg/370 Ariel.jpg,Sales Executive,120000,1001000,Active,Yes,4,10005000,Bruun Mci ,86800,3,260400,31217,10406,2023-5-9 3-28-0,,370 4
+370,370,Ariel Abapo Naciogoyo,images/empImg/370 Ariel.jpg,Sales Executive,120000,1001000,Active,Yes,5,10006000,Caviation Laser ,24500,6,147000,17622,2937,2023-5-9 3-28-0,,370 5
+370,370,Ariel Abapo Naciogoyo,images/empImg/370 Ariel.jpg,Sales Executive,120000,1001000,Active,Yes,6,10007000,Crio Lipo ,36400,3,109200,13091,4364,2023-5-9 3-28-0,,370 6
+370,370,Ariel Abapo Naciogoyo,images/empImg/370 Ariel.jpg,Sales Executive,120000,1001000,Active,Yes,7,10009000,G5 Slimming ,51800,3,155400,18629,6210,2023-5-9 3-28-0,,370 7
+370,370,Ariel Abapo Naciogoyo,images/empImg/370 Ariel.jpg,Sales Executive,120000,1001000,Active,Yes,8,10009001,G5 Slimming Applicators ,2800,15,42000,5035,336,2023-5-9 3-28-0,,370 8
+415,415,Tampos Antonio Magalona,images/empImg/415 Tampos.jpg,Sales Executive,150000,1400245,Active,Yes,1,10001000,Microneedling RF ,31465,10,314650,33707,3371,2023-5-10 20-34-31,,415 1
+415,415,Tampos Antonio Magalona,images/empImg/415 Tampos.jpg,Sales Executive,150000,1400245,Active,Yes,2,10001001,Microneedling RF - HandPiece ,4725,23,108675,11642,506,2023-5-10 20-34-31,,415 2
+415,415,Tampos Antonio Magalona,images/empImg/415 Tampos.jpg,Sales Executive,150000,1400245,Active,Yes,3,10002000,Diode Laser Hair Removal Device ,51380,4,205520,22016,5504,2023-5-10 20-34-31,,415 3
+415,415,Tampos Antonio Magalona,images/empImg/415 Tampos.jpg,Sales Executive,150000,1400245,Active,Yes,4,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece ,6300,26,163800,17547,675,2023-5-10 20-34-31,,415 4
+415,415,Tampos Antonio Magalona,images/empImg/415 Tampos.jpg,Sales Executive,150000,1400245,Active,Yes,5,10005000,Bruun Mci ,86800,7,607600,65089,9298,2023-5-10 20-34-31,,415 5
+417,417,JaimeEndaya,images/empImg/417 Jaime.jpg,Sales Man,200000,150750,Active,Yes,1,10001001,Microneedling RF - HandPiece,3375,10,33750,44776,4478,2023-6-1 11-16-16,,417 1
+417,417,JaimeEndaya,images/empImg/417 Jaime.jpg,Sales Man,200000,150750,Active,Yes,2,10004000,RF Fractional CO2 Laser,58500,2,117000,155224,77612,2023-6-1 11-16-16,,417 2
+418,418,Lucero Jackson Jackson,images/empImg/418 Lucero.jpg,Sales Man,200000,2001900,Active,Yes,1,10001000,Microneedling RF,22475,4,89900,8981,2245,2023-6-1 16-47-35,,418 1
+418,418,Lucero Jackson Jackson,images/empImg/418 Lucero.jpg,Sales Man,200000,2001900,Active,Yes,2,10001001,Microneedling RF - HandPiece,3375,20,67500,6744,337,2023-6-1 16-47-35,,418 2
+418,418,Lucero Jackson Jackson,images/empImg/418 Lucero.jpg,Sales Man,200000,2001900,Active,Yes,3,10002000,Diode Laser Hair Removal Device,36700,20,734000,73330,3667,2023-6-1 16-47-35,,418 3
+418,418,Lucero Jackson Jackson,images/empImg/418 Lucero.jpg,Sales Man,200000,2001900,Active,Yes,4,10003000,Portable Diode Laser Hair Removal Equipment,33700,20,674000,67336,3367,2023-6-1 16-47-35,,418 4
+418,418,Lucero Jackson Jackson,images/empImg/418 Lucero.jpg,Sales Man,200000,2001900,Active,Yes,5,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,4500,45,202500,20231,450,2023-6-1 16-47-35,,418 5
+418,418,Lucero Jackson Jackson,images/empImg/418 Lucero.jpg,Sales Man,200000,2001900,Active,Yes,6,10004000,RF Fractional CO2 Laser,58500,4,234000,23378,5845,2023-6-1 16-47-35,,418 6
+498,498,Mohammed Hasnain Hasnain,images/empImg/498 Mohammed.jpg,Sales Man,150000,827000,Active,Yes,1,10002000,Diode Laser Hair Removal Device,36700,2,73400,13313,6657,2023-6-2 20-13-20,Original,498 1
+498,498,Mohammed Hasnain Hasnain,images/empImg/498 Mohammed.jpg,Sales Man,150000,827000,Active,Yes,2,10003000,Portable Diode Laser Hair Removal Equipment,33700,3,101100,18337,6112,2023-6-2 20-13-20,Original,498 2
+498,498,Mohammed Hasnain Hasnain,images/empImg/498 Mohammed.jpg,Sales Man,150000,827000,Active,Yes,3,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,4500,15,67500,12243,816,2023-6-2 20-13-20,Original,498 3
+498,498,Mohammed Hasnain Hasnain,images/empImg/498 Mohammed.jpg,Sales Man,150000,827000,Active,Yes,4,10004000,RF Fractional CO2 Laser,58500,10,585000,106106,10611,2023-6-2 20-13-20,Original,498 4
+709,709,Jinu Ambadan Ambadan,images/empImg/709 Jinu.jpg,Admin Staff,150000,330500,Active,Yes,1,10004001,RF Fractional CO2 Laser - Handpiece,5500,5,27500,12481,2496,2023-6-2 19-19-21,Edited,709 1
+709,709,Jinu Ambadan Ambadan,images/empImg/709 Jinu.jpg,Admin Staff,150000,330500,Active,Yes,2,10004000,RF Fractional CO2 Laser,58500,2,117000,53101,26551,2023-6-2 19-19-21,Edited,709 2
+709,709,Jinu Ambadan Ambadan,images/empImg/709 Jinu.jpg,Admin Staff,150000,330500,Active,Yes,3,10005000,Bruun Mci,62000,3,186000,84418,28139,2023-6-2 19-19-21,Edited,709 3
+417,417,JaimeEndaya,images/empImg/417 Jaime.jpg,Sales Man,200000,750850,Active,Yes,1,10001001,Microneedling RF - HandPiece,3375,10,33750,8990,899,2023-6-2 22-46-31,Edited
+417,417,JaimeEndaya,images/empImg/417 Jaime.jpg,Sales Man,200000,750850,Active,Yes,2,10004000,RF Fractional CO2 Laser,58500,3,175500,46747,15582,2023-6-2 22-46-31,Edited
+417,417,JaimeEndaya,images/empImg/417 Jaime.jpg,Sales Man,200000,750850,Active,Yes,3,10003000,Portable Diode Laser Hair Removal Equipment,33700,3,101100,26929,8976,2023-6-2 22-46-31,Edited
+417,417,JaimeEndaya,images/empImg/417 Jaime.jpg,Sales Man,200000,750850,Active,Yes,4,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,4500,14,63000,16781,1199,2023-6-2 22-46-31,Edited
+417,417,JaimeEndaya,images/empImg/417 Jaime.jpg,Sales Man,200000,750850,Active,Yes,5,10004000,RF Fractional CO2 Laser,58500,5,292500,77912,15582,2023-6-2 22-46-31,Edited
+417,417,JaimeEndaya,images/empImg/417 Jaime.jpg,Sales Man,200000,750850,Active,Yes,6,10004001,RF Fractional CO2 Laser - Handpiece,5500,10,55000,14650,1465,2023-6-2 22-46-31,Edited
+417,417,JaimeEndaya,images/empImg/417 Jaime.jpg,Sales Man,200000,750850,Active,Yes,7,10004002,RF Fractional CO2 Laser - Accessories,1000,30,30000,7991,266,2023-6-2 22-46-31,Edited

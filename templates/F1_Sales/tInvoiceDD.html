@@ -1,0 +1,209 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+
+<div class="conA">
+		<div class="timeline">
+
+				<div class="entry">
+					<div class="type" >Sales Quotation</div>
+					<div class="typeOpn" id="qotOpnClo" ></div>
+						<div class="core">
+						<div> <p class="head"> Quotation No: </p> <p class="data" id="qotRef"> </p> </div>
+						<div> <p class="head"> Date: </p> <p class="data" id="qotDat"></p> </div>
+						<div> <p class="head"> Customer: </p> <p class="data" id="qotCust"></p> </div>
+						<div> <p class="head"> Amount: </p> <p class="data" id="qotAmt"></p> </div>
+						</div>
+					<div> <img style="position:absolute; bottom:-18px; left:45%; width:40px;"src=" {% static 'Java/Images/PNG/arrow.png' %}"alt=""> </div>
+				</div>
+
+				<div class="entry">
+					<div class="type" >Sales Order</div>
+					<div class="typeOpn" id="soOpnClo" ></div>
+						<div class="core">
+							<div> <p class="head"> Order No: </p> <p class="data" id="soRef"> </p> </div>
+							<div> <p class="head"> Date: </p> <p class="data" id="soDat"> </p> </div>
+							<div> <p class="head"> Customer: </p> <p class="data" id="soCust"> </p> </div>
+							<div> <p class="head"> Amount: </p> <p class="data" id="soAmt"> </p> </div>
+						</div>
+					<div> <img style="position:absolute; bottom:-18px; left:45%; width:40px;"src=" {% static 'Java/Images/PNG/arrow.png' %}"alt=""> </div>
+				</div>
+
+				<div class="entry">
+					<div class="type" >Delivery Note</div>
+					<div class="typeOpn" id="dlOpnClo" ></div>
+						<div class="core">
+							<div> <p class="head"> Delivery Ref: </p> <p class="data" id="dlRef"> </p> </div>
+							<div> <p class="head"> Date: </p> <p class="data" id="dlDat"> </p> </div>
+							<div> <p class="head"> Customer: </p> <p class="data" id="dlCust"> </p> </div>
+							<div> <p class="head"> Amount: </p> <p class="data" id="dlAmt"> </p> </div>
+						</div>
+					<div> <img style="position:absolute; bottom:-18px; left:45%; width:40px;"src=" {% static 'Java/Images/PNG/arrow.png' %}"alt=""> </div>
+				</div>
+
+				<div class="entry">
+					<div class="type" >Sales Invoice</div>
+					<div class="typeOpn" id="siOpnClo" ></div>
+						<div class="core">
+						<div> <p class="head"> Invoice No: </p> <p class="data" id="siRef"> </p> </div>
+						<div> <p class="head"> Date: </p> <p class="data" id="siDat"> </p> </div>
+						<div> <p class="head"> Customer: </p> <p class="data" id="siCust"> </p> </div>
+						<div> <p class="head"> Amount: </p> <p class="data" id="siAmt"> </p> </div>
+						</div>
+					<div> <img style="position:absolute; bottom:-18px; left:45%; width:40px;"src=" {% static 'Java/Images/PNG/arrow.png' %}"alt=""> </div>
+				</div>
+
+		</div>
+</div>
+
+<style>
+
+		/* ⚊⚊⚊⚊ Container A ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.conA{
+				position:relative;
+				min-height: 100vh;
+				width: 100%;
+				min-width:750px;
+				padding: 10px 5px;
+				background: linear-gradient(180deg, rgba(169, 152, 152, 0.7), rgba(220, 204, 225, 0.8)), #c2c7f2 url('/static/JAVA/Images/Background/BG12.jpg');  /* Img3.webp */
+				background-size: cover;
+				column-gap: 30px;
+				z-index:5;
+			}
+		/* ⚊⚊⚊⚊ Container A ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+    .timeline{
+        padding:5px 10px;
+        overflow:visible;
+      }   
+    /*---- Box -------------------------- */
+      .entry{   
+        margin:30px auto;
+        position:relative;
+        padding: 25px 20px 5px 20px;
+        border: 1px solid #5f9606;
+        box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.50);
+        border-radius: 5px;
+        min-width:450px;
+        max-width:450px;
+        min-height: 100px;
+        text-align:center;
+        z-index:2;
+        background: #ffffff;
+        z-index: 10;
+      }
+      .entry .type{
+        position:absolute; 
+        font-size: 22px;
+        color:#000E91;
+        top:-13px; 
+        left:160px;
+        padding:0px;
+        min-width: 130px;
+        text-shadow: rgb(192, 192, 192) 1px 1px 1px;
+      }
+			.typeOpn{
+				position:absolute; 
+        font-size: 15px;
+        color:orange;
+        top:2px; 
+        right:-10px;
+        width: 50px;
+				height: 50px;
+				margin:auto;
+				border-radius:50%;
+        text-shadow: rgb(192, 192, 192) 1px 1px 1px;
+			}
+      .entry p{
+        font-size: 13px;
+        font-weight: 300;
+      }
+      .entry .head{
+        font-size: 12px;
+        color: #04705C;
+        min-width:100px;
+        max-width:100px;
+      }
+      .entry .data{
+        font-size: 13px;
+        color: #00934C;
+      }      
+      .entry .core div {
+        display:flex;
+      }
+
+</style>
+
+
+
+<script>
+    let siData = {{siData|safe}}
+    let dlData = {{dlData|safe}}
+    let soData = {{soData|safe}}
+    let qotData = {{qotData|safe}}
+    console.log(siData)
+
+		var siVariable  = document.getElementById("siOpnClo").innerHTML = siData[0]["opnCloSt"];	
+    document.getElementById("siRef").innerHTML = 'si-'+siData[0]["siRef"];
+    document.getElementById("siDat").innerHTML = siData[0]["siDat"];
+    document.getElementById("siCust").innerHTML = siData[0]["cusName"];
+    document.getElementById("siAmt").innerHTML = siData[0]["siTAT"].toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+		var element = document.getElementById("siOpnClo");
+		if (siVariable === "Open") {
+			element.innerHTML = "<img src='/static/JAVA/Images/Icon/unlock.png' width=25 alt='Open'>";
+		} else {
+			element.innerHTML = "<img src='/static/JAVA/Images/Icon/lock.png' width=25 alt='Closed'>";
+		} 
+
+
+		var dlVariable  = document.getElementById("dlOpnClo").innerHTML = dlData[0]["opnCloSt"];
+    document.getElementById("dlRef").innerHTML = 'dl-'+dlData[0]["dlRef"];
+    document.getElementById("dlDat").innerHTML = dlData[0]["dlDat"];
+    document.getElementById("dlCust").innerHTML = dlData[0]["cusName"];
+    document.getElementById("dlAmt").innerHTML = dlData[0]["dlTAT"].toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+		var element = document.getElementById("dlOpnClo");
+		if (dlVariable === "Open") {
+			element.innerHTML = "<img src='/static/JAVA/Images/Icon/unlock.png' width=25 alt='Open'>";
+		} else {
+			element.innerHTML = "<img src='/static/JAVA/Images/Icon/lock.png' width=25 alt='Closed'>";
+		} 
+
+
+		var soVariable  = document.getElementById("soOpnClo").innerHTML = soData[0]["opnCloSt"];
+    document.getElementById("soRef").innerHTML = 'so-'+soData[0]["soRef"];
+    document.getElementById("soDat").innerHTML = soData[0]["soDat"];
+    document.getElementById("soCust").innerHTML = soData[0]["cusName"];
+    document.getElementById("soAmt").innerHTML = soData[0]["soTAT"].toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+		var element = document.getElementById("soOpnClo");
+		if (soVariable === "Open") {
+			element.innerHTML = "<img src='/static/JAVA/Images/Icon/unlock.png' width=25 alt='Open'>";
+		} else {
+			element.innerHTML = "<img src='/static/JAVA/Images/Icon/lock.png' width=25 alt='Closed'>";
+		} 
+
+
+		var qotVariable  = document.getElementById("qotOpnClo").innerHTML = qotData[0]["opnCloSt"];
+    document.getElementById("qotRef").innerHTML = 'qot-'+qotData[0]["qotRef"];
+    document.getElementById("qotDat").innerHTML = qotData[0]["qotDat"];
+    document.getElementById("qotCust").innerHTML = qotData[0]["cusName"];
+    document.getElementById("qotAmt").innerHTML = qotData[0]["qotTAT"].toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+		var element = document.getElementById("qotOpnClo");
+		if (qotVariable === "Open") {
+			element.innerHTML = "<img src='/static/JAVA/Images/Icon/unlock.png' width=25 alt='Open'>";
+		} else {
+			element.innerHTML = "<img src='/static/JAVA/Images/Icon/lock.png' width=25 alt='Closed'>";
+		} 
+		
+		
+		
+		
+		
+		
+
+
+</script>
+
+{% endblock body %}

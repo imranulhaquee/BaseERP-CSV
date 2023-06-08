@@ -1,0 +1,29 @@
+def empSalary(request):
+    #(Show the Detail Supplier Information)
+
+  ### Step 1 - Get Company and Year - to Load Data ---------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 2 - Read Employee- salesTarget.csv File ---------------------------
+  ### ========================================================================
+    req_cols = ['empCode' ,'empCName', 'empPosi', 'anTarget', 'empImg', 'anSalary', 'action']
+    fPath = "Data/" +coFolder+ "/" +Year+ "/I1_Hrm/Targets/salesTarget.csv"
+    dfDetail = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape').fillna('')
+
+    DataA = dfDetail.drop_duplicates(subset=['empCode'], keep='last')  ### drop duplicate value
+    DataB = DataA.drop(DataA.loc[DataA['action']=='Delete'].index) ### drop deleted record
+
+    DataB = DataB.fillna('')
+    iniData = DataB[['empCode','empCName','empPosi','anTarget', 'empImg', 'anSalary']]
+
+
+  ### Step 2 - Read Employee- salesTarget.csv File ---------------------------
+  ### ========================================================================
+    Data = iniData.to_dict(orient="records")
+
+    ### return Response data in List form i.e. [Data, page, id] we can send without [ ]
+    return JsonResponse(Data, safe=False) 

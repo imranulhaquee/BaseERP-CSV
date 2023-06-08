@@ -24,10 +24,14 @@ urlpatterns = [
     path('itemPrice/', views.itemPrice, name='itemPrice'),
 
 
+    #═══ Item Ledger ══════════════════════════════════════════════════════════
     path('sItemLedger', views.sItemLedger, name='sItemLedger'),
     path('sItemLedgerURL/<str:pk>/', views.sItemLedgerURL, name='sItemLedgerURL'),
+    path('syncItemLeger', views.syncItemLeger, name='syncItemLeger'),
 
+    path('singleLedger/<str:pk>/', views.singleLedger, name='singleLedger'),
 
+    #═══ Upload Item Data══════════════════════════════════════════════════════
     path('zUploadItmData', views.zUploadItmData, name='zUploadItmData'),
     path('zUploadItmLedger', views.zUploadItmLedger, name='zUploadItmLedger'),
 ]

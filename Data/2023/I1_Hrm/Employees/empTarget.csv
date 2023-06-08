@@ -5,3 +5,5 @@ id,empCode,empName,empImg,empPosi,anSalary,anTarget,empStat,targetSet,traDate,co
 366,366,Franco Viola Parota,images/empImg/File_jysMEvM.jpg,Sales Executive,132000,1000160,Active,Yes,2023-5-9 3-25-25,
 370,370,Ariel Abapo Naciogoyo,images/empImg/File_HQZALPl.jpg,Sales Executive,120000,1001000,Active,Yes,2023-5-9 3-28-0,
 415,415,Tampos Antonio Magalona,images/empImg/File_LB6b9wl.jpg,Sales Executive,150000,1400245,Active,Yes,2023-5-10 20-34-31,
+345,345,Pune Pratap Panjiyar,images/empImg/File_kmMF4fs.jpg,Sales Executive,216000,2056355,Active,Yes,2023-5-30 20-13-26,
+417,417,JaimeEndaya,images/empImg/417 Jaime.jpg,SalesMan,200000,150750,Active,Yes,2023-6-1 11-16-16,

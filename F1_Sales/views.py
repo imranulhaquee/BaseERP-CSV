@@ -39,6 +39,14 @@ from xhtml2pdf import pisa
 
 # from django.template import RequestContext
 
+#☰☰☰ SALES DASHBOARD ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
+def a2_salesDB(request):
+    context = {'abc':'abc', }
+    return render(request, 'F1_Sales/a2_salesDB.html', context)
+
+
+
+
 #☰☰☰ SALES SETUP ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
 def a1_salSetup(request):
     context = {'abc':'abc', }
@@ -460,7 +468,7 @@ def showQuot(request): #URL to fetch data--
 
   ### Step 2. Read qotBasic.csv File -----------------------------------------
   ### ========================================================================
-    req_cols = ['id','qotRef','qotDat','cusName', 'qotTax', 'qotTAT','spName','opnClo','action']
+    req_cols = ['id','qotRef','qotDat','cusName', 'qotTax', 'qotTAT','spCName','opnClo','action']
     fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
     df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape').fillna('0')
     
@@ -521,16 +529,19 @@ def syncQuot(request): #URL to fetch data--
     fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotBasic.csv"
     dfBasic.to_csv(fPath, index=False)
 
+    dfBasic['unique'] = dfBasic['qotRef'].astype(str)+" "+dfBasic['traDate']
 
   ### Step 3. Read qotAddi.csv File - to Load Data ---------------------------
   ### ========================================================================
     fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotAddi.csv"
     dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
 
+    dfB["unique"] = dfB['qotRef'].astype(str)+" "+dfB['traDate']
+
     ###---- Merge to filter out those data which Transaction Date is not matching with qotBasic
-    merged_df = pd.merge(dfB, dfBasic['traDate'], on='traDate', how='inner')
+    merged_df = pd.merge(dfB, dfBasic['unique'], on='unique', how='inner')
     ###---- Rearange Column to aboid any mistake
-    merged_df = merged_df[['id','qotRef','sno','itmCod','desc','qty','price','disc','tot','traDate','action']]
+    merged_df = merged_df[['id','qotRef','sno','itmCod','desc','qty','price','disc','tot','vat','traDate','action']]
 
     ### Save the data in qotAddi.csv File...
     fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Quotations/qotAddi.csv"
@@ -604,7 +615,7 @@ def sQuotAddUrl(request):
               'qotTAD': basData['qotTAD'],   'qotTax': basData['qotTax'],
               'qotTAT': basData['qotTAT'],	 'shipTo':  basData['shipTo'],	
               'qotComm': basData['qotComm'], 'spCode': basData['spCode'],
-              'spName': basData['spName'],   'opeClo': 'Open',
+              'spCName': basData['spCName'],   'opeClo': 'Open',
               'traDate': basData['traDate'], 'action': basData['action']
             }
 
@@ -620,7 +631,7 @@ def sQuotAddUrl(request):
       addiData={'ID': basData['qotRef'], 'qotRef': basData['qotRef'], 'sno':data['sno'],
               'itmCod':data['itmcode'], 'desc':data['desc'], 'qty':data['qty'],
               'price':data['price'], 'disc':data['disc'], 'tot':data ['tot'],
-              'traDate':basData['traDate'], 'action':'' 
+              'vat':data ['vat'], 'traDate':basData['traDate'], 'action':'' 
               }
     
       dfAddi = pd.DataFrame(addiData, index=[0])
@@ -702,6 +713,16 @@ def delQot(request, pk):
     dfStd = pd.read_csv('data/basInfo.csv')
     coFolder = str(dfStd.loc[0, 'coFolder'])
     Year = str(dfStd.loc[0, 'year'])
+
+  ### CHECK - Before Deleting Record ----------------------------------------
+    req_cols = ["soRef","qotRef", "action"]
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    dfA = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape').fillna('')
+    dfA = dfA.drop_duplicates(subset=['qotRef'], keep='last') ### Remove Duplicate Record
+    dfA = dfA.drop(dfA.loc[dfA['action']=='Deleted'].index)  ### Remove Deleted Record
+    list = dfA['qotRef'].tolist() ### Convert Column in LIst
+    if pk in list:
+        return JsonResponse({'result': 'No'})
 
 
   ### Step 2. Read qotBasic.csv File - to Get all the Sales Quotations -------
@@ -861,7 +882,7 @@ def sQotCotAdd(request, pk):
 
   ### Step 3 - Read Employee Cost - "I1_Hrm (HRM Module)"--------------------
     req_Column = ['empCode', 'itemCode', 'salCostPU']
-    empCost = pd.read_csv("Data/" +coFolder+ "/" +Year+ "/I1_Hrm/Employees/empTargetDetail.csv", usecols=req_Column ,encoding='unicode_escape').fillna(0)
+    empCost = pd.read_csv("Data/" +coFolder+ "/" +Year+ "/I1_Hrm/Targets/salesTarget.csv", usecols=req_Column ,encoding='unicode_escape').fillna(0)
     empCost = empCost.loc[empCost['empCode'] == empCode]
     empCost = empCost.to_dict(orient="records")   ### Convert Data into Dictionary
     empCostList = {item['itemCode']: item['salCostPU'] for item in empCost} # Extract desired values into a new dictionary
@@ -910,7 +931,7 @@ def showOrderURL(request):
 
   ### Step 2. Read soBasic.csv File ------------------------------------------
   ### ========================================================================
-    req_cols = ['id','soRef','soDat','cusName','qotRef', 'soTax', 'soTAT','spName','opnClo','action']
+    req_cols = ['id','soRef','soDat','cusName','qotRef', 'soTax', 'soTAT','spCName','opnClo','action']
     fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
     df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
 
@@ -971,16 +992,22 @@ def syncOrder(request): #URL to fetch data--
     fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
     dfBasic.to_csv(fPath, index=False)
 
+    dfBasic['unique'] = dfBasic['soRef'].astype(str)+" "+dfBasic['traDate']
+
 
   ### Step 3. Read soAddi.csv File - to Load Data ----------------------------
   ### ========================================================================
     fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soAddi.csv"
     dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
 
+    dfB["unique"] = dfB['soRef'].astype(str)+" "+dfB['traDate']
+
     ###---- Merge to filter out those data which Transaction Date is not matching with qotBasic
-    merged_df = pd.merge(dfB, dfBasic['traDate'], on='traDate', how='inner')
+    merged_df = pd.merge(dfB, dfBasic['unique'], on='unique', how='inner')
     ###---- Rearange Column to aboid any mistake
-    merged_df = merged_df[['id','soRef','sno','itmCod','desc','qty','price','disc','tot','traDate','action']]
+    merged_df = merged_df[['id','soRef','sno','itmCod','desc','qty','price','disc','tot','vat', 'traDate','action']]
+
+    merged_df =merged_df.sort_values(['soRef','sno'], ascending = [True, True])
 
     ### Save the data in qotAddi.csv File...
     fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soAddi.csv"
@@ -1176,7 +1203,7 @@ def sOrderAddUrl(request):
                 'soTAD':basData['soTAD'],      'soTax': basData['soTax'],
                 'soTAT':basData['soTAT'],      'shipTo':basData['shipTo'],
                 'soComm':basData['soComm'],    'opnClo':"Open",
-                'spName':basData['spName'],    'spCode':basData['spCode'],
+                'spCName':basData['spCName'],    'spCode':basData['spCode'],
                 'qotRef':basData['qotRef'],    'qotDat':basData['qotDat'],
                 'traDate':basData['traDate'],  'action':" ",
     }
@@ -1199,6 +1226,7 @@ def sOrderAddUrl(request):
                 'price':data ['price'],
                 'disc':data ['disc'],
                 'tot':data ['tot'],
+                'vat':data ['vat'], 
                 'traDate':basData['traDate'],
                 'action':" " ,                             
         }
@@ -1295,6 +1323,8 @@ def sOrderEdit(request, pk):
 def delSOrd(request, pk, Qot):
     pk = int(pk)
     Qot = int(Qot)
+    print(pk)
+
 
   ### Step 1. Get Company and Year to Load Data ------------------------------
   ### ========================================================================
@@ -1302,6 +1332,17 @@ def delSOrd(request, pk, Qot):
     coFolder = str(dfStd.loc[0, 'coFolder'])
     Year = str(dfStd.loc[0, 'year'])
 
+
+    ###--CHECK Delivery exist against such Order than don't Delete--------------
+    #pk = 2300002
+    req_cols = ["dlRef","soRef", "action"]
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlBasic.csv"
+    dfA = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape').fillna('')
+    dfA = dfA.drop_duplicates(subset=['soRef'], keep='last') ### Remove Duplicate Record
+    dfA = dfA.drop(dfA.loc[dfA['action']=='Deleted'].index)  ### Remove Deleted Record
+    list = dfA['soRef'].tolist() ### Convert Column in LIst
+    if pk in list: 
+        return JsonResponse({'result': 'No'})
 
   ### Step 2. Read soBasic.csv File ------------------------------------------
   ### ========================================================================
@@ -1443,7 +1484,7 @@ def showDeliveryURL(request):
 
   ### Step 2. Read dlBasic.csv File ------------------------------------------
   ### ========================================================================
-    req_cols = ['id','dlRef','dlDat','cusName','soRef', 'dlTax', 'dlTAT','spName','opnClo','action']
+    req_cols = ['id','dlRef','dlDat','cusName','soRef', 'dlTax', 'dlTAT','spCName','opnClo','action']
     fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlBasic.csv"
     df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
 
@@ -1479,6 +1520,70 @@ def showDeliveryURL(request):
 
 
     return JsonResponse(Data, safe=False) 
+
+
+def syncDelivery(request): #URL to fetch data--
+
+  ### Get Company and Year - to Load Data ------------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 2. Read dlBasic.csv File - to Load Data ---------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfBasic = dfA.drop_duplicates(subset=['dlRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Deleted'].index)
+
+    dfBasic = dfBasic.sort_values('dlRef') #sor by qotRef
+
+    ### Save the data in qotBasic.csv File...
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlBasic.csv"
+    dfBasic.to_csv(fPath, index=False)
+
+    dfBasic['unique'] = dfBasic['dlRef'].astype(str)+" "+dfBasic['traDate']
+
+  ### Step 3 - Read dlAddi.csv File - to Load Data ---------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlAddi.csv"
+    dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    dfB["unique"] = dfB['dlRef'].astype(str)+" "+dfB['traDate']
+
+    ###---- Merge to filter out those data which Transaction Date is not matching with qotBasic
+    merged_df = pd.merge(dfB, dfBasic['unique'], on='unique', how='inner')
+    ###---- Rearange Column to aboid any mistake
+    merged_df = merged_df[['id','dlRef','sno','itmCod','desc','qty','price','disc','tot','vat','traDate','action']]
+
+    merged_df =merged_df.sort_values(['dlRef','sno'], ascending = [True, True])
+
+    ### Save the data in qotAddi.csv File...
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlAddi.csv"
+    merged_df.to_csv(fPath, index=False)
+
+
+  ### Step 4 - Read dlStat.csv File - to Load Data ---------------------------
+  ### ========================================================================
+    statPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlStat.csv"
+    stat = pd.read_csv(statPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ### Remove Duplicate Quote and Deleted Record...
+    stat = stat.drop_duplicates(subset=['dlRefSt'], keep='last')
+    stat = stat.drop(stat.loc[stat['action']=='Deleted'].index)
+
+    ### Save the data in qotStat.csv File...
+    statPath =  "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlStat.csv"
+    stat.to_csv(statPath, index=False)
+
+
+    jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
+    return JsonResponse(jsonData)
+
 
 
 def sDeliveryAdd(request):
@@ -1645,7 +1750,7 @@ def sDeliveryAddURL(request):
                 'dlTAD':basData['dlTAD'],      'dlTax': basData['dlTax'],
                 'dlTAT':basData['dlTAT'],      'shipTo':basData['shipTo'],
                 'dlComm':basData['dlComm'],    'opnClo':"Open",
-                'spName':basData['spName'],    'spCode':basData['spCode'],
+                'spCName':basData['spCName'],    'spCode':basData['spCode'],
                 'soRef':basData['soRef'],    'soDat':basData['soDat'],
                 'traDate':basData['traDate'],  'action':" ",
     }
@@ -1669,6 +1774,7 @@ def sDeliveryAddURL(request):
                 'price':data ['price'],
                 'disc':data ['disc'],
                 'tot':data ['tot'],
+                'vat':data ['vat'],
                 'traDate':basData['traDate'],
                 'action':" " ,                             
         }
@@ -1708,7 +1814,9 @@ def sDeliveryAddURL(request):
   ### Step 6 - Save Data in ItemMovement.csv file ----------------------------------
   ### ========================================================================
     itmRecords = []
+    COGS = 0
     for data in addiData:
+      COGS = COGS + int(data['wac']) ### Sum Total Value of Cost of Sales
       Qty = int(data['qty']) * -1
       itemMov =  {'id':basData['dlRef'],        'itmCode':data ['itmcod'],
                   'itmName':data ['desc'],      'traDat':basData['dlDat'],
@@ -1722,6 +1830,24 @@ def sDeliveryAddURL(request):
     itemDf = pd.DataFrame(itmRecords)
     fPath = "Data/" +coFolder+ "/" +Year+ "/H1_Items/Items/itemMovement.csv"
     itemDf.to_csv(fPath, index=False, header=False, mode='a')
+
+
+
+
+  ### Step 7 - Journal Entry Entries.csv file --------------------------------
+  ### ========================================================================
+    addRecords = []
+    Inventory = COGS * -1
+
+    cogs =  {'Ref':basData['dlRef'], 'type': 'dl', 'Date':basData['dlDat'], 'accCode':60110001, 'accName':'Cogs1','amount':COGS , 'Comm':basData['dlComm'] ,'traDate':basData['traDate'], 'action':" "}
+    sales =  {'Ref':basData['dlRef'], 'type': 'dl', 'Date':basData['dlDat'], 'accCode':37000001, 'accName':'Inventory at Cost','amount':Inventory, 'Comm':basData['dlComm'],'traDate':basData['traDate'], 'action':" "}
+    addRecords.append(cogs)
+    addRecords.append(sales)
+
+    Journal = pd.DataFrame(addRecords)
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    Journal.to_csv(fPath, index=False, header=False, mode='a')
+
 
 
     jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
@@ -1857,8 +1983,29 @@ def delDelivery(request, pk, Ord):
     fPath = fPath = "Data/" +coFolder+ "/" +Year+ "/H1_Items/Items/itemMovement.csv"
     dfStat.to_csv(fPath, index=False, header=False, mode='a')
 
-    return Response('Items delete successfully!')
 
+  ### Step 6 - Read Journals.csv File ----------------------------------------
+  ### ========================================================================
+    #pk= 2300002
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    dfA['unique'] = dfA['Ref'].astype(str)+ '-' +dfA['Type']
+    itemPk = str(pk)+'-dl'
+    dfStat = dfA[dfA['unique'] == itemPk].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfStat = dfStat.drop_duplicates(subset=['accCode'], keep='last')
+    dfStat = dfStat.drop(dfStat.loc[dfStat['action']=='Deleted'].index)
+
+    dfStat['action'] = 'Deleted' ### in 'action' column add the word 'Deleted
+    dfStat = dfStat.drop('unique', axis=1)
+
+    ### Save the record(dataframe) in csv file
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    dfStat.to_csv(fPath, index=False, header=False, mode='a')
+
+    return Response('Items delete successfully!')
 
 
 def sDeliveryPdf(request):
@@ -1927,8 +2074,7 @@ def sDeliveryPdf(request):
 
 
 
-
-#☰☰☰☰☰☰☰☰☰☰☰☰☰☰ Delivery Notes ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
+#☰☰☰☰☰☰☰☰☰☰☰☰☰☰ Sales Invoices ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
 
 def sInvoiceList(request):
     #(To Show all the Sales Order Basic Information Screen)
@@ -1939,17 +2085,53 @@ def sInvoiceList(request):
 def showInvoiceURL(request):
     #(Get Sales Order Detail from DataBase)
 
-    ###---- Qutation open/Close File to Get Last Quotation Number -------------
-    query = '''SELECT "siRef","siDat", "cusName", "siTax", "siTAT", "spName", "opnClo" , "dlRef" FROM "F1_Sales_siBasic"'''
-    dfSal = pd.read_sql(query, con=engine)
 
-    ### Convert Data into Json Dictionary (can be access by JavaScript) .........
-    Data = dfSal.to_dict(orient="records")
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2 - Read dlBasic.csv File -----------------------------------------
+  ### ========================================================================
+    req_cols = ['id','siRef','siDat','cusName','dlRef', 'siTax', 'siTAT','spCName','opnClo','action']
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
+    df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+
+    ### drop first row which is empty...
+    df = df.drop(df.index[0])
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    df['siDat'] = pd.to_datetime(df['siDat']).dt.strftime('%Y-%m-%d')
+
+    ### Remove Duplicate Delivery and Deleted Record...
+    df = df.drop_duplicates(subset=['siRef'], keep='last')
+    df = df.drop(df.loc[df['action']=='Deleted'].index).fillna('')
+
+
+  ### Step 3 - Read siStat.csv File ------------------------------------------
+  ### ========================================================================
+    statPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siStat.csv"
+    stat = pd.read_csv(statPath, index_col=False, encoding='unicode_escape')
+
+    ### Remove Duplicate and Deleted Record...
+    stat = stat.drop_duplicates(subset=['siRefSt'], keep='last')
+
+
+  ### Step 4 - Map dlBasic.csv Open/Close with dlStat.csv --------------------
+  ### ========================================================================
+    opnClo_map = dict(zip(stat['siRefSt'], stat['opnCloSt']))
+    df['opnClo'] = df['siRef'].map(opnClo_map).fillna(df['opnClo'])
+
+    ### Convert Data into Json Dictionary
+    Data = df.to_dict(orient="records")
+
 
     return JsonResponse(Data, safe=False) 
 
 
-def syncDelivery(request): #URL to fetch data--
+def syncInvoice(request): #URL to fetch data--
 
   ### Get Company and Year - to Load Data ------------------------------------
   ### ========================================================================
@@ -1958,48 +2140,53 @@ def syncDelivery(request): #URL to fetch data--
     coFolder = str(dfStd.loc[0, 'coFolder'])
 
 
-  ### Step 2. Read dlBasic.csv File - to Load Data ---------------------------
+  ### Step 2 - Read siBasic.csv File - to Load Data --------------------------
   ### ========================================================================
-    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlBasic.csv"
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
     dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
 
     ### Remove Duplicate Quote and Deleted Record...
-    dfBasic = dfA.drop_duplicates(subset=['dlRef'], keep='last')
+    dfBasic = dfA.drop_duplicates(subset=['siRef'], keep='last')
     dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Deleted'].index)
 
-    dfBasic = dfBasic.sort_values('dlRef') #sor by qotRef
+    dfBasic = dfBasic.sort_values('siRef') #sor by qotRef
 
     ### Save the data in qotBasic.csv File...
-    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlBasic.csv"
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
     dfBasic.to_csv(fPath, index=False)
 
+    dfBasic['unique'] = dfBasic['siRef'].astype(str)+" "+dfBasic['traDate']
 
-  ### Step 3 - Read dlAddi.csv File - to Load Data ---------------------------
+  ### Step 3 - Read siAddi.csv File - to Load Data ---------------------------
   ### ========================================================================
-    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlAddi.csv"
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siAddi.csv"
     dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
 
+    dfB["unique"] = dfB['siRef'].astype(str)+" "+dfB['traDate']
+
     ###---- Merge to filter out those data which Transaction Date is not matching with qotBasic
-    merged_df = pd.merge(dfB, dfBasic['traDate'], on='traDate', how='inner')
+    merged_df = pd.merge(dfB, dfBasic['unique'], on='unique', how='inner')
     ###---- Rearange Column to aboid any mistake
-    merged_df = merged_df[['id','dlRef','sno','itmCod','desc','qty','price','disc','tot','traDate','action']]
+    merged_df = merged_df[['id','siRef','sno','itmCod','desc','qty','price','disc','tot','vat','traDate','action']]
+
+    merged_df =merged_df.sort_values(['siRef','sno'], ascending = [True, True])
 
     ### Save the data in qotAddi.csv File...
-    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlAddi.csv"
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siAddi.csv"
     merged_df.to_csv(fPath, index=False)
 
 
-  ### Step 4 - Read dlStat.csv File - to Load Data ---------------------------
+  ### Step 4 - Read siStat.csv File - to Load Data ---------------------------
   ### ========================================================================
-    statPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlStat.csv"
+    statPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siStat.csv"
     stat = pd.read_csv(statPath, index_col=False, encoding='unicode_escape').fillna('')
 
     ### Remove Duplicate Quote and Deleted Record...
-    stat = stat.drop_duplicates(subset=['dlRefSt'], keep='last')
+    stat = stat.drop_duplicates(subset=['siRefSt'], keep='last')
     stat = stat.drop(stat.loc[stat['action']=='Deleted'].index)
 
     ### Save the data in qotStat.csv File...
-    statPath =  "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlStat.csv"
+    statPath =  "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siStat.csv"
     stat.to_csv(statPath, index=False)
 
 
@@ -2007,57 +2194,164 @@ def syncDelivery(request): #URL to fetch data--
     return JsonResponse(jsonData)
 
 
+def sInvoiceAdd(request):
+    #(to Show Sales Order Addition Page)
 
-def openSalSiURL(request):  #Get the list of all Open Sales Order only .........
-    ###---- Get all Sales Order ----------------------------------------------------------------
-    query = '''SELECT "dlRef","dlDat", "cusCode", "cusName", "opnClo" FROM "F1_Sales_dlBasic"'''
-    dfSal = pd.read_sql(query, con=engine)
 
-    ###---- Get all Delivery Notes "dfRef" -----------------------------------------------------------
-    queryB = '''SELECT "dlRef" FROM "F1_Sales_siBasic"'''
-    dfDl = pd.read_sql(queryB, con=engine)
-    soList = dfDl['dlRef'].tolist() #Convert "qotRef" column into list
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
 
-    ### Step 2 - Filter out Delivery Note -----------------------------------------------
-    Data = dfSal[dfSal['opnClo'] != 'Closed']
-    filterData = Data[~Data['dlRef'].isin(soList)]
 
-    ### Convert Data into Json Dictionary (can be access by JavaScript) .........
+  ### Step 2 - Read siBasic.csv - to Get the last Invoice Number -------------
+  ### ========================================================================
+    try: 
+        req_cols = ['siRef', 'siDat']
+        fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
+        df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+    except:
+        data = {'siRef': [0]}
+        df = pd.DataFrame(data)
+
+    ## Get the last Order Number...
+    lastInvoice = df['siRef'].max()
+
+
+    context = {'lastInvoice': lastInvoice }
+    return render(request, 'F1_Sales/sInvoiceAdd.html', context)
+
+
+def sDeliveryOpnList(request):  #Get the list of all Open Sales Order only .........
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+    
+  ### Step 2 - Read dlBasic.csv - file to Load Data --------------------------
+  ### ========================================================================
+    req_cols = ["dlRef","dlDat", "cusCode", "cusName", "opnClo","action"]
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlBasic.csv"
+    df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+    df = df.drop(df.index[0]).fillna('') #drop first row which is dummy
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    df['dlDat'] = pd.to_datetime(df['dlDat']).dt.strftime('%Y-%m-%d')
+
+    ## Remove Duplicate Order and Deleted Record...
+    df = df.drop_duplicates(subset=['dlRef'], keep='last')
+    df = df.drop(df.loc[df['action']=='Deleted'].index)
+
+
+  ### Step 3 - Read dlStat.csv - file to Load Data ---------------------------
+  ### ========================================================================
+    statPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlStat.csv"
+    stat = pd.read_csv(statPath, index_col=False, encoding='unicode_escape')
+
+    ### Remove Duplicate and Deleted Record...
+    stat = stat.drop_duplicates(subset=['dlRefSt'], keep='last')
+
+    
+  ### Step 4 - Map dlBasic.csv Open/Close with dlStat.csv --------------------
+  ### ========================================================================
+    opnClo_map = dict(zip(stat['dlRefSt'], stat['opnCloSt']))   ##map with stat
+    df['opnClo'] = df['dlRef'].map(opnClo_map).fillna(df['opnClo'])
+
+    
+  ### Step 5 - Read siBasic.csv - file to Load Data --------------------------
+  ### ========================================================================
+    dlPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
+    siDf = pd.read_csv(dlPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ### Remove Duplicate and Deleted Record...
+    siDf = siDf.drop_duplicates(subset=['siRef'], keep='last')
+    siDf = siDf.drop(siDf.loc[siDf['action']=='Deleted'].index).fillna('')
+
+    #Select a column "dlRef" and convert into list to filter
+    siList = siDf['dlRef'].tolist() 
+
+    #filter out all open sales Quote which is already converted into Sales Order
+    filterData = df[~df['dlRef'].isin(siList)]
+
+    
+  ### Step 6 - Convert Data into Dictionary ----------------------------------
+  ### ========================================================================
     Data = filterData.to_dict(orient="records")
+
 
     ### return Response data in List form i.e. [Data, page, id] we can send without [ ]
     return JsonResponse(Data, safe=False) 
 
 
-def sInvoiceDetailURL(request, pk):  #Fetch Sales Order Detail for initially load .....
-    Basic = dlBasic.objects.get(id=pk)
-    serilizerA = dlBasicSerializer(Basic, many=False) #for single record 'many=False' other wise ittiration error will come
-    # if there is 'None' cell convert into '' empty to avoid error in JS 
-    dlBasi = {k: '' if v is None else v for k, v in serilizerA.data.items()}
+def sDeliveryDetail(request, pk):  #Fetch Sales Order Detail for initially load .....
+    pk = int(pk)
 
-    DlAddi = dlAddi.objects.filter(dlRef=pk)  ### Get all record where 'qotRef = pk (value)'
-    serilizerB = dlAddiSerializer(DlAddi, many=True) ### Serialize the selected data
-    dlAddiItems = serilizerB.data ### Get the data not attributes
-    dlAddiItems = [dict(item) for item in dlAddiItems]  ### Convert OrderedDict into (0,1,2,3,etct)
-    dlAddiItems = [{key: '' if value is None else value for key, value in dictionary.items()} for dictionary in dlAddiItems]
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2 - Read soBasic.csv - file to Load Data --------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+
+    ### Filter data based on 'pk' selected Order
+    dfBasic = dfA[dfA['dlRef'] == pk].fillna(0) 
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    dfBasic['dlDat'] = pd.to_datetime(dfBasic['dlDat']).dt.strftime('%Y-%m-%d')
+
+    ### Remove Duplicate Order and Deleted Record...
+    dfBasic = dfBasic.drop_duplicates(subset=['dlRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Deleted'].index)
+
+    ###..Get 'Transaction Date' Value..................................
+    traDate = dfBasic.loc[dfBasic['dlRef'] == pk, 'traDate'].values[0]
+
+    dlBasi = dfBasic.to_dict(orient="records") ### convert into dictionary
+
+
+    
+  ### Get Cutomer Detail - To Get Credit Term and other details --------------
+  ### ========================================================================
+    ###..Get 'Get Customer Code' Value..................................
+    custCode = dfBasic.loc[dfBasic['dlRef'] == pk, 'cusCode'].values[0]
+    
+    ### Read "CustMaster.csv" file
+    req_cols = ["cusCode","cusCrLim", "cusPytTerm", "cusLegName", "cusTRN"]
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Customers/CustMaster.csv"
+    dfC = pd.read_csv(fPath, index_col=False, usecols=req_cols, encoding='unicode_escape')
+
+    ### Filter data based on 'Customer Code' selected Order
+    dfCustomer = dfC[dfC['cusCode'] == custCode].fillna(0) 
+    ###..Convert into List...................................................
+    cusDetail = dfCustomer.to_dict(orient="records") 
+
+
+  ### Step 3 - Read soAddi.csv - file to Load Data ---------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlAddi.csv"
+    dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+
+    ### Filter data based on 'pk' selected Quote
+    dfB = dfB[dfB['dlRef'] == pk].fillna(0)
+
+    ###..Filter the Record as per Transact Date .............................
+    dfB = dfB[dfB['traDate'] == traDate].fillna('')
+
+    ###..Convert into List...................................................
+    dlAddiItems = dfB.to_dict(orient="records") 
+
 
     ### return Response data in List form i.e. [Data, page, id] we can send without [ ]
-    return JsonResponse([dlBasi, dlAddiItems], safe=False) 
-
-
-def sInvoiceAdd(request):
-    #(to Show Sales Order Addition Page)
-
-    ###---- Sales Order File to Get Last Quotation Number -------------
-    Max = '''SELECT MAX(id) FROM "F1_Sales_siBasic"'''
-    df2 = pd.read_sql(Max, con=engine)
-    val = df2.rename(columns={df2.columns[0]: 'new'})
-    val.fillna(20230000, inplace=True)
-    lastInvoice= val.loc[0, 'new']
-
-
-    context = {'lastInvoice': lastInvoice }
-    return render(request, 'F1_Sales/sInvoiceAdd.html', context)
+    return JsonResponse([dlBasi, dlAddiItems, cusDetail], safe=False) 
 
 
 @api_view(['POST'])
@@ -2066,70 +2360,107 @@ def sInvoiceAdd(request):
 def sInvoiceAddURL(request):
     #(to Save Quotation into Database)
 
-    print(request.data)
-    #---- Quotation Basic Information ---------------------------------------
-    basData = request.data[0]
-    SiBasic=siBasic(basData['siRef'], basData['siRef'], basData['siDat'],
-                    basData['cusCode'], basData['cusName'],basData['siTBD'],
-                    basData['siTAD'], basData['siTax'], basData['siTAT'], basData['shipTo'],
-                    basData['siComm'], "Open", basData['spName'], basData['salPer'],
-                    basData['dlRef'], basData['dlDat'])
-    SiBasic.save()
 
-    #---- Delevery Last Transaction ------------------------------------------
-    addiData = request.data[1]
-    Max = '''SELECT MAX(id) FROM "F1_Sales_siAddi"'''
-    df2 = pd.read_sql(Max, con=engine)
-    val = df2.rename(columns={df2.columns[0]: 'new'})
-    val.fillna(0, inplace=True) # if there is no record put 0
-    lastN = val.loc[0, 'new']
-
-    with transaction.atomic():
-      for data in addiData:
-          if( data['id'] == '0'):
-            lastN=lastN+1
-            ID = lastN
-          else:
-            ID = data['id']
-
-          value = siAddi(ID, basData['siRef'], data ['sno'],data ['itmcode'], data ['desc'], data ['qty'],data ['price'], data ['disc'], data ['tot'])
-          value.save()
-
-    #-- Delete Missing IDs from DataBase ------------------------------
-    missingId = request.data[2]
-    queryset = dlAddi.objects.filter(id__in=missingId)
-    queryset.delete()
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
 
 
-    ###---Change Sales Order Status as Closed ------------------
-    rec = basData['dlRef']
-    record = dlBasic.objects.get(id=rec)   
-    record.opnClo = 'Closed' # Update the specific field
-    record.save() # Save the changes to the database
 
-
-    #Variable to Save in CSV File ..........
-    tempDf = {'ID': basData['siRef'], 
-              'siRef': basData['siRef'],
-              'siDat': basData['siDat'], 
-              'cusCode': basData['cusCode'],
-              'cusName': basData['cusName'],
-              'siTBD':basData['siTBD'], 
-              'siTAD': basData['siTAD'],
-              'siTax': basData['siTax'],
-              'siTAT': basData['siTAT'],	
-              'shipTo':  basData['shipTo'],	
-              'siComm': basData['siComm'],
-              'opnClo': 'Open',
-              'spName': basData['spName'],
-              'spCode': basData['salPer'],
-              'dlRef': basData['dlRef'],
-              'dlDat': basData['dlDat'],
-              'comment': ''
+  ### Step 2 - Save Data in siBasic.csv file ---------------------------------
+  ### ========================================================================
+    basData = request.data[0]  
+    SiBasic={'id':basData['siRef'],        'siRef':basData['siRef'], 
+             'siDat':basData['siDat'],     'cusCode':basData['cusCode'], 
+             'cusName':basData['cusName'],   'siTBD':basData['siTBD'], 
+             'siTAD':basData['siTAD'],     'siTax':basData['siTax'], 
+             'siTAT':basData['siTAT'],     'shipTo':basData['shipTo'],
+             'siComm':basData['siComm'],    'opnClo':'Open', 
+             'spCName':basData['spCName'],    'spCode':basData['spCode'],
+             'dlRef':basData['dlRef'],     'dlDat':basData['dlDat'],
+             'traDate':basData['traDate'],   'action':basData['action'],
             }
 
-    df = pd.DataFrame(tempDf, index=[0])
-    df.to_csv('Data/F1_Sales/sInvoice/sInvoice2023.csv',index=False, header=False, mode='a')
+    dfBasic = pd.DataFrame(SiBasic, index=[0])
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
+    dfBasic.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 3 - Save Data in soAddi.csv file ----------------------------------
+  ### ========================================================================
+    addiData = request.data[1]
+    addRecords = []
+    for data in addiData:
+      Addi  = { 'id': basData['siRef'],      'dlRef': basData['siRef'],
+                'sno':data ['sno'],          'itmCod':data ['itmcode'],
+                'desc':data ['desc'],        'qty':data ['qty'],
+                'price':data ['price'],      'disc':data ['disc'],
+                'tot':data ['tot'],          'vat':data['vat'],
+                'traDate':basData['traDate'],'action':basData['action'],                             
+        }
+    
+      addRecords.append(Addi)  # Add the dictionary to the list
+
+    dfAddi = pd.DataFrame(addRecords)
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siAddi.csv"
+    dfAddi.to_csv(fPath, index=False, header=False, mode='a')
+
+
+
+  ### Step 4 - Save Data in siStat.csv file ----------------------------------
+  ### ========================================================================
+    siStat =  {'siRefSt':basData['siRef'], 'opnCloSt':"Open",
+               'traDate':basData['traDate'],   'action':basData['action']}
+
+    SiStat = pd.DataFrame(siStat, index=[0])
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siStat.csv"
+    SiStat.to_csv(fPath, index=False, header=False, mode='a')
+
+
+
+  ### Step 5 - Save Data in dlStat.csv file ----------------------------------
+  ### ========================================================================
+    dlStat =  {'dlRefSt':basData['dlRef'], 'opnCloSt':"Closed",
+               'traDate':basData['traDate'],   'action':basData['action']}
+
+    dfBasic = pd.DataFrame(dlStat, index=[0])
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlStat.csv"
+    dfBasic.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 6 - Save Data in Customers.csv file -------------------------------
+  ### ========================================================================
+    customers =  {'Ref':basData['siRef'],     'type': 'si', 'siDat':basData['siDat'], 
+                  'cusCode':basData['cusCode'], 'cusName':basData['cusName'],
+                  'siTAT':basData['siTAT'],     'siComm':basData['siComm'],
+                  'ptStat':'Outstanding',       'dueDate':basData['crPeiod'],
+                  'traDate':basData['traDate'],   'action':basData['action'],
+            }
+    
+    custDf = pd.DataFrame(customers, index=[0])
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Customers/Customers.csv"
+    custDf.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 7 - Journal Entry Entries.csv file --------------------------------
+  ### ========================================================================
+    addRecords = []
+    VAT = (basData['siTax'])*-1
+    SALES = (basData['siTAD'])*-1
+
+    customer =  {'Ref':basData['siRef'], 'type': 'si', 'Date':basData['siDat'], 'accCode':basData['cusCode'], 'accName':basData['cusName'], 'amount':basData['siTAT'] ,'Comm':basData['siComm'],'traDate':basData['traDate'], 'action':basData['action']}
+    vat =  {'Ref':basData['siRef'], 'type': 'si', 'Date':basData['siDat'], 'accCode':44280001, 'accName':'VAT Output Tax Payable', 'amount':VAT,'Comm':basData['siComm'],'traDate':basData['traDate'], 'action':basData['action']}
+    sales =  {'Ref':basData['siRef'], 'type': 'si', 'accCode':70120001, 'Date':basData['siDat'], 'accName':'Credit Sales', 'Comm':basData['siComm'],'amount':SALES,'traDate':basData['traDate'], 'action':basData['action']}
+    addRecords.append(customer)
+    addRecords.append(vat)
+    addRecords.append(sales)
+
+    Journal = pd.DataFrame(addRecords)
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    Journal.to_csv(fPath, index=False, header=False, mode='a')
+
 
     jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
     return JsonResponse(jsonData)
@@ -2137,46 +2468,311 @@ def sInvoiceAddURL(request):
 
 
 def sInvoiceEdit(request, pk):
-    print(pk)
+    pk = int(pk)
     #(to Show Quotation to edit)
 
-    Basic = siBasic.objects.get(id=pk)
-    serilizerA = siBasicSerializer(Basic, many=False) #for single record 'many=False' other wise ittiration error will come
-    # if there is 'None' cell convert into '' empty to avoid error in JS 
-    siBasi = {k: '' if v is None else v for k, v in serilizerA.data.items()}
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
 
-    SiAddi = siAddi.objects.filter(siRef=pk)  ### Get all record where 'qotRef = pk (value)'
-    serilizerB = siAddiSerializer(SiAddi, many=True) ### Serialize the selected data
-    siAddiItems = serilizerB.data ### Get the data not attributes
-    siAddiItems = [dict(item) for item in siAddiItems]  ### Convert OrderedDict into (0,1,2,3,etct)
-    siAddiItems = [{key: '' if value is None else value for key, value in dictionary.items()} for dictionary in siAddiItems]
 
-    context = {'lastOrder': pk, 'siBasic':siBasi,  'siAddiItems':siAddiItems}
+  ### Step 2 - Read siBasic.csv File -----------------------------------------
+  ### ========================================================================
+    #pk = 2300001
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfBasic = dfA[dfA['siRef'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    dfBasic['siDat'] = pd.to_datetime(dfBasic['siDat']).dt.strftime('%Y-%m-%d')
+    dfBasic['dlDat'] = pd.to_datetime(dfBasic['dlDat']).dt.strftime('%Y-%m-%d')
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfBasic = dfBasic.drop_duplicates(subset=['siRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Delete'].index)
+
+    ### Convert Transaction Date to list to filter records in qotAddi
+    List = dfBasic["traDate"] #.tolist()
+
+    ### Convert Transaction Date to list to filter records in qotAddi
+    siBasi = dfBasic.to_dict(orient="records") ### convert into dictionary
+
+
+  ### Step 3 - Read siAddi.csv File ------------------------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siAddi.csv"
+    dfB = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfAddi = dfB[dfB['siRef'] == pk].fillna(0) ### Filter as per 'pk' selected quote
+
+    filtered_df = dfAddi[dfAddi['traDate'].isin(List)] ### Filter by transaction Date
+
+    ### Convert Transaction Date to list to filter records in qotAddi
+    siAddiItems = filtered_df.to_dict(orient="records") ### convert into dictionary
+
+
+  ### Get Cutomer Detail - To Get Credit Term and other details --------------
+  ### ========================================================================
+    ###..Get 'Get Customer Code' Value..................................
+    custCode = dfBasic.loc[dfBasic['siRef'] == pk, 'cusCode'].values[0]
+
+    ### Read "CustMaster.csv" file
+    req_cols = ["cusCode","cusCrLim", "cusPytTerm", "cusLegName", "cusTRN"]
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Customers/CustMaster.csv"
+    dfC = pd.read_csv(fPath, index_col=False, usecols=req_cols, encoding='unicode_escape')
+
+    ### Filter data based on 'Customer Code' selected Order
+    dfCustomer = dfC[dfC['cusCode'] == custCode].fillna(0) 
+    ###..Convert into List...................................................
+    cusDetail = dfCustomer.to_dict(orient="records") 
+
+    context = {'lastOrder': pk, 'siBasic':siBasi,  'siAddiItems':siAddiItems, 'cusDetail':cusDetail}
     return render(request, 'F1_Sales/sInvoiceEdit.html', context)
 
 
 @api_view(['DELETE'])
 @authentication_classes([BasicAuthentication]) 
 @permission_classes([IsAuthenticated])
-def delInvoice(request, pk, So):
+def delInvoice(request, pk, dl):
+    pk = int(pk)
+    dl = int(dl)
 
- #----------Delete Record -----------------------------------------------
-      SiBasic = siBasic.objects.get(id=pk)
-      SiBasic.delete()
-      
-      pk = int(pk)
-      SiAddi = siAddi.objects.filter(siRef=pk)  ### Filter  'id' of all record and convert into list
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
 
-      with transaction.atomic():
-        for data in SiAddi:
-          data.delete()
-      
-      ###---Change Sales Quotation Status as Open on delete relevent Sales Order ------
-      record = dlBasic.objects.get(id=So)   
-      record.opnClo = 'Open' # Update the specific field
-      record.save() # Save the changes to the database
 
-      return Response('Items delete successfully!')
+  ### Step 2 - Read siBasic.csv File -----------------------------------------
+  ### ========================================================================
+    #pk = 2300001
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfBasic = dfA[dfA['siRef'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfBasic = dfBasic.drop_duplicates(subset=['siRef'], keep='last')
+    dfBasic = dfBasic.drop(dfBasic.loc[dfBasic['action']=='Deleted'].index)
+
+    dfBasic['action'] = 'Deleted' ### in 'action' column add the word 'Deleted'
+
+    ### Save the record(dataframe) in csv file
+    fPath = fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
+    dfBasic.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 3 - Read siState.csv File -----------------------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siStat.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfStat = dfA[dfA['siRefSt'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfStat = dfStat.drop_duplicates(subset=['siRefSt'], keep='last')
+    dfStat = dfStat.drop(dfStat.loc[dfStat['action']=='Deleted'].index)
+
+    dfStat['action'] = 'Deleted' ### in 'action' column add the word 'Deleted'
+
+    ### Save the record(dataframe) in csv file
+    fPath = fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siStat.csv"
+    dfStat.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 4 - Read dlStat.csv File ------------------------------------------
+  ### ========================================================================
+    #dl= 2300004
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlStat.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfStat = dfA[dfA['dlRefSt'] == dl].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfStat = dfStat.drop_duplicates(subset=['dlRefSt'], keep='last')
+    dfStat = dfStat.drop(dfStat.loc[dfStat['action']=='Deleted'].index)
+
+    dfStat['opnCloSt'] = 'Open' ### in 'action' column add the word 'Deleted'   
+
+    ### Save the record(dataframe) in csv file
+    fPath = fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlStat.csv"
+    dfStat.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 5 - Read Customers.csv File ---------------------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Customers/Customers.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+    dfStat = dfA[dfA['Ref'] == pk].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfStat = dfStat.drop_duplicates(subset=['Ref'], keep='last')
+    dfStat = dfStat.drop(dfStat.loc[dfStat['action']=='Deleted'].index)
+
+    dfStat['action'] = 'Deleted' ### in 'action' column add the word 'Deleted'
+
+    ### Save the record(dataframe) in csv file
+    fPath = fPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Customers/Customers.csv"
+    dfStat.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 6 - Read Journals.csv File ----------------------------------------
+  ### ========================================================================
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    dfA = pd.read_csv(fPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    dfA['unique'] = dfA['Ref'].astype(str)+ '-' +dfA['Type']
+    itemPk = str(pk)+'-si'
+    dfStat = dfA[dfA['unique'] == itemPk].fillna(0) ### Filter data as per 'pk' selected quote
+
+    ### Remove Duplicate Quote and Deleted Record...
+    dfStat = dfStat.drop_duplicates(subset=['accCode'], keep='last')
+    dfStat = dfStat.drop(dfStat.loc[dfStat['action']=='Deleted'].index)
+
+    dfStat['action'] = 'Deleted' ### in 'action' column add the word 'Deleted
+    dfStat = dfStat.drop('unique', axis=1)
+
+    ### Save the record(dataframe) in csv file
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    dfStat.to_csv(fPath, index=False, header=False, mode='a')
+
+
+    return Response('Items delete successfully!')
+
+
+
+
+#☰☰☰ Invoice Drill Down ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
+def tInvoiceDD(request, pk):
+    sInv = int(pk)
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### 2. Reading of invoices.CSV file ----------------------------------------
+  ### ========================================================================
+    req_cols = ["siRef", "siDat", "cusName", "siTAT", "dlRef", "dlDat", "action"]
+    siPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
+    siDf = pd.read_csv(siPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+
+    siStatPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siStat.csv"
+    siStatDf = pd.read_csv(siStatPath, index_col=False, encoding='unicode_escape')
+
+    ### Filter data by Sales Invoice Number ---------------------------------------
+    #sInv = 2300131
+    siDf = siDf[siDf['siRef'] == sInv].fillna(0) 
+    siStatDf = siStatDf[siStatDf['siRefSt'] == sInv].fillna(0) 
+
+    ### Remove Duplicate Sales Invoice and Deleted Record...
+    siDf = siDf.drop_duplicates(subset=['siRef'], keep='last')
+    siDf = siDf.drop(siDf.loc[siDf['action']=='Deleted'].index).fillna('')
+
+    ### Remove Duplicate Sales Invoice and Deleted Record...
+    siStatDf = siStatDf.drop_duplicates(subset=['siRefSt'], keep='last')
+    siStatDf = siStatDf.drop(siStatDf.loc[siStatDf['action']=='Deleted'].index).fillna('')
+    siStatDf = siStatDf.rename(columns={"siRefSt": "siRef"})
+    siMerge = pd.merge(siDf, siStatDf, on="siRef")
+
+    ###..Get 'Quotation number' Value..................................
+    dlNm = siDf.loc[siDf['siRef'] == sInv, 'dlRef'].values[0]
+
+    ###-- Record --###
+    siData = siMerge.to_dict(orient="records") ### convert into dictionary
+
+  ### 3. Reading of deliveries.CSV file --------------------------------------
+  ### ========================================================================
+    req_cols = ["dlRef", "dlDat", "cusName", "dlTAT", "soRef", "soDat", "traDate", "action"]
+    dlPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlBasic.csv"
+    dlDf = pd.read_csv(dlPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+
+    dlStatPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlStat.csv"
+    dlStatDf = pd.read_csv(dlStatPath, index_col=False, encoding='unicode_escape')
+
+    ### Filter data by Delivery Note Number ---------------------------------------
+    dlDf = dlDf[dlDf['dlRef'] == dlNm].fillna(0) 
+    dlStatDf = dlStatDf[dlStatDf['dlRefSt'] == dlNm].fillna(0) 
+
+    ### Remove Duplicate Delivery Note and Deleted Record...
+    dlDf = dlDf.drop_duplicates(subset=['dlRef'], keep='last')
+    dlDf = dlDf.drop(dlDf.loc[dlDf['action']=='Deleted'].index).fillna('')
+
+    ### Remove Duplicate Sales Invoice and Deleted Record...
+    dlStatDf = dlStatDf.drop_duplicates(subset=['dlRefSt'], keep='last')
+    dlStatDf = dlStatDf.drop(dlStatDf.loc[dlStatDf['action']=='Deleted'].index).fillna('')
+    dlStatDf = dlStatDf.rename(columns={"dlRefSt": "dlRef"})
+    dlMerge = pd.merge(dlDf, dlStatDf, on="dlRef")
+
+    ###-- Record --###
+    dlData = dlMerge.to_dict(orient="records") ### convert into dictionary
+
+    ###..Get 'Quotation number' Value..................................
+    soNm = dlDf.loc[dlDf['dlRef'] == dlNm, 'soRef'].values[0]
+
+
+  ### 4. Reading of Orders.CSV file ------------------------------------------
+  ### ========================================================================
+    req_cols = ["soRef", "soDat", "cusName", "soTAT", "qotRef", "qotDat", "action"]
+    soPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soBasic.csv"
+    soDf = pd.read_csv(soPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+
+    soStatPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Orders/soStat.csv"
+    soStatDf = pd.read_csv(soStatPath, index_col=False, encoding='unicode_escape')
+
+    ### Filter data by Sales Order Number ---------------------------------------
+    soDf = soDf[soDf['soRef'] == soNm].fillna(0) 
+    soStatDf = soStatDf[soStatDf['soRefSt'] == soNm].fillna(0) 
+
+    ### Remove Duplicate Sales Order and Deleted Record...
+    soDf = soDf.drop_duplicates(subset=['soRef'], keep='last')
+    soDf = soDf.drop(soDf.loc[soDf['action']=='Deleted'].index).fillna('')
+
+    ### Remove Duplicate Sales Invoice and Deleted Record...
+    soStatDf = soStatDf.drop_duplicates(subset=['soRefSt'], keep='last')
+    soStatDf = soStatDf.drop(soStatDf.loc[soStatDf['action']=='Deleted'].index).fillna('')
+    soStatDf = soStatDf.rename(columns={"soRefSt": "soRef"})
+    soMerge = pd.merge(soDf, soStatDf, on="soRef")
+
+    ###-- Record --###
+    soData = soMerge.to_dict(orient="records") ### convert into dictionary
+
+    ###..Get 'Quotation number' Value..................................
+    qotNm = soDf.loc[soDf['soRef'] == soNm, 'qotRef'].values[0]
+
+  ### 4. Reading of Orders.CSV file ------------------------------------------
+  ### ========================================================================
+    req_cols = ["qotRef", "qotDat", "cusName", "qotTAT", "action"]
+    qotPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/quotations/qotBasic.csv"
+    qotDf = pd.read_csv(qotPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+
+    qotStatPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/quotations/qotStat.csv"
+    qotStatDf = pd.read_csv(qotStatPath, index_col=False, encoding='unicode_escape')
+
+    ### Filter data by Sales Order Number ---------------------------------------
+    qotDf = qotDf[qotDf['qotRef'] == qotNm].fillna(0) 
+    qotStatDf = qotStatDf[qotStatDf['qotRefSt'] == qotNm].fillna(0) 
+
+    ### Remove Duplicate Sales Order and Deleted Record...
+    qotDf = qotDf.drop_duplicates(subset=['qotRef'], keep='last')
+    qotDf = qotDf.drop(qotDf.loc[qotDf['action']=='Deleted'].index).fillna('')
+
+    ### Remove Duplicate Sales Invoice and Deleted Record...
+    qotStatDf = qotStatDf.drop_duplicates(subset=['qotRefSt'], keep='last')
+    qotStatDf = qotStatDf.drop(qotStatDf.loc[qotStatDf['action']=='Deleted'].index).fillna('')
+    qotStatDf = qotStatDf.rename(columns={"qotRefSt": "qotRef"})
+    qotMerge = pd.merge(qotDf, qotStatDf, on="qotRef")
+
+    ###-- Record --###
+    qotData = qotMerge.to_dict(orient="records") ### convert into dictionary
+
+
+    #records = [siData, dlData, soData, qotData]    
+    #context = {'records':records}
+
+    context = {'siData':siData, 'dlData':dlData, 'soData':soData, 'qotData':qotData }
+    return render(request, 'F1_Sales/tInvoiceDD.html', context)
 
 
 

@@ -1,0 +1,478 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+
+
+<div class="conA">
+
+  <!--════ Top Section ═══════════════════════════════════════ //Start-->
+    <section id="tMenu">
+        <div class='BoxA' >
+            <div> <img src=" {% static 'Java/Images/Logo/clientLogo.png' %}" style="width:100px; margin-top:5px" alt=""> </div>
+            <!-- <span class='p1'>〄</span> <span class="basCo" ></span>  -->
+        </div>
+        <div class='BoxB'>
+            <img src="{% static 'JAVA/Images/Icon/clock.png'%}" alt="" class='img1'>
+            <img src="{% static 'JAVA/Images/Icon/folder.png'%}" alt="" class='img1'>
+            <img src="{% static '../media/iuh.jpg'%}" alt="" class='img2'> 
+        </div>
+    </section>
+  <!--════ Top Section ═══════════════════════════════════════ // End -->
+
+
+    <div class="Table">
+
+      <!--════ Heading ═══════════════════════════════════════════ //Start-->
+        <div class="heading">
+          <h2> Trial Balance </h2>
+
+          <div class="btnDiv">
+              <button class="sBtn" onclick="resultFormatting1()">+Collapse</button>
+              <button class="sBtn" onclick="resultFormatting2()">-Expend</button>
+              <img src="static/JAVA/Images/Icon/refresh.png" alt="" onclick="dataSync()" style="position:relative; top:4px; width:20px; cursor:pointer;">
+          </div>
+        </div>
+      <!--════ Heading ═══════════════════════════════════════════ //Start-->
+
+
+        <table id="myTable">
+            <tr class="tableHeading1" style="text-align:center; font-size: 18px;">
+                <th colspan="2"> </button></th>
+                <th colspan="2" style="text-align:center;"> </th>
+
+            </tr>
+            <tr  class="tableHeading2" style="color:black">
+                <th style="padding: 0 10px; background: linear-gradient(#f1f1f3, #a7b4c8); width:250px">Category</th>
+                <th style="display:none; ">Department</th>
+                <th class="Heading2" style="text-align:left; padding: 0 10px; background: linear-gradient(#f1f1f3, #a7b4c8); width:100px">A/C Code</th>
+								<th style="padding: 0 10px; background: linear-gradient(#f1f1f3, #a7b4c8);">A/C Head</th>
+                <th class="Heading2" style="text-align:right; padding: 0 10px; background: linear-gradient(#f1f1f3, #a7b4c8);  width:130px">Amount</th>
+            </tr>
+            <tbody id="myTableB">
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<script>
+
+	//.... Get Data from Context Process and General Functions ...............
+    let basInfo = {{basInfo|safe}}
+	//.... Get Data from Context Process and General Functions ...............
+
+
+  // ....................................................................................
+  // Bring Data and show in Table........................................................
+  // ....................................................................................
+      var objJson = {{ Data|safe }}
+      console.log(objJson)
+      document.getElementById("myTableB").innerHTML=""; 
+
+      var dataBody = document.getElementById("myTableB");
+
+      // Generate table rows using template literals
+      var tableRows = objJson.map(function (item) {
+          return `<tr>
+                      <td class="sHad1">${item.Vertical}</td>
+                      <td class="sHad2" style="display:none">${item.Department}</td>
+                      <td class="Amt" style="text-align:left; color:#30b5b8; font-weight:bold; cursor:pointer">${item.accCode}</td>
+                      <td class="Amt" style="text-align:left">${item.accHead}</td>
+                      <td class="Amt">${(item.Amount).toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})}</td>
+                  </tr>`;
+                });
+    
+      // Set the HTML content of the table body
+      dataBody.innerHTML = tableRows.join("");
+
+          //-- on click select the row -------------------------
+          // Get all table rows excluding the header row
+          var tableRows = document.querySelectorAll("#myTableB");
+
+          var rows = dataBody.getElementsByTagName("tr");
+          for (var i = 0; i < rows.length; i++) {
+            rows[i].addEventListener("click", function() {
+              // Get the cells within the clicked row
+              var cells = this.getElementsByTagName("td");
+          
+              // Access and display the values
+              var LedgerNo = cells[2].innerText;
+              fetchLedger(LedgerNo)
+            });
+          }
+
+
+
+      async function fetchLedger(pk){
+        if (pk === "") {
+          // Perform multiple operations when the variable is empty
+          console.log("Variable is empty");
+          // Other operations...
+        } else {
+          console.log(pk)
+          const response = await fetch(`${basInfo.IP[0]}/singleLedger/${pk}`)
+          const data = await response.json()
+          list_B = data  //when call showRecord() function data will save in finalData
+          console.log(data)
+          //Table_B(list_B)
+          //console.log(list_B)
+          var newWindow = window.open(`http://127.0.0.1:8090/sLedger/${pk}`);
+          newWindow.document.write(result);
+        }
+
+    }
+
+  // ....................................................................................
+
+
+  // ....................................................................................
+  // Hide and Show Rows..................................................................
+  // ....................................................................................
+      function resultFormatting1() {
+          var rows = document.getElementById("myTable").getElementsByTagName('tr');
+              for (var i = 0; i < rows[1].children.length && rows[1].children[i].innerHTML !== "Category"; i++);
+              for (var j = 1; j < rows.length; j++) {
+              rows[j].classList.add(rows[j].children[i].innerHTML === "---" ? 'hide' :'abc');
+          }
+      };
+      resultFormatting1()
+
+      function resultFormatting2() {
+          var rows = document.getElementById("myTable").getElementsByTagName('tr');
+          for (var i = 0; i < rows[1].children.length && rows[1].children[i].innerHTML !== "Category"; i++);
+          for (var j = 1; j < rows.length; j++) {
+          rows[j].classList.remove(rows[j].children[i].innerHTML === "---" ? 'hide' : 'abc');
+          }
+      };
+  // ....................................................................................
+
+
+  // ....................................................................................
+  //  to unhide the selected Category on click...........................................
+  // ....................................................................................
+    function ggg(line) {
+        // To hide the rest of the rows again..................................................
+        var rows = document.getElementById("myTable").getElementsByTagName('tr');
+            for (var i = 0; i < rows[1].children.length && rows[1].children[i].innerHTML !== "Category"; i++);
+            for (var j = 1; j < rows.length; j++) {
+            rows[j].classList.add(rows[j].children[i].innerHTML === "---" ? 'hide' :'abc');
+        }
+
+        // To unhide the selected ............................................................
+        var rows = document.getElementById("myTable").getElementsByTagName('tr');
+        for (var i = 0; i < rows[1].children.length && rows[1].children[i].innerHTML !== "Department"; i++);
+        for (var j = 1; j < rows.length; j++) {
+        rows[j].classList.remove(rows[j].children[i].innerHTML === line ? 'hide' : 'abc');
+
+        }
+    }
+  // ....................................................................................
+
+
+
+  // ....................................................................................
+  // Formating Raw based on Condition....................................................
+  // ....................................................................................
+      function rowFormating() {
+          var rows = document.getElementById("myTable").getElementsByTagName('tr');
+          for (var i = 0; i < rows[1].children.length && rows[1].children[i].innerHTML !== "A/C Head"; i++);
+          for (var j = 1; j < rows.length; j++) {
+          rows[j].classList.add(rows[j].children[i].innerHTML === "Total" ? 'subHeading' : 'abc');
+          }
+          for (var j = 1; j < rows.length; j++) {
+              rows[j].classList.add(rows[j].children[i].innerHTML === "z. Grand Total" ? 'gTotal' : 'abc');
+          }
+      }
+      rowFormating()
+
+      // Color '---' Gray ..........................................................
+      const rows1 = document.querySelectorAll('#myTable tr');
+      rows1.forEach( function (row) {
+          var text = row.textContent;
+          if (text.includes('---')) {row.classList.add('hideByColor')}
+      })
+
+      const rows2 = document.querySelectorAll('#myTable td');
+      rows2.forEach( function (row) {
+          var text = row.textContent;
+          if (text.includes('NaN')) {row.classList.add('hideByColor1')}
+      })
+  // ....................................................................................
+
+  
+  // ....................................................................................
+  // Get Value of the Table  and run a function to unhide selected row...................
+  // ....................................................................................
+      function highlight_row() {
+          let line
+
+          var table = document.getElementById('#myTableB');
+          var cells = document.querySelectorAll('td');
+      
+          for (var i = 0; i < cells.length; i++) {
+              // Take each cell
+              var cell = cells[i];
+              // do something on onclick event for cell
+              cell.onclick = function () {
+                  // Get the row id where the cell exists
+                  var rowId = this.parentNode.rowIndex;
+      
+                  var rowsNotSelected = document.querySelectorAll('tr');
+                  for (var row = 0; row < rowsNotSelected.length; row++) {
+                      rowsNotSelected[row].style.backgroundColor = "";
+                      rowsNotSelected[row].classList.remove('selected');
+                  }
+                  var rowSelected = document.querySelectorAll('tr')[rowId];
+                  rowSelected.style.backgroundColor = "#BBC9C4";
+                  rowSelected.className += " selected";
+      
+                  msg = 'The ID of the company is: ' + rowSelected.cells[0].innerHTML;
+                  msg += '\nThe cell value is: ' + this.innerHTML;
+                  //alert(msg);
+
+                  line = rowSelected.cells[1].innerHTML
+                  ggg(line)
+              }
+          }
+      } //end of function
+      highlight_row()
+  // window.onload = highlight_row;
+
+
+
+
+    //▒▒▒▒▒▒ Refresh Excel File ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+        async function dataSync(){
+          const response = await fetch(`${basInfo.IP[0]}/syncGenLeger`)
+          const data = await response.json()
+          finalData = data  //when call showRecord() function data will save in finalData
+          temData = finalData
+          alert('Data Synchronized Successfully......')
+          console.log(temData)
+      }
+
+    //▒▒▒▒▒▒ Refresh Excel File ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+
+
+</script>
+
+
+<style>
+
+  /* ⚊⚊⚊⚊ Container A ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+    .conA{
+      position:relative;
+      min-height: 100vh;
+      width: 100%;
+      min-width:750px;
+      padding: 10px 5px;
+      background: linear-gradient(180deg, rgba(232, 219, 250, 0.7), rgba(220, 204, 225, 0.8)), #c2c7f2 url('/static/JAVA/Images/Background/BG12.jpg');  /* Img3.webp */
+      background-size: cover;
+      column-gap: 30px;
+      z-index:5;
+    }
+  /* ⚊⚊⚊⚊ Container A ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+  /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+    #tMenu {
+      position: relative;
+      margin: -10px -5px 0 -10px;
+      display:grid; 
+      padding:0 25px;
+      box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.34);
+      border-bottom:#181919;
+      grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));  
+      align-items: center; 
+      background:#f2f5f8; 
+      height:35px;
+      background-image: linear-gradient(to right, #2e2436, #474053, #615e72, #7e7e92, #9b9fb3);
+    }
+    #tMenu .BoxA {
+      color:#fcf6c4; 
+      font-weight:600; 
+      font-size:20px;
+    }
+    #tMenu .BoxA .p1{
+      color:#fcbce9; 
+      font-weight:bold;
+    }
+    #tMenu .BoxB {
+      justify-self:end;
+    }
+    #tMenu .BoxB .img1{
+      position:relative; 
+      top:-2px; 
+      width:20px; 
+      height:20px; 
+      margin-right: .5rem;
+    }
+    #tMenu .BoxB .img2{
+      position:relative; 
+      top:2px;
+      border-radius:50%; 
+      width: 30px; 
+      height: 30px;
+    }       
+  /* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+  /* ⚊⚊⚊⚊ HTML Table  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+    .Table {
+      width:95%;
+      margin: 20px;
+      min-width:700px;
+      max-height: 480px;
+      border-collapse: collapse;
+      font-size: 13px;
+      overflow: auto;
+      border: 2px sold;
+      background:white;
+      border:3px solid #fff;
+      box-shadow: 10px 9px 34px 0px rgba(121, 125, 124, 0.45);
+    }
+
+    #myTable {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+      /* background: linear-gradient(#f1f1f3, #a7b4c8);*/
+      height:30px;
+      top: 0px;
+      position: sticky; position: -webkit-sticky;
+      z-index: 30;
+      border: .1px solid #dddddd;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 2px 10px;
+    }
+    .sHad1{
+        /* background: #808080; */
+        left: 0px;
+        position: sticky; position: -webkit-sticky;
+        z-index: 10;
+    }
+    .sHad2{
+        /*background: #d6d6c9;*/
+        border-right: 1px solid black;
+        /*color: black;*/
+        font-weight:bold;
+    }
+    .sHad3{
+        /*color:black*/
+    }
+    #myTable tr:last-child { 
+      background:#00324A !important; 
+      color:white;
+      font-size: 15px !important;
+    }
+    .tableHeading1 {
+      background: linear-gradient(#f1f1f3, #a7b4c8);
+      height:30px;
+      top: 50px;
+      position: sticky; position: -webkit-sticky;
+      z-index: 30;
+      border: .1px solid #dddddd;
+    }
+    .tableHeading2 {
+      background: linear-gradient(#f1f1f3, #a7b4c8);
+      height:30px;
+      top: 80px;
+      position: sticky; position: -webkit-sticky;
+      z-index: 30;
+      border: .1px solid #dddddd;
+    }
+
+    .Amt{
+      text-align: right;
+      padding-right:5px; 
+    }
+
+    .subHeading{
+        background-color: #ebeff2;
+        font-weight: bold;
+        border-bottom: 1.5px double black;
+    }
+    .gTotal{
+      font-size: 28px !important;
+    }
+    .hideByColor{
+        /*color: gray;*/
+    }
+    .hideByColor1{
+        color: #fff;
+    }
+  /* ⚊⚊⚊⚊ HTML Table  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+  /* ⚊⚊⚊⚊ Heading Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+    .heading{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #00324A;
+      padding:10px 20px;
+      color:white;
+      min-height: 50px;
+      position: sticky;
+      top:0;
+      z-index:100;
+    }
+    .heading h2{
+      color: #EDFFF8;
+      font-size: 25px;
+      font-weight: 300px;
+    }
+  /* ⚊⚊⚊⚊ Heading Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+
+
+
+
+  /* ⚊⚊⚊⚊ Collapse and Expend Button ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+    .hide {
+        display:none;
+    }
+
+    .abc {
+        border-bottom: 0.75px solid #d3d0d0;;
+    }
+  /* ⚊⚊⚊⚊ Collapse and Expend Button ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+  /* ⚊⚊⚊⚊ Collapse and Expend Button ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+    .sBtn{
+        box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+        background-color: #2CBBBB;;
+        display: inline-block;
+        cursor: pointer;
+        color: #FFFFFF;
+        font-family: 'Open Sans Condensed', sans-serif;
+        font-size: 12px;
+        padding: 4px 6px;
+        margin: 5px 10px 5px 0px;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+    .sBtn:hover{
+      background-color: #2f8f8f;
+    }
+  
+  /* ⚊⚊⚊⚊ Collapse and Expend Button ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+
+</style>
+
+
+{% endblock body %}

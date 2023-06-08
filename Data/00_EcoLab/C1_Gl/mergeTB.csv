@@ -1,0 +1,203 @@
+code,head,level1,level2,level3,level4
+22420001,Equipments (Demo),1. Assets,1. Non Current Assets,1. Property and Equipment,Equipments (Demo)
+22620003,Depr. Equipments (Demo),1. Assets,1. Non Current Assets,1. Property and Equipment,Equipments (Demo)
+22620001,Office Equipments,1. Assets,1. Non Current Assets,1. Property and Equipment,Computer hardware
+28240001,Depr. office Equipments,1. Assets,1. Non Current Assets,1. Property and Equipment,Computer hardware
+22620002,Computer hardware,1. Assets,1. Non Current Assets,1. Property and Equipment,Computer hardware
+28240002,Depr. Computers Hardware,1. Assets,1. Non Current Assets,1. Property and Equipment,Computer hardware
+22500001,Moter Vehicle,1. Assets,1. Non Current Assets,1. Property and Equipment,Motor Vehicles
+28250001,Depr. Motor Vehicles,1. Assets,1. Non Current Assets,1. Property and Equipment,Motor Vehicles
+22620004,Computer Software,1. Assets,1. Non Current Assets,2. Intangible Assets,Computer Software
+22620005,Dep Computer Software,1. Assets,1. Non Current Assets,2. Intangible Assets,Computer Software
+37000001,Inventory at Cost,1. Assets,2. Current Assets,1. Inventories,Goods in Warehouse
+37000002,Goods Shipped But Not Billed,1. Assets,2. Current Assets,1. Inventories,Goods in Warehouse
+39700001,Provision for Obsolete / Slow Moving Items,1. Assets,2. Current Assets,1. Inventories,Goods in Warehouse
+41000003,Goods In Transit,1. Assets,2. Current Assets,1. Inventories,Goods in Transit
+41119999,Debtors having Credit Balance,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+41150001,Doubtful Debits Allowance,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+51120001,Cheque Received Not Deposit,1. Assets,2. Current Assets,3. Trade Receivables,Post Dated Cheque Receivable
+41300001,PDC Receivable in Bank Custody,1. Assets,2. Current Assets,3. Trade Receivables,Post Dated Cheque Receivable
+41200001,Prepaid Expenses,1. Assets,2. Current Assets,4. Other Receivables,Prepaid Expenses
+41200104,Refundable Deposit Facility BOS,1. Assets,2. Current Assets,4. Other Receivables,Refundable Deposits
+41600134,Hafiz Umer KSA,1. Assets,2. Current Assets,4. Other Receivables,Refundable Deposits
+41600136,Nidaa Mresh,1. Assets,2. Current Assets,4. Other Receivables,Refundable Deposits
+41600038,Joseph Zgheib,1. Assets,2. Current Assets,4. Other Receivables,Staff Advance
+44980002,Accrued Income,1. Assets,2. Current Assets,4. Other Receivables,Advances To Suppliers
+41700111,Advance For SAP Software,1. Assets,2. Current Assets,4. Other Receivables,Advances To Suppliers
+41709999,Transfer - Creditors having Debit Balance,1. Assets,2. Current Assets,4. Other Receivables,Advances To Suppliers
+41700118,Advances to Tania Nassar,1. Assets,2. Current Assets,4. Other Receivables,Other Receivables
+45110011,Apex Catering Services LLC,1. Assets,2. Current Assets,2. Due From Related Parties,Due From Related Parties
+45110004,AFF Restaurant LLC,1. Assets,2. Current Assets,2. Due From Related Parties,Due From Related Parties
+41200101,Fixed Deposit BOS AED (01366-278390),1. Assets,2. Current Assets,5. Other Financial Assets,Other Financial Assets
+42810004,Cash A/C,1. Assets,2. Current Assets,6. Cash and Cash Equivalents,Cash in Hand
+51210001,BANK OF SHARJAH ( 011-06-277565) DH,1. Assets,2. Current Assets,6. Cash and Cash Equivalents,Cash at Bank
+51210024,ENBD AED 1014677278701,1. Assets,2. Current Assets,6. Cash and Cash Equivalents,Cash at Bank
+10130001,Subscribed capital (called and paid up) - Tania FZ Capital,2. Equity,1. Equity,1. Share Capital,Share Capital
+10130003,Jamal Lootah Capital,2. Equity,1. Equity,1. Share Capital,Share Capital
+11110001,Statutory Reserve,2. Equity,1. Equity,2. Statutory Reserve,Statutory Reserve
+12110001,Retained Earnings,2. Equity,1. Equity,4. Retained Earnings,Retained Earnings
+12110002,Dividend,2. Equity,1. Equity,4. Retained Earnings,Retained Earnings
+12119999,Last year profit,2. Equity,1. Equity,4. Retained Earnings,Retained Earnings
+43100001,Staff Gratuity,3. Liabilities,1. Non Current Liabilities,1. Employees' End of Service Indemnity,Employees' End of Service Indemnity
+51900014,Lease Liability,3. Liabilities,2. Current Liabilities,3. Liabilities against subject to finance lease,Liabilities against subject to finance lease
+51900005,Blom Bank Auto Loan,3. Liabilities,2. Current Liabilities,3. Liabilities against subject to finance lease,Liabilities against subject to finance lease
+40110002,A3 DESIGN LLC,3. Liabilities,2. Current Liabilities,1. Trade Payables,Trade Payables
+40150001,PDC Payables A/C,3. Liabilities,2. Current Liabilities,2. Other Payables,PDC Cheques Payable
+40150002,LC Payable A/C,3. Liabilities,2. Current Liabilities,2. Other Payables,PDC Cheques Payable
+42120001,Accrued Salaries,3. Liabilities,2. Current Liabilities,2. Other Payables,Accruals
+42810003,Security Deposit ( from customers),3. Liabilities,2. Current Liabilities,2. Other Payables,Accruals
+44280001,VAT Output Tax Payable,3. Liabilities,2. Current Liabilities,2. Other Payables,Accruals
+44280002,VAT Output Tax Exports,3. Liabilities,2. Current Liabilities,2. Other Payables,Accruals
+42830002,VAT Input Tax Imports,3. Liabilities,2. Current Liabilities,2. Other Payables,Accruals
+44280003,VAT Output Tax Reverse Charge Mechanism (RCM),3. Liabilities,2. Current Liabilities,2. Other Payables,Accruals
+42830001,VAT Input Tax Receivable,3. Liabilities,2. Current Liabilities,2. Other Payables,Accruals
+44280004,VAT Net Settlement,3. Liabilities,2. Current Liabilities,2. Other Payables,Accruals
+42830003,VAT Input 5% Tax Receivable,3. Liabilities,2. Current Liabilities,2. Other Payables,Accruals
+51900001,Blom Bank Trust Receipt 052-00713578402020,3. Liabilities,2. Current Liabilities,4. Bank Borrowings,Bank Borrowings
+51900002,Blom Loan Against PDC,3. Liabilities,2. Current Liabilities,4. Bank Borrowings,Bank Borrowings
+51900007,Bank of Sharjah TR Margin,3. Liabilities,2. Current Liabilities,4. Bank Borrowings,Bank Borrowings
+521100001,Glow Holding Ltd,3. Liabilities,2. Current Liabilities,5. Due to related parties,Due to related parties
+70120002,Cash Sales,4. Profit and Loss,1. Sales,1. Sales,Sales
+70120001,Credit Sales,4. Profit and Loss,1. Sales,1. Sales,Sales
+70120100,Sales Discount,4. Profit and Loss,1. Sales,1. Sales,Sales Related
+60110001,Cogs1,4. Profit and Loss,2. Cost of Sales,1. Cost of Sales,Cost of Sales
+12110005,Stock Shortage,4. Profit and Loss,2. Cost of Sales,1. Cost of Sales,Cost Related
+60110101,Direct Costs,4. Profit and Loss,2. Cost of Sales,1. Cost of Sales,Cost Related
+63200017,Exchange rate diff.,4. Profit and Loss,3. Other Income,1. Other Income,Other Income
+77270005,Gain on Disposal of Fixed Asset,4. Profit and Loss,3. Other Income,1. Other Income,Other Income
+63110001,Salaries -selling,4. Profit and Loss,4. Direct Expenses,1. Salaries and Related Cost,Salaries and Related Cost
+63110009,Medical Insurance-Selling,4. Profit and Loss,4. Direct Expenses,1. Salaries and Related Cost,Salaries and Related Cost
+63200043,Visa & Immigration expenses-Selling,4. Profit and Loss,4. Direct Expenses,1. Salaries and Related Cost,Salaries and Related Cost
+63140002,Commission - selling,4. Profit and Loss,4. Direct Expenses,2. Sales Commission,Sales Commission
+63140001,Bonuses-selling,4. Profit and Loss,4. Direct Expenses,3. Bonus,Bonus
+63500001,Graduity -selling,4. Profit and Loss,4. Direct Expenses,4. Gratuity Provision,Gratuity Provision
+63200002,Leave salaries &air tickets-selling,4. Profit and Loss,4. Direct Expenses,5. Leave salaries &air tickets,Leave salaries &air tickets
+63110007,Staff Air Ticket Allowance-Selling,4. Profit and Loss,4. Direct Expenses,5. Leave salaries &air tickets,Leave salaries &air tickets
+63200001,Training &seminars-selling,4. Profit and Loss,4. Direct Expenses,6. Selling and business promotion,Selling and business promotion
+63200003,Machine Demo Expenses,4. Profit and Loss,4. Direct Expenses,6. Selling and business promotion,Selling and business promotion
+63200006,Exhibitionand coferences,4. Profit and Loss,4. Direct Expenses,6. Selling and business promotion,Selling and business promotion
+63200010,Marketing,4. Profit and Loss,4. Direct Expenses,6. Selling and business promotion,Selling and business promotion
+63200032,Advertising,4. Profit and Loss,4. Direct Expenses,6. Selling and business promotion,Selling and business promotion
+62610003,Travelling -selling,4. Profit and Loss,4. Direct Expenses,8. Travelling and Vehicle maintenance,Travelling and Vehicle maintenance
+62620002,Rent -staff-selling,4. Profit and Loss,4. Direct Expenses,9. Rent,Rent
+62610001,Telecom-selling,4. Profit and Loss,4. Direct Expenses,10. Communications,Communications
+63110002,Salaries-admin,4. Profit and Loss,5. Indirect Expenses,1. Salaries and Related Cost,Salaries and Related Cost
+63110006,Staff other benefits,4. Profit and Loss,5. Indirect Expenses,1. Salaries and Related Cost,Salaries and Related Cost
+63110011,Salary Related Consultancy,4. Profit and Loss,5. Indirect Expenses,1. Salaries and Related Cost,Salaries and Related Cost
+63110010,Medical Insurance-Admin,4. Profit and Loss,5. Indirect Expenses,1. Salaries and Related Cost,Salaries and Related Cost
+63160002,Bonus to Management,4. Profit and Loss,5. Indirect Expenses,2. Bonus,Bonus
+63200014,Visa &immigration expenses,4. Profit and Loss,5. Indirect Expenses,3. Visa & Immigration,Visa & Immigration
+63110005,Gratuity admin,4. Profit and Loss,5. Indirect Expenses,4. Gratuity Provision,Gratuity Provision
+63110003,Leave salaries &air tickets-admin,4. Profit and Loss,5. Indirect Expenses,5. Leave Salaries and Tickets,Leave Salaries and Tickets
+63110008,Staff Air Ticket Allowance-Admin,4. Profit and Loss,5. Indirect Expenses,5. Leave Salaries and Tickets,Leave Salaries and Tickets
+63200019,Training & Seminars,4. Profit and Loss,5. Indirect Expenses,6. Training,Training
+63200005,Recruitment,4. Profit and Loss,5. Indirect Expenses,7. Recruitment,Recruitment
+63120001,Audit & professional fees,4. Profit and Loss,5. Indirect Expenses,"8. Legal, license and professional fee","Legal, license and professional fee"
+63120002,Goverment Registrations,4. Profit and Loss,5. Indirect Expenses,"8. Legal, license and professional fee","Legal, license and professional fee"
+63120004,Trade license,4. Profit and Loss,5. Indirect Expenses,"8. Legal, license and professional fee","Legal, license and professional fee"
+63120005,Consultancy fee,4. Profit and Loss,5. Indirect Expenses,"8. Legal, license and professional fee","Legal, license and professional fee"
+62610007,Travelling -admin,4. Profit and Loss,5. Indirect Expenses,9. Travelling and Vehicle maintenance,Travelling and Vehicle maintenance
+63200020,Salik Toll Gate,4. Profit and Loss,5. Indirect Expenses,9. Travelling and Vehicle maintenance,Travelling and Vehicle maintenance
+63200023,Fuel Expenses,4. Profit and Loss,5. Indirect Expenses,9. Travelling and Vehicle maintenance,Travelling and Vehicle maintenance
+63200024,Travel Expenses,4. Profit and Loss,5. Indirect Expenses,9. Travelling and Vehicle maintenance,Travelling and Vehicle maintenance
+62620003,Rent office and warehouses,4. Profit and Loss,5. Indirect Expenses,10. Rent,Rent
+61120002,Maintenance,4. Profit and Loss,5. Indirect Expenses,11. Office maintenance,Office maintenance
+63200034,Office cleaning &maint.,4. Profit and Loss,5. Indirect Expenses,11. Office maintenance,Office maintenance
+63200013,Bad debts,4. Profit and Loss,5. Indirect Expenses,12. Bad debts,Bad debts
+63200007,Insurance,4. Profit and Loss,5. Indirect Expenses,13. Insurance,Insurance
+79110006,Damaged Stock,4. Profit and Loss,5. Indirect Expenses,14. Provision for slow moving inventories,Provision for slow moving inventories
+62610006,Telecommunication-admin,4. Profit and Loss,5. Indirect Expenses,15. Communications,Communications
+63200021,Bank interest &charges,4. Profit and Loss,5. Indirect Expenses,16. Bank charges,Bank charges
+63200004,Stationary & Printing expenses,4. Profit and Loss,5. Indirect Expenses,17. Printing and stationery,Printing and stationery
+63200035,Other expenses,4. Profit and Loss,5. Indirect Expenses,18. Others,Others
+65110001,Amortization of other intangible fixed assets-tax accepted,4. Profit and Loss,6. Depreciation and amortiaztion,6. Depreciation and amortiaztion,Depreciation and amortiaztion
+65300001,Depreciation,4. Profit and Loss,6. Depreciation and amortiaztion,6. Depreciation and amortiaztion,Depreciation and amortiaztion
+67300002,Finance Cost,4. Profit and Loss,7. Finance Cost,7. Finance Cost,Finance Cost
+67300003,Finance Cost - TR,4. Profit and Loss,7. Finance Cost,7. Finance Cost,Finance Cost
+67300004,Finance Cost - Discounting,4. Profit and Loss,7. Finance Cost,7. Finance Cost,Finance Cost
+67300006,Finance Cost - Ubora Tower Interest,4. Profit and Loss,7. Finance Cost,7. Finance Cost,Finance Cost
+67300005,Finance Cost - OD,4. Profit and Loss,7. Finance Cost,7. Finance Cost,Finance Cost
+77360001,Finance Income,4. Profit and Loss,8. Finance Income,8. Finance Income,Finance Income
+22310029,Al Jameya Pharmacy,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310102,Health &amp; Aesthetic Medical Center,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310055,Al Noor Pharmacy,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310093,Women's Medical Center (Dr. Ameena),1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310097,Sahar Pharmacy,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310102,Health & Aesthetic Medical Center,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310131,Ali Bin Ali Medical,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310133,Al Samnan Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310182,Spaces Spa Center,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310200,German Clinic FZ LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310207,Delta Pharmacy,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310210,Al Burg Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310252,Faith Pharmacy,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310269,Flora Beauty Spa,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310280,Gulf Beauty Salon - Abu Dhabi,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310286,Hamad Pharmacy,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310298,HANI Pharmacy Abu Dhabi,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310341,Kaya Trading,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310359,Life Pharmacy LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310436,NADA Pharmacy,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310439,NAS Medical,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310580,Al Qaser Medical Center,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310646,American Hospital Dubai LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310701,Grace Medical Centre,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310747,Marjan Beauty Saloon JLT,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310776,Mafraq Hospital,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310789,Al Sharq Hospital,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310802,Elite Medical Centre,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310807,Aesthetica Clinic LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310827,Al Soor Pharmacy LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310873,Sera Beauty Lounge,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310888,Heavenly Spa,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22310916,Alexandria Pharmacy,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311027,Visage Pharmacy,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311052,Top Medical Group,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311066,American European Medical Center,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311134,Al Dar Medical Center,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311163,Health Point Hospital LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311242,ICON CLINIC LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311663,Zulekha Hospital LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311664,Unicare Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311809,Carmen Beauty Salon,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311852,Zaki Ladies Salon,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311863,Beverly Hills Speciality Center LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311988,Glamour Care Clinics LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22311998,Acacia Medical Center,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312024,Glamour Beauty & Nail Spa,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312100,Adan Hospital,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312101,Al Seef Hospital,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312106,Basma Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312107,Bella Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312111,Canadian Medical Center,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312112,Celebrity Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312117,Dasman Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312119,Devon Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312127,Family Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312129,Global Med Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312130,Hala Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312131,Huda Saffar Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312133,Infinity Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312135,Jana Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312141,Manar Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312142,Marina Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312146,Mazaya Clinic Jabriya,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312154,Private Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312157,Reform Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312158,Roses Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312165,Saray Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312168,Sebi Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312172,Shape Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312173,Skin Clinic,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312174,Taiba Hospital,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312258,Burjeel Specialty Hospital LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312272,Hobbs Clinic L.L.C.,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312288,Happiness Clinic LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312289,Korean Cosmetics Medical Center LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312344,Duri Medical Center LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312370,Alpha Medical LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312373,Karima Medical Centre,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312394,Velvet Ladies Salon,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312443,Hareer Medical Centre LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312475,Dermatics Clinic LLC,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
+22312569,Harmony Medical Center,1. Assets,2. Current Assets,3. Trade Receivables,Trade Receivables
