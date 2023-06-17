@@ -9,6 +9,10 @@ urlpatterns = [
     path('F1_salesTargetSup', views.F1_salesTargetSup, name='F1_salesTargetSup'),
 
 
+    #═══ Month End Closing  ═════════════════════════════════════════════════
+    path('updateSalRevenue', views.updateSalRevenue, name='updateSalRevenue'),
+
+
     path('textRep', views.textRep, name='textRep'),
 
 ]

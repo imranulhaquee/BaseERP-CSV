@@ -1,0 +1,32 @@
+id,Group,Type,Description,Short
+10001,Country,Country,United Arab Emirates,UAE
+10002,Country,Country,Saudi Arabia,SA
+10003,Country,Country,Oman,OM
+10004,Country,Country,Qtar,QT
+10005,Country,Country,Kuwait,Kw
+20001,Revenu Center,Department,Medical,Medical
+20002,Revenu Center,Department,Cosmetics,Cosmetics
+20003,Revenu Center,Department,Equipment,Equipment
+20004,Revenu Center,Department,Surgical,Surgical
+20005,Revenu Center,Department,Dental,Dental
+20006,Cost Center,Department,Finance,Finance
+20007,Cost Center,Department,Marketing,Marketing
+20008,Cost Center,Department,HR,HR
+20009,Cost Center,Department,IT,IT
+20010,Cost Center,Department,Logistics,Logistics
+20011,Cost Center,Department,Admin,Admin
+30001,Supplier,Brand,ADSS,
+30002,Supplier,Brand,Bruun MCI,
+30003,Supplier,Brand,Caviation,
+30004,Supplier,Brand,Crio,
+30005,Supplier,Brand,Deod,
+30006,Supplier,Brand,G5 ,
+30007,Supplier,Brand,Hiemt,
+30008,Supplier,Brand,Hydra,
+30009,Supplier,Brand,Jumia,
+30010,Supplier,Brand,Konmision,
+30011,Supplier,Brand,Mickcara,
+30012,Supplier,Brand,Risen,
+30013,Supplier,Brand,SPA,
+30014,Supplier,Brand,Ultrasonic,
+30015,Supplier,Brand,VCA,

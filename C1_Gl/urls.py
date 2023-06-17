@@ -23,9 +23,20 @@ urlpatterns = [
     path('sLedger/<str:pk>/', views.sLedger , name='sLedger'),
 
 
-
     path('zUploadTbData', views.zUploadTbData, name='zUploadTbData'),
     
+
+    #═════════════ Expend/Collaps ════════════════════════════════════
+    path('dJournalList', views.dJournalList, name='dJournalList'),
+    path('dJournalListURL', views.dJournalListURL, name='dJournalListURL'),
+
+    path('dJournalAdd', views.dJournalAdd, name='dJournalAdd'),
+    path('dJournalAddUrl', views.dJournalAddUrl, name='dJournalAddUrl'),
+
+    path('dJournalEdit/<str:pk>/', views.dJournalEdit , name='dJournalEdit'),
+
+    path('cCOA_List', views.cCOA_List, name='cCOA_List'),
+
 
 
     #═════════════ Expend/Collaps ════════════════════════════════════

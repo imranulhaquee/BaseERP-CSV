@@ -112,13 +112,14 @@
 
     //======================Show Records ========================== //Start-->
         let finalData = []
-        let pageSize = 10
+        let pageSize = 15
         let currentPage = 1
         
         //----Function to Render Table ------------------------------------
         async function renderTable(Id) {
             const response = await fetch(`${basInfo.IP[0]}/sItemLedgerURL/${Id}`)
             const data = await response.json()
+            finalData = data
             console.log(data)
             dataTable(data)
         }
@@ -173,31 +174,31 @@
         function previousPage() {
         if (currentPage > 1)
                 currentPage--;
-                dataTable(temData)   //renderTable()
+                dataTable(finalData)   //renderTable()
         }
         document.querySelector('#prevButton').addEventListener('click', previousPage, false)
 
         function nextPage() {
-        if ((currentPage * pageSize) < temData.length )
+        if ((currentPage * pageSize) < finalData.length )
                 currentPage++;
-                dataTable(temData)   //renderTable()
+                dataTable(finalData)   //renderTable()
         }
         document.querySelector('#nextButton').addEventListener('click', nextPage, false)
 
         function jumpTo() {
             let num = document.querySelector('#goto').value
             currentPage = parseInt(num);
-            dataTable(temData)   //renderTable()
+            dataTable(finalData)   //renderTable()
         }
 
         function first() {
             currentPage = 1;
-            dataTable(temData)   //renderTable()
+            dataTable(finalData)   //renderTable()
         }
 
         function last() {
-            currentPage = (temData.length)/pageSize;
-            dataTable(temData)   //renderTable()
+            currentPage = (finalData.length)/pageSize;
+            dataTable(finalData)   //renderTable()
         }
 
     //======================Show Records ========================== // End -->
@@ -211,7 +212,6 @@
             let filter = document.querySelector('#filterA').value.toUpperCase(); //capturing input value
             let myTable = document.querySelector('#tableBody'); //get table rows
             let data = finalData
-            finalData
 
             if (filter.length >= 3) {
                 let abc = data.filter(x => x.supName.toLowerCase().includes(filter.toLowerCase()))

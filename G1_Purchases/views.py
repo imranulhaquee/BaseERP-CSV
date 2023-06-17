@@ -335,6 +335,186 @@ def delSup(request, pk):
 
 
 
+#☰☰☰☰☰☰☰☰☰☰☰☰☰☰ Purchase Order ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
+
+def pOderList(request):
+    #(To Show all the Quotation Basic Information Screen)
+    context = {'Data':'Data' }
+    return render(request, 'G1_Purchases/pOrderList.html', context)
+
+
+def pOrderShow(request): #URL to fetch data--
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2. Read qotBasic.csv File -----------------------------------------
+  ### ========================================================================
+    req_cols = ['id','ordRef','ordDat','supName', 'ordTax', 'ordTAT','spCName','opnClo','action']
+    fPath = "Data/" +coFolder+ "/" +Year+ "/G1_Purchases/Orders/ordBasic.csv"
+    df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape').fillna('0')
+    
+    ### drop first row which is empty...
+    df = df.drop(df.index[0])
+
+    ### file doesn't recongnize date formate first convert into date and than strftime...
+    df['ordDat'] = pd.to_datetime(df['ordDat']).dt.strftime('%Y-%m-%d')
+
+    ### Remove Duplicate Quote and Deleted Record...
+    df = df.drop_duplicates(subset=['ordRef'], keep='last')
+    df = df.drop(df.loc[df['action']=='Deleted'].index)   
+
+
+  ### Step 3. Read qotStat.csv File ------------------------------------------
+  ### ========================================================================
+    statPath = "Data/" +coFolder+ "/" +Year+ "/G1_Purchases/Orders/ordStat.csv"
+    stat = pd.read_csv(statPath, index_col=False, encoding='unicode_escape')
+
+    ### Remove Duplicate and Deleted Record...
+    stat = stat.drop_duplicates(subset=['ordRefSt'], keep='last')  ##Drop Duplicate
+
+
+  ### Step 4 - Map qotBasic.csv Open/Close with qotStat.csv ------------------
+  ### ========================================================================
+    opnClo_map = dict(zip(stat['ordRefSt'], stat['opnCloSt']))
+    df['opnClo'] = df['ordRef'].map(opnClo_map).fillna(df['opnClo'])
+
+
+  ### Step 5 - Convert Data into Dictionary ----------------------------------
+  ### ========================================================================
+    Data = df.to_dict(orient="records")
+
+    return JsonResponse(Data, safe=False) 
+
+
+
+
+def pOrderAdd(request):
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 1. Read qotBasic.csv - to Get the last Quotation Number -----------
+  ### ========================================================================
+    try: 
+        req_cols = ['ordRef', 'ordDat']
+        fPath = "Data/" +coFolder+ "/" +Year+ "/G1_Purchases/Orders/ordBasic.csv"
+        df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+    except:
+        data = {'ordRef': [0]}
+        df = pd.DataFrame(data)
+    
+    ### Get the last Quotation Number and make it 5 digit and add year...
+    lastOrder = df['ordRef'].max()
+
+
+    context = {'lastOrder': lastOrder }
+    return render(request, 'G1_Purchases/pOrderAdd.html', context)
+
+
+
+@api_view(['POST'])
+@authentication_classes([BasicAuthentication]) 
+@permission_classes([IsAuthenticated])
+def pOrderAddUrl(request):
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+ 
+  ### Step 2. Save Data in ordBasic.csv file----------------------------------
+  ### ========================================================================
+    basData = request.data[0]
+    basicData = {'ID': basData['ordRef'],    'ordRef': basData['ordRef'],
+              'ordDat': basData['ordDat'],   'supCode': basData['supCode'],
+              'supName': basData['supName'], 'ordTBD':basData['ordTBD'], 
+              'ordTAD': basData['ordTAD'],   'ordTax': basData['ordTax'],
+              'ordTAT': basData['ordTAT'],	 'shipFrom':  basData['shipFrom'],	
+              'ordComm': basData['ordComm'], 'spCode': basData['spCode'],
+              'spCName': basData['spCName'],   'opeClo': 'Open',
+              'traDate': basData['traDate'], 'action': basData['action']
+            }
+
+    dfBasic = pd.DataFrame(basicData, index=[0])
+    fPath = "Data/" +coFolder+ "/" +Year+ "/G1_Purchases/Orders/ordBasic.csv"
+    dfBasic.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 3. Save Data in ordAddi.csv file-----------------------------------
+  ### ========================================================================
+    addiData = request.data[1]
+    for data in addiData:
+      addiData={'ID': basData['ordRef'], 'ordRef': basData['ordRef'], 'sno':data['sno'],
+              'itmCod':data['itmcode'], 'desc':data['desc'], 'qty':data['qty'],
+              'price':data['price'], 'disc':data['disc'], 'tot':data ['tot'],
+              'vat':data ['vat'], 'traDate':basData['traDate'], 'action':'' 
+              }
+    
+      dfAddi = pd.DataFrame(addiData, index=[0])
+      fPath = "Data/" +coFolder+ "/" +Year+ "/G1_Purchases/Orders/ordAddi.csv"
+      dfAddi.to_csv(fPath, index=False, header=False, mode='a')
+
+
+  ### Step 4. Save Data in ordStat.csv file-----------------------------------
+  ### ========================================================================
+    basData = request.data[0]
+    OrdStat =  {'ordRef':basData['ordRef'],
+                'opnClo':"Open",
+                'traDate':basData['traDate'],
+                'action':" ",
+    }
+
+    dfBasic = pd.DataFrame(OrdStat, index=[0])
+    fPath = "Data/" +coFolder+ "/" +Year+ "/G1_Purchases/Orders/ordStat.csv"
+    dfBasic.to_csv(fPath, index=False, header=False, mode='a')
+
+
+    jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
+    return JsonResponse(jsonData)
+
+
+
+
+def supListURL(request):
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+    ### Step 1- Read CSV Files in Pandas......................................
+    ### ----------------------------------------------------------------------
+    req_cols = ['supCode','supName', 'comment','supBillFrom','supShipFrom']
+    fPath = "Data/" +coFolder+"/G1_Purchases/Suppliers/SuppMaster.csv"
+    df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape').fillna(0)
+
+
+    ### Remove Duplicate Quote and Deleted Record.............................
+    df = df.drop_duplicates(subset=['supCode'], keep='last')
+    df = df.drop(df.loc[df['comment']=='Delete'].index)
+
+
+    ### Convert Data into Record...............................................
+    Data = df.to_dict(orient="records")
+
+    return JsonResponse(Data, safe=False) 
+
+
+
+
 def zUploadSupData(request):
     
     if request.method == 'POST':

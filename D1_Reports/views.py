@@ -175,6 +175,99 @@ def F1_salesTargetSup(request):
 
 
 
+#☰☰☰ B1 Month End Closing ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
+
+def updateSalRevenue (request):
+    #(Get All the Sales Delivery Detail)
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 2 - Read siBasic.csv siAddi.csv File ------------------------------
+  ### ========================================================================
+    basicPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siBasic.csv"
+    siBasic = pd.read_csv(basicPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    addiPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Invoices/siAddi.csv"
+    siAddi = pd.read_csv(addiPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    ### siBasic Remove Duplicate Invoice and Deleted Record...convert date into standard date formate........
+    siBasic = siBasic.drop_duplicates(subset=['siRef'], keep='last')   ### Remove previous record
+    siBasic = siBasic.drop(siBasic.loc[siBasic['action']=='Deleted'].index)  ### Remove Deleted row
+    siBasic['siDat'] = pd.to_datetime(siBasic['siDat']).dt.strftime('%Y-%m-%d')  ### convert date to standard Date
+    siBasic['unique'] = siBasic['siRef'].astype(str)+" "+siBasic['traDate']  ### Creat a unique column
+
+
+    siAddi["unique"] = siAddi['siRef'].astype(str)+" "+siAddi['traDate']
+    ###---- Merge to filter out those data which Transaction Date is not matching with qotBasic
+    mergedSi = pd.merge(siAddi, siBasic['unique'], on='unique', how='inner')
+
+    siAddiCom = pd.merge(mergedSi, siBasic[['siRef', 'siDat',  'cusCode', 'cusName', 'spCode', 'spCName', 'dlRef']], on='siRef', how='left')
+
+    siAddiCom['dlRef'] = siAddiCom['dlRef'].astype(int).astype(str) ### convert 2300003.0 to 2300003
+    siAddiCom['unique'] = siAddiCom['dlRef'].astype(str)+' '+siAddi['itmCod'].astype(str)
+    siAddiCom['Sales'] = siAddiCom['tot']- siAddi['vat']
+
+
+  ### Step 3 - Read dlBasic.csv dlAddi.csv File ------------------------------
+  ### ========================================================================
+    req_cols = ['dlRef','traDate','action']
+    basicPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlBasic.csv"
+    dlBasic = pd.read_csv(basicPath, usecols=req_cols, index_col=False, encoding='unicode_escape').fillna('')
+
+    req_cols = ['dlRef','itmCod','wac','traDate','action']
+    addiPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Deliveries/dlAddi.csv"
+    dlAddi = pd.read_csv(addiPath, usecols=req_cols, index_col=False, encoding='unicode_escape').fillna('')
+
+    ### siBasic Remove Duplicate Invoice and Deleted Record...convert date into standard date formate........
+    dlBasic = dlBasic.drop_duplicates(subset=['dlRef'], keep='last')   ### Remove previous record
+    dlBasic = dlBasic.drop(dlBasic.loc[dlBasic['action']=='Deleted'].index)  ### Remove Deleted row
+    dlBasic['uniqueA'] = dlBasic['dlRef'].astype(str)+" "+dlBasic['traDate']  ### Creat a unique column
+
+
+    dlAddi["uniqueA"] = dlAddi['dlRef'].astype(str)+" "+dlAddi['traDate']
+    ###---- Merge to filter out those data which Transaction Date is not matching with qotBasic
+    mergedDl = pd.merge(dlAddi, dlBasic['uniqueA'], on='uniqueA', how='inner')
+
+    mergedDl['unique'] = mergedDl['dlRef'].astype(str)+' '+mergedDl['itmCod'].astype(str)
+
+    ### Get 'wac' column and merge with  salAddi-----------
+    MergedDf = pd.merge(siAddiCom, mergedDl[['unique', 'wac']], on='unique', how='left')
+
+
+  ### Step 4 - Read ItemSalPrice.csv File ------------------------------------
+  ### ========================================================================
+    req_cols = ['itmCode','brand','supplier']
+    salPricePath = "Data/" +coFolder+ "/" +Year+ "/H1_Items/Items/ItemSalPrice.csv"
+    salPrice = pd.read_csv(salPricePath, usecols=req_cols, index_col=False, encoding='unicode_escape').fillna('')
+
+    salPrice = salPrice.rename(columns={'itmCode': 'itmCod'})
+
+    salPrice = salPrice.drop_duplicates(subset=['itmCod'], keep='last')   ### Remove previous record
+
+    ### Get 'wac' column and merge with  salAddi-----------
+    Merged = pd.merge(MergedDf,salPrice[['itmCod', 'supplier']], on='itmCod', how='left')
+    Merged = Merged.fillna(0)
+
+    ### Save the data in qotStat.csv File...
+    statPath =  "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Analysis/Sales Report.csv"
+    Merged.to_csv(statPath, index=False)
+
+
+    jsonData = {"Company": "BaseFR"}
+    return JsonResponse(jsonData)
+
+
+
+
+
+
+
+#☰☰☰  ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
 
 def textRep(request):
     ### Read CSV Files in Pandas...........................

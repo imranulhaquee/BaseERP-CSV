@@ -41,7 +41,49 @@ from xhtml2pdf import pisa
 
 #☰☰☰ SALES DASHBOARD ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
 def a2_salesDB(request):
-    context = {'abc':'abc', }
+    
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 2 - Read siBasic.csv siAddi.csv File ------------------------------
+  ### ========================================================================
+    basicPath = "Data/" +coFolder+ "/" +Year+ "/F1_Sales/Analysis/Sales Report.csv"
+    salReport = pd.read_csv(basicPath, index_col=False, encoding='unicode_escape').fillna('')
+
+    salReport['GP'] = salReport['Sales'] - salReport['wac']
+
+    salReport['siDat'] = pd.to_datetime(salReport['siDat'])
+    salReport['month'] = salReport['siDat'].dt.month
+    salReport['year'] = salReport['siDat'].dt.year
+
+    monSales = salReport.groupby(['year', 'month'])[['Sales', 'wac', 'GP']].sum().reset_index()
+    monSales['Sales'] = monSales['Sales'] / 1000
+    monSales['Sales'] = monSales['Sales'].round(1)
+
+    monSales['wac'] = monSales['wac'] / 1000
+    monSales['wac'] = monSales['wac'].round(1)
+
+    monSales['GP'] = monSales['GP'] / 1000
+    monSales['GP'] = monSales['GP'].round(1)
+    
+    totSal = monSales['Sales'].sum()
+
+    monSales['percentage'] = (monSales['Sales'] / totSal) * 100
+    monSales['percentage'] = monSales['percentage'].round(1)
+
+    monSales['gpPer'] = (monSales['GP'] / monSales['Sales']) * 100
+    monSales['gpPer'] = monSales['gpPer'].round(1)
+
+    perList = monSales['percentage'].tolist()
+
+    monSales = monSales.to_dict(orient="records")
+
+    context = {'monSales':monSales , 'perList':perList, }
     return render(request, 'F1_Sales/a2_salesDB.html', context)
 
 
@@ -1558,7 +1600,7 @@ def syncDelivery(request): #URL to fetch data--
     ###---- Merge to filter out those data which Transaction Date is not matching with qotBasic
     merged_df = pd.merge(dfB, dfBasic['unique'], on='unique', how='inner')
     ###---- Rearange Column to aboid any mistake
-    merged_df = merged_df[['id','dlRef','sno','itmCod','desc','qty','price','disc','tot','vat','traDate','action']]
+    merged_df = merged_df[['id','dlRef','sno','itmCod','desc','qty','price','disc','tot','vat','wac','traDate','action']]
 
     merged_df =merged_df.sort_values(['dlRef','sno'], ascending = [True, True])
 
@@ -1775,6 +1817,7 @@ def sDeliveryAddURL(request):
                 'disc':data ['disc'],
                 'tot':data ['tot'],
                 'vat':data ['vat'],
+                'wac':data ['wac'],
                 'traDate':basData['traDate'],
                 'action':" " ,                             
         }

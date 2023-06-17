@@ -15,5 +15,20 @@ urlpatterns = [
     path('editSup', views.editSup , name='editSup'),
     path('delSup/<str:pk>/', views.delSup, name='delSup'),
 
+
+    #═══ Purchase Order ════════════════════════════════════════════════════
+    path('pOderList/', views.pOderList, name='pOderList'),
+    path('pOrderShow/', views.pOrderShow, name='pOrderShow'),
+
+
+    path('pOrderAdd/', views.pOrderAdd, name='pOrderAdd'),
+    path('pOrderAddUrl', views.pOrderAddUrl, name='pOrderAddUrl'),
+
+
+    path('supListURL', views.supListURL, name='supListURL'),
+
+
+
+
     path('zUploadSupData', views.zUploadSupData, name='aUploadSupData'),
 ]

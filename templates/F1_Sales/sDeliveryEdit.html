@@ -37,10 +37,11 @@
 						<input type="text" id="cusName" name="cusName" disabled style="width:450px; min-width:300px;">
 					</div>
 				</div>
+
 				<div class="boxB"> 
 					<div style="display:flex; margin-bottom:10px;">
 						<p>Edit Delivery:</p>
-						<input class="cEdit" type="checkbox" id="myCheckbox"> 
+						<input class="custom-checkbox" class="cEdit" type="checkbox" id="myCheckbox"> 
 					</div>
 					<div class="inputFieldB">
 						<p style="width:120px; min-width:120px;">Sale Order Ref:</p> 
@@ -108,7 +109,8 @@
 										</div>
 								</th>
 								<th style="width:120px; text-align:right">Total</th>
-								<th style="width:50px; display:none">WAC</th>
+								<th style="width:75px; text-align:right">WAC</th>
+
 							</tr>
 						<!--== Table Second Heading (Hidden) for field name ===============-->
 							<tr style="display:none">
@@ -127,8 +129,11 @@
 						<!--== Table Body (Input) to get value =============================-->
 							<tbody id="tBody">
 								<tr>
-									<td><button class="remRow" onclick="remove_tr(this)"> 🗑 </button></td>
-									<td style="text-align:center;"><button onclick="getRowAndCellIndex(this)" style="border-radius:5px; color:orange; font-size: 15px; font-weight:bold; padding: 0px 2px 2px 2px; cursor:pointer">☰</button></td>                     
+									<td> <button class="remRow" onclick="remove_tr(this)"> 🗑 </button></td>
+									<td style="text-align:center; display:flex;">
+										<button onclick="getRowAndCellIndex(this)" style="border-radius:5px; color:orange; font-size: 15px; font-weight:bold; padding: 0px 2px 2px 2px; cursor:pointer">☰</button>
+										<input onclick="itemWAC(this)" type="checkbox" class="myCheckbox" id="myCheckboxA" value="10">
+									</td>                     
 									<td><input type="number" id="sno" class="input" value=1 disabled=true></td>
 									<td><input  id="itmCod" type="text" disabled=true></td>
 									<td ><input  id="desc" type="text" disabled=true></td>
@@ -139,7 +144,7 @@
 										<button onclick="getRowAndCell(this)" style="position:absolute; left:5px; border-radius:5px; color:#527198; font-size: 15px; cursor:pointer">☰</button>
 									</td>
 									<td><input type="floatformat" step="0.01" class="input numInput" value=0 disabled=true  style="text-align:right"> </td>
-									<td><input type="number"  class="input" value=0 disabled=true  style="text-align:right; display:none" disabled> </td>
+									<td><input type="floatformat"  class="input" value=0 disabled=true  style="text-align:right; display:block" disabled> </td>
 								</tr>
 							</tbody>
 					</table>
@@ -313,7 +318,7 @@
 								var Col_id = lastRow.cells[7].getElementsByTagName('input')[0].value = Data.disc.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[8].getElementsByTagName('input')[0].value = Data.vat.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[9].getElementsByTagName('input')[0].value = Data.tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-								var Col_id = lastRow.cells[10].getElementsByTagName('input')[0].value = Data.id;
+								var Col_id = lastRow.cells[10].getElementsByTagName('input')[0].value = Data.wac.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 						}
 						var delRow = table.deleteRow(0)  //delete first row which is emptry
 				}
@@ -325,13 +330,12 @@
 		//▒▒▒▒▒▒ SHOW DELIVERY NOTE DATA ON INITIAL LOAD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
 
-
 		//▒▒▒▒▒▒ Form Validation ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 			
 				let checkbox = document.getElementById('myCheckbox');
 				checkbox.addEventListener('change', function() {
-						if (this.checked) {savDisable('No')} 
-						else {savDisable('Yes')}
+						if (this.checked) {	savDisable('No'); getChkBoxResult()} 
+						else {savDisable('Yes'); }
 				});
 
 				//==== Form Validation =====================================//Start-->
@@ -363,6 +367,7 @@
 				//console.log(tBody.lastElementChild)
 				clean_last_tr(tBody.lastElementChild);
 				resetNo ()
+				emptyCell() //to make save button active or deactive
 			}
 
 			//---- CLEAN LAST ROW ------------------------------------------------------
@@ -392,7 +397,11 @@
 			function resetNo (Numb){
 				var lastRow = tBody.rows[ tBody.rows.length - 1 ] //get the last row of the table
 				var addColNo = parseInt(lastRow.cells[2].getElementsByTagName('input')[0].value); //get the value of the last row 1st cell
-				var sno = addColNo + 1 //add 1 to Last Column Value
+
+				var number = tBody.rows[ tBody.rows.length - 2 ]
+				var Number = parseInt(number.cells[2].getElementsByTagName('input')[0].value); //get the value of the last row 1st cell
+
+				var sno = Number + 1 //add 1 to Last Column Value
 				var addSO = lastRow.cells[2].getElementsByTagName('input')[0].value = sno;
 				//---Loop Throgh Table length to reset number from begning---------------
 				
@@ -408,8 +417,10 @@
 					var addQty = parseInt(lastRow.cells[5].getElementsByTagName('input')[0].value = 0); //add Value to new row "Quantity" 
 					var addPri = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
-					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
-					var addID = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addVat = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addTot = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addWac= parseInt(lastRow.cells[10].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+//					var addWAC = parseInt(lastRow.cells[11].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 				}
 			}
 
@@ -442,8 +453,32 @@
 				parseFloat(table.rows[ab].cells[9].getElementsByTagName('input')[0].value =  tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
 
 				getSum(abc)
+							
+				var row = table.rows[ab];
+				if (row) {
+					var checkbox = row.querySelector('input[type="checkbox"]');  
+					if (checkbox) {checkbox.checked = false;} //unchecked tick
+				}
+				getChkBoxResult()
 			}
 		
+			
+			//Check all the checkbox is checked or not  ------------------		
+			function getChkBoxResult() {
+				var table = document.getElementById("myTable");
+				var columnIndex = 1; // Get the index of the specific column
+				var rows = table.tBodies[1].rows;  // Get all the rows in the table body
+				for (var i = 0; i < rows.length; i++) {  // Loop through each row
+					var checkbox = rows[i].cells[columnIndex].querySelector("input[type='checkbox']");
+					if (!checkbox.checked) { savDisable('Yes'); return "No"	} // If any checkbox is not checked,
+				}
+				savDisable('No')
+				return "Yes";  // If all checkboxes are checked,
+			}
+				
+			//Check all the checkbox is checked or not  ------------------	
+
+
 
 			//■■■■■ GET SUM OF THE TOTAL COLUMN ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 			function getSum() {
@@ -464,7 +499,36 @@
 				document.getElementById("dlTax").value = VAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 				document.getElementById("dlTAD").value = sumADis.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 				document.getElementById("dlTBD").value = dlTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+			
+				emptyCell()
 			}
+
+
+			//==== Form Validation Ensure Ledger Account is not Empty ===================
+			function emptyCell(){
+				const subBtn = document.querySelector(".addRec");
+
+				var table = document.getElementById('myTable');
+				var cells = table.querySelectorAll('td:nth-child(11)');
+				var isEmpty = false;
+				
+				cells.forEach(function(cell) {
+					var input = cell.querySelector('input');
+					if (!input || input.value.trim() == 0) {
+						isEmpty = true;
+					}
+				});
+					
+				if (isEmpty) {
+					subBtn.disabled = true;
+					subBtn.classList.remove('addColor')
+				} else {
+					subBtn.disabled = false;
+					subBtn.classList.add('addColor')
+				}
+			
+			}
+
 
 		//▒▒▒▒▒▒ GET TOTAL AND GRAND TOTAL ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
@@ -736,44 +800,52 @@
 					outline: none; 
 					background-color:#e8f0f5;
 			}
-
 			.cEdit{
 				width: 100px;
 			}
+
+
 			.check-box {
-					transform: scale(2);
+				transform: scale(2);
 			}
-			input[type="checkbox"] {
-					position: relative;
-					appearance: none;
-					width: 50px;
-					height: 20px;
-					background: #ccc;
-					border-radius: 50px;
-					box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-					cursor: pointer;
-					transition: 0.4s;
+			
+			.custom-checkbox {
+				position: relative;
+				appearance: none;
+				width: 50px;
+				height: 20px;
+				background: #ccc;
+				border-radius: 50px;
+				box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+				cursor: pointer;
+				transition: 0.4s;
 			}
-			input:checked[type="checkbox"] {
-					background: #2CBBBB;
+			
+			.custom-checkbox:checked {
+				background: #2CBBBB;
 			}
-			input[type="checkbox"]::after {
-					position: absolute;
-					content: "";
-					width: 20px;
-					height: 20px;
-					top: 0;
-					left: 0;
-					background: #fff;
-					border-radius: 50%;
-					box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-					transform: scale(1.1);
-					transition: 0.4s;
+			
+			.custom-checkbox::after {
+				position: absolute;
+				content: "";
+				width: 20px;
+				height: 20px;
+				top: 0;
+				left: 0;
+				background: #fff;
+				border-radius: 50%;
+				box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+				transform: scale(1.1);
+				transition: 0.4s;
 			}
-			input:checked[type="checkbox"]::after {
-					left: 60%;
+			
+			.custom-checkbox:checked::after {
+				left: 60%;
 			}
 
+			.check-box {
+				transform: scale(2);
+		}
 		/* ⚊⚊⚊⚊ General INPUT ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
 
 		/* ⚊⚊⚊⚊ Main Container ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
@@ -1289,6 +1361,46 @@
 	</style>
 
 <!--==== Item Deatil Popup Window ====================================// End -->
+
+
+
+
+<!--.........................................................................-->
+<!--==== GET ITEM WAC Value ==========================================//Start-->
+<!--.........................................................................-->
+	<script>
+		//------ Get Clicked Row and Cell Index ---------------------------- //Start-->
+		async function itemWAC(test) {
+			var table = document.getElementById("myTable")
+			var row = test.parentNode.parentNode; // Get the row index
+			var ab = row.rowIndex; 
+			var checkbox = table.rows[ab].cells[1].getElementsByTagName('input')[0];
+
+			if (checkbox.checked) {
+				var itemCode = parseFloat(table.rows[ab].cells[3].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+				var qty = parseFloat(table.rows[ab].cells[5].getElementsByTagName('input')[0].value.replace(/,/g, ''))
+
+				if (isNaN(itemCode)){	console.log('there is NaN')}
+				else{
+					const response = await fetch(`${basInfo.IP[0]}/sItemLedgerURL/${itemCode}`)
+					const data = await response.json()
+					var lastRecord = data[data.length - 1]; //to select last record
+					var lastWAC = lastRecord.WAC;	
+					var totalCost = lastWAC * qty					//to select last record WAC Value
+					console.log(totalCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+					totCost = table.rows[ab].cells[10].getElementsByTagName('input')[0].value = totalCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})  // parseFloat(totalCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}));
+					console.log(lastWAC)
+				}
+			}
+
+			emptyCell()
+			getChkBoxResult()
+
+			//------ Get Clicked Row and Cell Index ---------------------------- // End -->
+		}
+	</script>
+<!--==== GET ITEM WAC Value ==========================================//Start-->
+
 
 
 

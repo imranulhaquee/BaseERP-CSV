@@ -1,0 +1,6 @@
+id,ordRef,ordDat,supCode,supName,ordTBD,ordTAD,ordTax,ordTAT,shipTo,ordComm,spCode,spCName,opnClo,traDate,action
+2300000,2300000,,,,,,,,,,,,,,
+2300001,2300001,6/16/2023,32110000,Adss Laser Co,55000,53000,2650,55650,"PO Box: 108879, Khalifa City A, Abu Dhabi",Purchse Order,1234,Andree Gloria Gestopa,Open,2023-6-16 22-13-24,
+2300002,2300002,6/16/2023,32110000,Adss Laser Co,20000,19800,990,20790,"PO Box: 108879, Khalifa City A, Abu Dhabi",Order Microneedling RF - HandPiece,1317,Richard Pinto Pimentel,Open,2023-6-16 22-27-0,
+2300003,2300003,6/16/2023,32110003,Crio and Co LLC,56000,54500,2725,57225,"PO Box 117452, Shoreline no. 10, Palm Jumerirah, Dubai",Purchase Order for Crio Lipo,1317,Richard Pinto Pimentel,Open,2023-6-16 22-45-47,
+2300004,2300004,2023-06-17,32110009,Konmision and Co LLC,88500,86750,4338,91088,"Al Rebat Street,Shop No. FH001",Purchase of Konmision from Konmision and Co LLC.,1366,Dilip Kumar Khawas,Open,2023-6-17 11-32-27,

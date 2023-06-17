@@ -315,7 +315,230 @@ def zUploadTbData(request):
 
 
 
-#☰☰☰☰☰☰☰☰☰☰☰☰☰☰ Upload Trial Balance ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
+
+#☰☰☰☰☰☰☰☰☰☰☰☰☰☰ EXPENSE RECORD ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
+
+
+def dJournalList(request):
+    #(To Show all the Sales Order Basic Information Screen)
+    context = {'Data':'Data' }
+    return render(request, 'C1_Gl/dJournalList.html', context)
+
+
+def dJournalListURL(request):
+    #(Get All the Sales Delivery Detail)
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    Year = str(dfStd.loc[0, 'year'])
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+
+
+  ### Step 2 - Read siBasic.csv File -----------------------------------------
+  ### ========================================================================
+    req_cols = ['Ref','Type','Date','Comm', 'traDate', 'action']
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+
+    ### Filter the data by type ie 'ji'-------------------------
+    df = df[df['Type'] == 'jl']
+
+    df['unique'] =  df['Ref'].astype(str)+" "+df['traDate']
+
+    ### Remove Duplicate Quote and Deleted Record...
+    df = df.drop_duplicates(subset=['unique'], keep='last')
+    df = df.drop(df.loc[df['action']=='Deleted'].index)
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
+
+
+  ### Step 3. Convert Data into Dictionary -----------------------------------
+  ### ========================================================================
+    Data = df.to_dict(orient="records")
+
+
+    return JsonResponse(Data, safe=False) 
+
+
+
+def dJournalAdd(request):
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2 - Read journals.csv - to Get the last Journal Number ------------
+  ### ========================================================================
+    req_cols = ['Ref', 'Type']
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    df = pd.read_csv(fPath, usecols=req_cols, index_col=False, encoding='unicode_escape')
+
+    ### Filter the data by type ie 'ji'-------------------------
+    filtered_df = df[df['Type'] == 'jl']
+
+    # Check if the DataFrame is empty max_value = 2300001 else get the max_value----------
+    if filtered_df.empty:
+        max_value = 2300000
+    else:
+        max_value = filtered_df['Ref'].max()
+
+
+  ### Step 2 - Read DropDown.csv - to Get the list of Countries and Departments etc--
+  ### ===============================================================================
+    fPath = "Data/" +coFolder+ "/C1_Gl/DropDown/DropDown.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+
+    Country = df[df['Type'] == 'Country']
+    countryList = Country['Description'].tolist()
+
+    Department = df[df['Type'] == 'Department']
+    departmentList = Department['Description'].tolist()
+
+    Brand = df[df['Type'] == 'Brand']
+    brandList = Brand['Description'].tolist()
+
+    context = {'lastJL':max_value, 'countryList':countryList, 'departmentList':departmentList, 'brandList':brandList}
+    return render(request, 'C1_Gl/dJournalAdd.html', context)
+
+
+@api_view(['POST'])
+@authentication_classes([BasicAuthentication]) 
+@permission_classes([IsAuthenticated])
+def dJournalAddUrl(request):
+    print(request.data)
+
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2 - Save Data in soStat.csv file ----------------------------------
+  ### ========================================================================
+    addiData = request.data
+    addRecords = []
+    for data in addiData:
+      Amount =  int(data['debit']) - int(data['credit'])
+          
+      Addi  = { 'ref': data['jlRef'],
+                'Type': 'jl',
+                'Date':  data['jlDat'],
+                'accCode':  data['accode'],
+                'accHead':  data['achead'],
+                'Amount' : Amount,
+                'Cumm': data['jlDesc'],
+                'traDate':data['traDate'],
+                'action':" " ,   
+                'brand': data['brand'],
+                'department': data['department'],
+                'country': data['country'],              
+        }
+      addRecords.append(Addi)  # Add the dictionary to the list
+
+    dfAddi = pd.DataFrame(addRecords)
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    dfAddi.to_csv(fPath, index=False, header=False, mode='a')
+
+    jsonData = {"name": "John", "age": 30,"address": "123 Main St"}
+    return JsonResponse(jsonData)
+
+
+
+
+def dJournalEdit(request, pk):
+    #(to Show Quotation to edit)
+    pk = int(pk)
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2. Read Journals.csv File ------------------------------------------
+  ### =========================================================================
+    ###pk = 2300006
+    fPath = "Data/" +coFolder+ "/" +Year+ "/C1_Gl/Journals/Journals.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+
+    ### Filter the data by type ie 'ji'-------------------------
+    df = df[df['Type'] == 'jl']
+
+    ### file doesn't recongnize date formate first convert into date and than strftime
+    df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
+
+    df = df[df['Ref'] == pk].fillna(0) ### Filter as per 'pk' selected quote
+
+    df['unique'] =  df['Ref'].astype(str)+" "+df['accCode'].astype(str)  ### Create a Unique Column
+
+    ### Remove Duplicate Quote and Deleted Record...
+    df = df.drop_duplicates(subset=['unique'], keep='last')
+    df = df.drop(df.loc[df['action']=='Deleted'].index)
+
+
+  ### Step 3 - Convert Data into Dictionary -----------------------------------
+  ### =========================================================================
+    Data = df.to_dict(orient="records")
+
+
+
+
+  ### Step 2 - Read DropDown.csv - to Get the list of Countries and Departments etc--
+  ### ===============================================================================
+    fPath = "Data/" +coFolder+ "/C1_Gl/DropDown/DropDown.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+
+    Country = df[df['Type'] == 'Country']
+    countryList = Country['Description'].tolist()
+
+    Department = df[df['Type'] == 'Department']
+    departmentList = Department['Description'].tolist()
+
+    Brand = df[df['Type'] == 'Brand']
+    brandList = Brand['Description'].tolist()
+
+    context = {'lastOrder': pk, 'Data':Data,
+               'countryList':countryList, 'departmentList':departmentList, 'brandList':brandList,
+               }
+    return render(request, 'C1_Gl/dJournalEdit.html', context)
+
+
+
+
+def cCOA_List(request):
+
+  ### Step 1. Get Company and Year to Load Data ------------------------------
+  ### ========================================================================
+    dfStd = pd.read_csv('data/basInfo.csv')
+    coFolder = str(dfStd.loc[0, 'coFolder'])
+    Year = str(dfStd.loc[0, 'year'])
+
+
+  ### Step 2 - Read DropDown.csv - to Get the list of Countries and Departments etc--
+  ### ===============================================================================
+    fPath = "Data/" +coFolder+ "/C1_Gl/mergeTB.csv"
+    df = pd.read_csv(fPath, index_col=False, encoding='unicode_escape')
+
+    selCol = df[['code', 'head', 'level2']]
+    selCol = selCol.replace(r'^.. ', '', regex=True)    # Replace "1. " with ""
+
+
+    ### Convert Data into Json Dictionary
+    Data = selCol.to_dict(orient="records")
+
+
+    return JsonResponse(Data, safe=False) 
+
+
+#☰☰☰☰☰☰☰☰☰☰☰☰☰☰ TEST  ☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰☰
 
 def expend(request):
     context = {'abc':'abc', }

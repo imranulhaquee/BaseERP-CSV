@@ -1,0 +1,1402 @@
+{% extends 'B1_Setup/LpBase.html' %}
+{% block title %} | Home {% endblock title %}
+{% block body %}
+{% load static%}
+
+
+
+<!--.........................................................................-->
+<!--==== Main Container ==============================================//Start-->
+<!--.........................................................................-->
+	<div class="mainCon">
+
+		<!--════ Heading Section ══════════════════════════════════════ //Start-->
+			<div class="heading"> 
+				<div> <img src=" {% static 'Java/Images/Logo/clientLogo.png' %}" style="width:175px;" alt=""> </div>
+				<h2><span class="span1">┃</span><span class="span2">Expnses Entry</span> </h2>
+			</div>
+		<!--════ Heading Section ══════════════════════════════════════ //Start-->
+			
+		<!--════ TOP Section ══════════════════════════════════════════ //Start-->
+			<div class="top"> 
+				<div class="boxA"> 
+					<div class="inputField">
+						<p>Journal Ref:</p> 
+						<input disabled type="text" id="jlRef" name="jlRef" placeholder="Ref #" style="width:180px; min-width:180px;"> 
+					</div>
+					<div class="inputField">
+						<p>Journal Date:</p> 
+						<input type="date" id="jlDat" name="jlDat" style="width:180px; min-width:180px;">
+					</div>
+
+				</div>
+				<div class="boxB"> 
+				</div>
+			</div>
+		<!--════ TOP Section ═══════════════════════════════════════════ //Start-->
+
+
+		<!--════ Table Section ══════════════════════════════════════════ //Start-->
+
+			<!--==== Item Search Table ======================================== -->
+					<!--━━━━ Customer Code (Search Table Pop) ━━━━━━━━━━━━━━━━━━━━━-->
+						<div  id="Pop_B"  onmouseleave="hidePop_B()" > 
+							<div class="sDiv">
+								<div class="Sear">
+									<img onclick="fetchPop_B()" style="cursor:pointer " class="Icon iA" src="{% static "JAVA/Images/Icon/search.png" %}" alt="" width="15px" >
+									<span  class="Icon iB">🞃 |</span>
+									<input id="filter_B" onkeyup="filter_B()" type="text" placeholder="Search Item" >
+								</div>
+								<div class="boxAA">
+									<div onclick="cashCustomer()"> General Item</div>
+								</div>
+								<div class="boxAB">
+									<div><a href="/addCustomer" target="_blank"> +Item </a></div>
+								</div>
+								<div onclick="hidePop_B()" class="closeBtn"> X </div>
+							</div>
+							<table id="table_B">
+								<tr class="tableHead"> <th style="width:80px"> Item #</th>  <th>Item Name</th> <th>Item Cost</th></tr>
+								<tbody id="popBody_B"> </tbody>
+							</table>
+						</div>
+					<!--━━━━ Customer Code (Search Table Pop_A) ━━━━━━━━━━━━━━━━━━━-->
+			<!--==== Item Search Table ======================================== -->
+	
+
+			<!--==== Table ==================================================== -->
+				<div class="Table">
+					<table id="myTable" >
+						<!--== Table First Heading =========================================-->
+							<tr  style="text-align:center; position:relative">
+								<th style="text-align: center;"width="25px;"class="addRow" onclick="create_tr('tBody')"> ✚ </th>
+								<th width="20px;" style="text-align:center;"> </th> 
+								<th width="50px;">S.No</th>
+								<th width="80px;">A/C Code </th>
+								<th >A/C Head</th>
+								<th style="width:120px;">Brand
+										<!--=======Select Brand Option=======================-->
+										<div onmouseleave="showDD_Brand()" style="position:absolute; right:0px; top:0px; border:2px solid #adb7c4; border-radius:5px; box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.5);" class="taxDD" id="brandMenu"> 
+											<select id="selBrand"  style="padding:2px 20px; background-image:linear-gradient(180deg, #E9F3F5 15%,#AAC8EB); position:relative;" >
+												<option value="" selected disabled hidden>Select Brand</option>
+												<option value="" >None</option>
+											</select>
+										</div>
+								</th>
+								<th style="width:120px;display:relative">Department
+										<!--=======Select Department Option=======================-->
+										<div onmouseleave="showDD_Dept()" style="position:absolute; right:0px; top:0px; border:2px solid #adb7c4; border-radius:5px; box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.5);" class="taxDD" id="deptMenu"> 
+											<select id="selDepartment"  style="padding:2px 20px; background-image:linear-gradient(180deg, #E9F3F5 15%,#AAC8EB); position:relative;" >
+												<option value="" selected disabled hidden>Select Department</option>
+												<option value="" >None</option>
+											</select>
+										</div>
+								</th>
+								<th style="width:120px;display:relative">Country
+									<!--=======Select Country Option==========================-->
+									<div onmouseleave="showDD_Coun()" style="position:absolute; right:0px; top:0px; border:2px solid #adb7c4; border-radius:5px; box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.5);" class="taxDD" id="counMenu"> 
+										<select id="selCountry"  style="padding:2px 20px; background-image:linear-gradient(180deg, #E9F3F5 15%,#AAC8EB); position:relative;" >
+											<option  value="" selected disabled hidden>Select Country</option>
+											<option value="" >None</option>
+										</select>
+									</div>
+								</th>
+								<th style="width:100px; text-align:right">Debit</th>
+								<th style="width:100px; text-align:right">Credit</th>
+								<th style="width:50px; display:none">id</th>
+							</tr>
+						<!--== Table Second Heading (Hidden) for field name ===============-->
+							<tr style="display:none">
+								<th></th>
+								<th></th>
+								<th>sno</th>
+								<th>acCode</th>
+								<th>acHead</th>
+								<th>brand</th>
+								<th>department</th>
+								<th>country</th>
+								<th>debit</th>
+								<th>credit</th>
+								<th style="display:none">id</th>
+							</tr>
+						<!--== Table Body (Input) to get value =============================-->
+							<tbody id="tBody">
+								<tr>
+									<td><button class="remRow" onclick="remove_tr(this)"> 🗑 </button></td>
+									<td style="text-align:center;"><button onclick="getRowAndCellIndex(this)" style="border-radius:5px; color:orange; font-size: 15px; font-weight:bold; padding: 0px 2px 2px 2px; cursor:pointer">☰</button></td>                     
+									<td><input type="number" id="sno" class="input" value=1 disabled=true></td>
+									<td><input  id="acCode" type="text" disabled=true></td>
+									<td ><input  id="acHead" type="text" disabled=true></td>
+									<td style="position:relative; "><input  id="brand" type="text" style="padding-left:20px;"> 
+										<button onclick="getBrandRow(this)" style="position:absolute; left:5px; border-radius:5px; color:#527198; font-size: 15px; cursor:pointer">☰</button>
+									</td>
+									<td style="position:relative;"><input  id="department" type="text" style="padding-left:20px;"> 
+										<button onclick="getDeptRow(this)" style="position:absolute; left:5px; border-radius:5px; color:#527198; font-size: 15px; cursor:pointer;">☰</button>
+									</td>
+									<td style="position:relative;" ><input  id="country" type="text" style="padding-left:20px;"> 
+										<button onclick="getRowAndCell(this)" style="position:absolute; left:5px; border-radius:5px; color:#527198; font-size: 15px; cursor:pointer">☰</button>
+									</td>
+									<td ><input type="floatformat" step="0.01" class="input numInput"  value=0 onkeyup="getTot(this)"  style="text-align:right"> </td>
+									<td><input type="floatformat" step="0.01" class="input numInput"  value=0 onkeyup="getTot(this)"  style="text-align:right"> </td>
+									<td><input type="number"  class="input" value=0 disabled=true  style="text-align:right; display:none" disabled> </td>
+								</tr>
+							</tbody>
+					</table>
+				</div>
+			<!--==== Table ==================================================== -->
+
+		<!--════ Table Section ══════════════════════════════════════════ // End -->
+
+
+		<!--════ Total Section ═══════════════════════════════════════════ //Start-->
+			<div class="total"> 
+				<div class="boxA"> 
+				</div>
+				<div class="boxB"> 
+					<div class="inputField">
+						<p>Total Debit</p> 
+						<input type="floatformat" id="totDr" disabled=true> 
+					</div>
+					<div class="inputField">
+						<p>Total Credit</p> 
+						<input type="floatformat" id="totCr" disabled=true>
+					</div>
+
+					<div class="inputField">
+						<p>Balance</p>
+						<input type="floatformat" id="balDiff" disabled=true>
+					</div>
+
+				</div>
+			</div><br><br>		
+	  <!--════ Total Section ═══════════════════════════════════════════ //Start-->
+
+
+		<!--════ Customer Additional Information Section ═══════════ //Start-->
+
+			<!--==== < Tab > ==========================================//Start-->
+				<div class="tabs">
+					<!-- Tab Heading ========================-->
+					<div class="tabsHead">
+							<div class="tabsToggle isActive">
+									<span class="tabsName">Description</span>
+							</div>
+							<div class="tabsToggle">
+									<span class="tabsName">Payment Term</span>
+							</div>
+							<div class="tabsToggle">
+									<span class="tabsName">Others</span>
+							</div>
+					</div>
+
+					<div class="tabsBody">
+							<!--Status =========================================================-->
+							<div class="tabsContent isActive">
+									<h3 class="tabsTitle">Description / Notes</h3>
+									<div class="cusTab">
+
+										<!--════ Bottom Section ════════════════════════════ //Start-->
+											<div class="Bottom">
+												<div>
+													<label> <span>Note </span> 
+													<textarea type="text" id="jlDesc" name="jlDesc" class="tabA" id="addShip" rows="3"></textarea> </label>
+												</div>
+
+											</div>
+										<!--════ Bottom Section ════════════════════════════ //Start-->
+
+									</div>
+							</div>
+							
+							<!--Additional Information===========================================-->
+							<div class="tabsContent">
+									<h3 class="tabsTitle">Payment Term</h3>
+
+									<div class="cusTab">
+
+										<!--════ Sales Section ═════════════════════════════ //Start-->
+											<div class="cusLimit">
+
+											</div><br>	
+										<!--════ Sales Section ═════════════════════════════ //Start-->
+
+									</div>
+							</div>
+
+							<!--Payment Settings================================================-->
+							<div class="tabsContent">
+									<h3 class="tabsTitle">Others</h3>
+
+							</div>
+							
+					</div>
+				</div>
+
+				<script>
+						//==== Tab Menu =========================================== //Start-->
+						let tabs = document.querySelectorAll('.tabsToggle'),
+								contents = document.querySelectorAll('.tabsContent');
+
+						tabs.forEach((tab, index) => {
+								tab.addEventListener('click', () => {
+										contents.forEach((content) => {
+												content.classList.remove('isActive');
+										});
+										tabs.forEach((tab) => {
+												tab.classList.remove('isActive');
+										});
+										contents[index].classList.add('isActive');
+										tabs[index].classList.add('isActive');
+								});
+						});
+						//==== Tab Menu =========================================== // End -->
+				</script>
+
+				<style>
+						.tabs {
+								display: flex;
+								flex-direction: column;
+								min-width: 600px;
+								margin: 0px 0px 0px 0px;
+								padding: 0px 0px 0px 0px;
+								font-size: 13px;
+						}
+						.tabsHead {
+								display: flex;
+								padding: 0px 5px 0 0px;
+								border-bottom: 1px solid rgb(208, 222, 237);
+								background-image: linear-gradient(to bottom, #f4f5fa, #e6e8f5, #d3dbe7, #b5b5d3);
+								/* background: #cccaca; */
+								cursor: pointer;
+						}
+						.tabsToggle {
+								margin: 0 0px;
+								padding: 3px 25px;
+								border-right:1px solid #525158;
+								/* background: #cccaca; */
+								background-image: linear-gradient(to bottom, #f4f5fa, #e6e8f5, #d3dbe7, #b5b5d3);
+								border-radius: 0 15px 0 0;
+								transition: .5s;
+						}
+						.tabsName {
+								font-weight: 600;
+								font-size: 16px;
+								color:#292961;
+
+						}
+						.tabsBody {
+								border-top: none;
+								padding: 0px 10px 0px 25px;
+								min-height:150px;
+								background: #ffff;
+						}
+						.tabsTitle {
+								font-weight: 500;
+								font-size: 18px;
+								color: #2b9fd6;
+								margin: 10px 10px 25px 0px;
+								text-align: left;
+						}
+						.tabsText {
+								font-size: 13px;
+								line-height: 1.2;
+								color: #484848;
+						}
+						.tabsContent {
+								position:relative;
+								display: none;
+						}
+						.tabsToggle.isActive {
+								background-image: linear-gradient(to bottom, #e5e7f0, #d5d8e7, #bac1ce, #b7b7ce);
+								/* background: #4D4D4D; */
+								color: #34284b;
+								font-size: 13px;
+								font-weight: 100;
+								text-align: left;
+						}
+						.tabsToggle.isActive .tabsName {
+								color: #454751;
+								font-weight:bold;
+						}
+						.tabsContent.isActive {
+								display: block;
+						}
+				</style>
+
+			<!--===== < Tab > ==========================================// End -->
+
+		<!--════ Customer Additional Information Section ═══════════ // End -->
+
+
+		<!--════ Save Section ══════════════════════════════════════ //Start-->
+			<section id="savSec">
+				<div><button  onclick="event.preventDefault()" class="hBtn" type="submit"> ⚠ HELP</button></div>
+				<div><button onclick="canRecord()" id="cancelA" class="cBtn" type="submit"> ✂ CANCEL</button></div>
+				<div><button onclick="addRecord()" id="addRec"  class="addRec sBtn" type="submit" disabled=true>✚ Save</button></div>
+			</section>
+		<!--════ Save Section ══════════════════════════════════════ // End -->
+
+	</div><br><br>
+<!--==== Main Container ==============================================// End -->
+
+
+
+<!--.........................................................................-->
+<!--==== PAGE JS =====================================================//Start-->
+  <script> 
+
+		//.... Get Data from Context Process and General Functions ...............
+			let basInfo = {{basInfo|safe}}
+		//.... Get Data from Context Process and General Functions ...............
+
+		//▒▒▒▒▒▒ Sales Invoice Number and Date and Form Validation ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+			
+      	//==== Last Sales Order Number // Date =====================//Start-->
+          let newDlNum
+          let newDlDat
+          function soNumber(){
+
+						const mmm = {{lastJL|safe}}  // get data from django noraml return
+						document.querySelector('#jlRef').value = mmm+1;
+						newDlNum = mmm+1
+
+						// display the formatted date -----------------
+						let currentDate = new Date();
+						//let formattedDate = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}/${currentDate.getFullYear()}`;
+						let inputDate = document.getElementById("jlDat");
+						inputDate.value = currentDate.toISOString().substr(0, 10);
+
+						newDlDat = currentDate.toISOString().substr(0, 10); 
+
+          }
+        	soNumber()
+      	//==== Last Sales Order Number // Date =====================// End -->
+
+
+				//==== Form Validation =====================================//Start-->
+					function savDisable (elem) {
+						const subBtn = document.querySelector(".addRec");
+						if (elem == 'Yes'){
+								subBtn.disabled = true;
+								subBtn.classList.remove('addColor')
+						}else{
+								subBtn.disabled = false;
+								subBtn.classList.add('addColor')
+						}
+					}
+				//==== Form Validation =====================================// End -->
+
+		//▒▒▒▒▒▒ Sales Invoice Number and Date and Form Validation ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+	
+		//▒▒▒▒▒▒ ADD REMOVE RESET TABLE ROWS ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+			//■■■■■ ADD NEW ROW IN THE TABLE ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			function create_tr(table_id) {
+				var tBody = document.getElementById(table_id),
+					last_tr   = tBody.lastElementChild,
+					tr_clone   = last_tr.cloneNode(true);
+				tBody.append(tr_clone);
+
+				//console.log(tBody.lastElementChild)
+				clean_last_tr(tBody.lastElementChild);
+				resetNo ()
+			}
+
+			//---- CLEAN LAST ROW ------------------------------------------------------
+			function clean_last_tr(lastTr) {
+				let children = lastTr.children;
+				children = Array.isArray(children) ? children : Object.values(children);
+
+				children.forEach(x=>{
+						if(x !== lastTr.lastElementChild){
+								x.lastElementChild.value = "";
+						}
+				});
+			}
+
+			//---- REMOVE LAST ROW -----------------------------------------------------
+			function remove_tr(This) {
+				if(This.closest('tbody').childElementCount == 1) {
+						alert("You Don't have Permission to Delete This ?");
+				}else{
+						This.closest('tr').remove();
+						getSum()
+						resetNo ('No')
+				}
+			}
+			
+			//---- RAESET NO ----------------------------------------------------------
+			function resetNo (Numb){
+				var lastRow = tBody.rows[ tBody.rows.length - 1 ] //get the last row of the table
+				var addColNo = parseInt(lastRow.cells[2].getElementsByTagName('input')[0].value); //get the value of the last row 1st cell
+				var sno = addColNo + 1 //add 1 to Last Column Value
+				var addSO = lastRow.cells[2].getElementsByTagName('input')[0].value = sno;
+				//---Loop Throgh Table length to reset number from begning---------------
+				
+				var a = 0
+				for (var j=0; j<tBody.rows.length; j++) {
+						var x = document.getElementById("tBody").rows[a].getElementsByTagName('input')[0].value = a+1;
+						a=a+1
+				} 
+
+				if (Numb=="No"){
+				}else{
+					//---- Give the new line Specific Value----------------------------------
+					var addTot = parseInt(lastRow.cells[5].getElementsByTagName('input')[0].value = ""); //add Value to new row "Price" 
+					var addTot = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = ""); //add Value to new row "Price" 
+					var addTot = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = ""); //add Value to new row "Price" 
+					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					var addID = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+				}
+			}
+
+		//▒▒▒▒▒▒ ADD REMOVE RESET TABLE ROWS ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+
+		//▒▒▒▒▒▒ GET TOTAL AND GRAND TOTAL ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+			//■■■■■ GET SUM OF THE ITEM SOLD ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+			function getTot(abc) {
+				//Change the input number into Comma Seperated Value ------------------
+					var value = event.target.value;
+					event.target.value = value.replace(/[^0-9]/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");  
+				//Change the input number into Comma Seperated Value ------------------
+
+				getSum(abc)
+			}
+		
+			//■■■■■ GET SUM OF THE TOTAL COLUMN ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+			function getSum() {
+				// Get sum of a table column --(temporary here)----------------------
+				// ==================================================================
+				var table = document.getElementById("myTable"), sumDr = 0; sumCr = 0;
+				for(var i = 2; i < table.rows.length; i++){
+						sumDr = sumDr + parseFloat(table.rows[i].cells[8].getElementsByTagName('input')[0].value.replace(/,/g, ''));
+						sumCr = sumCr + parseFloat(table.rows[i].cells[9].getElementsByTagName('input')[0].value.replace(/,/g, ''));
+				}
+
+				var balance = sumDr - sumCr
+				document.getElementById("totDr").value =sumDr.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.getElementById("totCr").value =sumCr.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+				document.getElementById("balDiff").value =balance.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});		
+
+
+
+				//==== Form Validation ===================================================
+				const subBtn = document.querySelector(".addRec");
+				if (balance == 0 ){    
+					emptyCell()
+				}else{
+					if (balance == 0)
+						emptyCell()
+					else
+						subBtn.disabled = true;
+						subBtn.classList.remove('addColor')
+				}
+				
+			}
+
+			//==== Form Validation Ensure Ledger Account is not Empty ===================
+			function emptyCell(){
+				const subBtn = document.querySelector(".addRec");
+
+				var table = document.getElementById('myTable');
+				var cells = table.querySelectorAll('td:nth-child(4)');
+				var isEmpty = false;
+				
+				cells.forEach(function(cell) {
+					var input = cell.querySelector('input');
+					if (!input || input.value.trim() === '') {
+						isEmpty = true;
+					}
+				});
+					
+				if (isEmpty) {
+					subBtn.disabled = true;
+					subBtn.classList.remove('addColor')
+				} else {
+					subBtn.disabled = false;
+					subBtn.classList.add('addColor')
+				}
+			
+			}
+
+		//▒▒▒▒▒▒ GET TOTAL AND GRAND TOTAL ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+		//▒▒▒▒▒▒ ADD RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+			//■■■■■ GET JAVASCRIPT ARRAY OF OBJECTS - BY CALLING  'tableToJson()'■■■■■■■■ 
+			function addRecord() {
+				var addData = tableToJson(document.getElementById("myTable")); // Get table  
+					console.log(addData)
+					//console.log(addData[1][0]['description'])
+					add_Record (addData)
+			}
+		
+			//■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			function tableToJson(table) {
+					//Get Date and time i.e. 2023-05-12 12-35-56------
+						let currentDate = new Date();
+						const year = currentDate.getFullYear(); // get the current year
+						const month = currentDate.getMonth() + 1; // get the current month (Note: month is zero-indexed)
+						const day = currentDate.getDate(); // get the current day of the month
+						const hours = currentDate.getHours(); // get the current hour
+						const minutes = currentDate.getMinutes(); // get the current minute
+						const seconds = currentDate.getSeconds(); // get the current second
+						let CurDate = `${year}-${month}-${day} ${hours}-${minutes}-${seconds}`
+					//Get Date and time i.e. 2023-05-12 12-35-56------				
+
+					var data = []
+					//first row needs to be headers
+					var headers = []; //if header contain code in second row means i=1
+					for (var i=1; i<table.rows[1].cells.length; i++) {
+							headers[i] = table.rows[1].cells[i].innerHTML.toLowerCase().replace(/ /gi,'').replace(/[.]/g,'');
+					}
+					
+					//---- go through each cells of all rows -- to generate Arry of Qut Items ---
+					for (var i=2; i<table.rows.length; i++) {
+							var tableRow = table.rows[i];
+							var rowData = {};
+							for (var j=2; j<tableRow.cells.length; j++) {
+
+								if(j>=7){ 
+									rowData [headers[j] ] = tableRow.cells[j].getElementsByTagName('input')[0].value.replace(/,/gi,'');
+								}else{
+									rowData [headers[j] ] = tableRow.cells[j].getElementsByTagName('input')[0].value;
+								}
+								
+								rowData ["jlRef"] = document.getElementById("jlRef").value;
+								rowData ["jlDat"] = document.getElementById("jlDat").value;
+								rowData ["jlDesc"] = document.getElementById("jlDesc").value;
+								rowData ["traDate"] = CurDate;
+							}
+							data.push(rowData);
+					}
+
+					return data;
+			}
+		
+			//■■■■■ CONVERT HTML TABLE DATA TO JSON DATA ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+			const add_Record = async (data) => {
+					try {
+					//console.log(data)
+					const response = await fetch(`${basInfo.IP[0]}/dJournalAddUrl`, { 
+							method: 'POST',                            
+							body: JSON.stringify(data), 
+							headers: {"Content-type":"application/json; charset=UTF-8"},
+					})
+					const post = await response.json();
+							alert("Record Saved Successfully...")
+							addRefresh()
+					} catch (e) {  
+							console.log(e)
+					}
+			}
+
+			//■■■■■ Refresh Quotation Form ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+				function addRefresh(){
+					JlRef = document.getElementById('jlRef').value;
+					let num = parseInt(JlRef); // convert string to number
+					num += 1; // add 1 to the number
+					ref = String(num);
+					document.getElementById('jlRef').value = ref
+					document.getElementById('jlDesc').value = ""
+
+					var table = document.getElementById("myTable");   
+					var rows = table.rows; // Get all rows in the table except the first 3 lines
+					for (var i = rows.length - 1; i >= 3; i--) {
+						table.deleteRow(i);// Delete the current row
+					}
+			
+					//---- Get the last row of the table -----------------------------------
+					var lastRow = table.rows[table.rows.length - 1];
+					//---- Refresh the line with nill value --------------------------------
+					var accCode = lastRow.cells[3].getElementsByTagName('input')[0].value = ""; //add Value to new row "Quantity" 
+					var accHead = lastRow.cells[4].getElementsByTagName('input')[0].value = ""; //add Value to new row "Quantity" 
+					var brand = parseInt(lastRow.cells[5].getElementsByTagName('input')[0].value = ""); //add Value to new row "Quantity" 
+					var department = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = ""); //add Value to new row "Price" 
+					var country = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = ""); //add Value to new row "Price" 
+					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price"
+					var addid = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+					
+					document.getElementById('totDr').value = ""
+					document.getElementById('totCr').value = ""
+					document.getElementById('balDiff').value = ""
+
+					savDisable('Yes')  //to Disable Save option..............
+			}
+
+		//▒▒▒▒▒▒ ADD RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+		//▒▒▒▒▒▒ CANCEL RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+			function canRecord(){
+				document.getElementById('qotRef').value = newQotNum
+				document.getElementById('qotDat').value = newQotDat
+				document.getElementById('cusCode').value = ""
+				document.getElementById('cusName').value = ""
+		
+				var table = document.getElementById("myTable");   
+				var rows = table.rows; // Get all rows in the table except the first 3 lines
+				for (var i = rows.length - 1; i >= 3; i--) {
+					table.deleteRow(i);// Delete the current row
+				}
+		
+				//---- Get the last row of the table -----------------------------------
+				var lastRow = table.rows[table.rows.length - 1];
+				//---- Refresh the line with nill value --------------------------------
+				var addSno = lastRow.cells[2].getElementsByTagName('input')[0].value = 1;
+				var addQty = lastRow.cells[3].getElementsByTagName('input')[0].value = ""; //add Value to new row "Quantity" 
+				var addQty = lastRow.cells[4].getElementsByTagName('input')[0].value = ""; //add Value to new row "Quantity" 
+				var addQty = parseInt(lastRow.cells[5].getElementsByTagName('input')[0].value = 0); //add Value to new row "Quantity" 
+				var addPri = parseInt(lastRow.cells[6].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+				var addDis = parseInt(lastRow.cells[7].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+				var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+
+				savDisable('Yes')  //to Disable Save option..............
+			}
+		//▒▒▒▒▒▒ CANCEL RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+
+		//▒▒▒▒▒▒ FORM VALIDATION ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+			function savDisable (elem) {
+				const subBtn = document.querySelector(".addRec");
+				if (elem == 'Yes'){
+					subBtn.disabled = true;
+					subBtn.classList.remove('addColor')
+				}else{
+					subBtn.disabled = false;
+					subBtn.classList.add('addColor')
+				}
+			}
+		//▒▒▒▒▒▒ FORM VALIDATION ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+
+	
+	</script>
+<!--.........................................................................-->
+
+
+
+<!--.........................................................................-->
+<!--==== PAGE CSS ====================================================//Start-->
+	<style>
+
+		/* ⚊⚊⚊⚊ General INPUT ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			input {
+					border: none;
+					box-sizing: border-box;
+					border-bottom: 1px solid rgb(0, 21, 255);
+					box-shadow: 1px 1px 4px #EBEBEB;
+					font-size: 13px;
+					padding: 2px 0 2px 5px;
+			}
+			input:focus { 
+					outline: none; 
+					background-color:#e8f0f5;
+			}
+
+			.cEdit{
+				width: 100px;
+			}
+			.check-box {
+					transform: scale(2);
+			}
+			input[type="checkbox"] {
+					position: relative;
+					appearance: none;
+					width: 50px;
+					height: 20px;
+					background: #ccc;
+					border-radius: 50px;
+					box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+					cursor: pointer;
+					transition: 0.4s;
+			}
+			input:checked[type="checkbox"] {
+					background: #2CBBBB;
+			}
+			input[type="checkbox"]::after {
+					position: absolute;
+					content: "";
+					width: 20px;
+					height: 20px;
+					top: 0;
+					left: 0;
+					background: #fff;
+					border-radius: 50%;
+					box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+					transform: scale(1.1);
+					transition: 0.4s;
+			}
+			input:checked[type="checkbox"]::after {
+					left: 60%;
+			}
+
+		/* ⚊⚊⚊⚊ General INPUT ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Main Container ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.mainCon { 
+					width: 95%;
+					min-width: 700px;
+					margin:3%; 
+					padding: 1% 3%; 
+					background-color: #fff;  
+					border-radius: 5px;
+					border-top: 10px solid rgb(91, 80, 104); 
+					border-bottom: 1px solid rgb(91, 80, 104); 
+					box-shadow: 0 1px 5px rgba(0,0,0,0.15); 
+					background:  url('/static/JAVA/Images/BackPng/backPng5.png') no-repeat;
+					background-size: 100%; /* Adjust the value as per your preference */
+					background-position: right top;
+			}
+		/* ⚊⚊⚊⚊ Main Container ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Heading Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.heading {
+					display:flex; 
+					flex-wrap:wrap; 
+					justify-content: space-between; 
+					width:100%; 
+					margin-bottom: 20px;
+			} 
+			.heading .span1 {
+					color:orange;
+			}
+			.heading .span2 {
+					font-weight:300;
+					letter-spacing: 3px;
+			}
+		/* ⚊⚊⚊⚊ Heading Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.top {
+					position: relative;
+					display:grid;
+					grid-template-columns: repeat(auto-fit, minmax(300px, 1fr) );
+					grid-gap: 20px;
+					align-items: center; 
+					margin-bottom: 10px; 
+			}
+			.top .boxB{
+					justify-self:end;
+			}
+			.top .inputField{
+					margin-bottom: 7px;
+					display:flex;
+					justify-content: start;
+			}
+			.top .inputFieldB{
+				margin-bottom: 7px;
+				display:flex;
+				justify-content: end;
+			}
+			.top p{
+					min-width: 170px;
+			}
+			.top .boxB img{
+				position:absolute;
+				width:100px; 
+				border-radius:10px;
+				top:0;
+				right:0;
+				transition: transform 0.3s;
+				cursor:pointer;
+			}
+			.top .boxB img:hover{
+				transform: scale(1.05);
+			}
+		/* ⚊⚊⚊⚊ Top Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Table Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.Table {
+				margin-bottom: 20px;
+				max-height:250px;
+				overflow:auto;
+				border-bottom: 1px solid gray;
+				border-radius: 2px;
+			}
+			#myTable {
+				font-size: 14px;
+				background: #FFFDFF;
+				border-collapse: collapse;
+				width: 100%;    
+			}
+			#myTable th {
+				border-bottom:2px solid #FFE485;
+				background-image:linear-gradient(0deg, #354A70 15%,#8DC0EB);
+				color:white;
+				position:sticky;
+				top:0px;
+				font-weight:500;
+				padding:5px 0px;
+				border: 1px solid rgb(5, 120, 209);
+			}
+			#myTable td, tr {
+				font-weight:500;
+				border: 1px solid rgb(5, 120, 209);
+			}
+			#myTable th:first-child {
+				position:-webkit-sticky;
+				position: sticky;
+				left: -15px;
+				background:linear-gradient(0deg, #30569c 15%,#63b5f8);
+				z-index: 10;
+				color:#FFE485;
+			}
+			#myTable input {
+				border: none;
+				box-sizing: border-box;
+				box-shadow: 1px 1px 4px #EBEBEB;
+				font-size: 13px;
+				margin: 3px 0;
+				padding: 2px 0;
+				width: 100%;
+				resize: vertical;
+			}
+			#sno{
+					text-align: center;
+			}
+			.addRow{
+				cursor:pointer;
+			}
+			.remRow{
+				color: #fc6f03;
+				font-size: 18px;
+				font-weight: bold;
+				padding-left: 6px;
+			}
+		/* ⚊⚊⚊⚊ Table Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Total Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.total {
+				position: relative;
+				display:grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr) );
+				grid-gap: 20px;
+				align-items: center; 
+				margin-bottom: 10px; 
+				justify-items: end;
+			}
+			.total input{
+				width:120px; 
+				min-width:120px;
+				text-align:right;
+			}
+			.toal .boxB{
+				justify-self:end;
+			}
+			.total .inputField{
+				margin-bottom: 7px;
+				display:flex;
+				justify-content: start;
+			}
+			.total .inputField p{
+				min-width: 120px;
+			}
+			.total .boxB img{
+				position:absolute;
+				width:100px; 
+				border-radius:10px;
+				top:0;
+				right:0;
+				transition: transform 0.3s;
+				cursor:pointer;
+			}
+			.total .boxB img:hover{
+				transform: scale(1.05);
+			}
+			.taxDD{
+        display: none;
+      }
+		/* ⚊⚊⚊⚊ Total Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Bottom Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.Bottom {
+				display:flex; 
+				flex-wrap: wrap;
+				justify-content: space-between;
+				width:100%; 
+				margin-bottom: 30px;
+			}
+			.Bottom label{
+				width: 340px;
+				font-size: 14px;
+				font-weight: 400;
+				float: right;
+				padding-top: 8px;
+				padding-right: 5px;
+				color: rgb(115, 114, 114);
+			}
+			textarea {
+				width: 300px;	
+				font-size: 13px;
+				min-width: 340px;
+				max-width: 340px;
+				padding: 3px 10px;
+				margin: 4px 0;
+				box-sizing: border-box;
+				border: solid 1px rgb(183, 182, 182);
+				border-radius: 3px;
+			}
+		/* ⚊⚊⚊⚊ Bottom Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Sales Person Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.salSec {
+				display:flex;  
+				flex-wrap:wrap; 	
+				color:gray;  
+				font-size:14px;
+			}
+			.salSec .boxA, .salSec .boxB {		
+				min-width:50%; 
+			}
+
+		/* ⚊⚊⚊⚊ Sales Person Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Customer Limit  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			.cusLimit {
+				display:flex;  
+				flex-wrap:wrap; 
+				color:gray;  
+				font-size:14px;
+			}
+			.cusLimit .boxA, .cusLimit .boxB {		
+				min-width:50%; 
+			}
+
+	  /* ⚊⚊⚊⚊ Sales Person Section  ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+		/* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+			#savSec {
+					display: flex;
+					justify-content:flex-end;
+					flex-wrap: wrap;
+					padding: 5px 0px 0px 40px;
+			}
+			.sBtn, .hBtn, .cBtn{
+					box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+					background-color: #AAAAAA;
+					display: inline-block;
+					cursor: pointer;
+					color: #FFFFFF;
+					font-family: 'Open Sans Condensed', sans-serif;
+					font-size: 14px;
+					padding: 4px 18px;
+					margin: 5px 10px;
+					text-decoration: none;
+					text-transform: uppercase;
+			}
+			.cBtn{
+					background-color: #1DA1F2;
+			}
+			.hBtn{
+					background-color: #3B5998;
+			}
+			.addColor{
+					background-color: #2CBBBB;
+			}
+			.cusTab3 {
+					display: flex;
+					justify-content:space-between;
+					flex-wrap: wrap;
+			}
+		/* ⚊⚊⚊⚊ Save Section ⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊⚊ */
+
+	</style>
+<!--.........................................................................-->
+
+
+
+<!--.........................................................................-->
+<!--==== Country, Department and Brand List ==========================//Start-->
+<!--.........................................................................-->
+	<script>
+
+		const counList = {{countryList|safe}}
+		const deptList = {{departmentList|safe}}
+		const brandList = {{brandList|safe}}
+		
+
+		//■■■■■ Country List ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ Start>
+				var seleElemCountry = document.getElementById('selCountry');
+
+				seleElemCountry.addEventListener('change', function() {
+						var selectedCountry = this.value;  //Getthe Drop Down Value
+						
+						var table = document.getElementById('tBody') //Target the Table
+						var lastRow = table.rows[clkRow-2]  //-2 because of two heading rows...
+						lastRow.cells[7].getElementsByTagName('input')[0].value = selectedCountry
+				
+						this.selectedIndex = 0;	
+				});
+
+				for (var i = 0; i < counList.length; i++) {
+						var option = document.createElement('option');
+						option.value = counList[i];
+						option.text = counList[i];
+						seleElemCountry.appendChild(option);
+				}
+		//■■■■■ Country List ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  End >
+
+		//■■■■■ Get Clicked Row and Cell Index ■■■■■■■■■■■■■■■■■■■■■■■■■■ Start>
+			var rIndex, clkRow
+			function getRowAndCell(button) {
+				var row = button.parentNode.parentNode; // Get the row index
+				var rowIndex = row.rowIndex;
+				clkRow = rowIndex
+				showDD_Coun()
+			}
+		//■■■■■ Get Clicked Row and Cell Index ■■■■■■■■■■■■■■■■■■■■■■■■■■  End >
+
+		//------ Toggle Hide Div ----------------------------------------
+			let taxDD = document.getElementById("counMenu");
+			function showDD_Coun(){
+				taxDD.classList.toggle("taxDD")
+			}
+		//------ Toggle Hide Div ----------------------------------------
+
+
+
+		//■■■■■ Department List ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ Start>
+				var seleElemDepartment = document.getElementById('selDepartment');
+
+				seleElemDepartment.addEventListener('change', function() {
+						var selectedDeprt = this.value;  //Getthe Drop Down Value
+						
+						var table = document.getElementById('tBody') //Target the Table
+						var lastRow = table.rows[clkRow-2]  //-2 because of two heading rows...
+						lastRow.cells[6].getElementsByTagName('input')[0].value = selectedDeprt;
+
+						this.selectedIndex = 0;
+				});
+
+				for (var i = 0; i < deptList.length; i++) {
+						var option = document.createElement('option');
+						option.value = deptList[i];
+						option.text = deptList[i];
+						seleElemDepartment.appendChild(option);
+				}
+		//■■■■■ Department List ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  End >
+
+		//■■■■■ Get Clicked Row and Cell Index ■■■■■■■■■■■■■■■■■■■■■■■■■■ Start>
+			var rIndex, clkRow
+			function getDeptRow(button) {
+				var row = button.parentNode.parentNode; // Get the row index
+				var rowIndex = row.rowIndex;
+				clkRow = rowIndex
+				showDD_Dept()
+			}
+		//■■■■■ Get Clicked Row and Cell Index ■■■■■■■■■■■■■■■■■■■■■■■■■■  End >
+
+		//------ Toggle Hide Div ----------------------------------------
+			let taxDDA = document.getElementById("deptMenu");
+			function showDD_Dept(){
+				taxDDA.classList.toggle("taxDD")
+			}
+		//------ Toggle Hide Div ----------------------------------------
+
+
+
+		//■■■■■ Brand List ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ Start>
+				var seleElemBrand = document.getElementById('selBrand');
+
+				seleElemBrand.addEventListener('change', function() {
+						var selectedDeprt = this.value;  //Getthe Drop Down Value
+						
+						var table = document.getElementById('tBody') //Target the Table
+						var lastRow = table.rows[clkRow-2]  //-2 because of two heading rows...
+						lastRow.cells[5].getElementsByTagName('input')[0].value = selectedDeprt;
+
+						this.selectedIndex = 0;
+				});
+
+				for (var i = 0; i < brandList.length; i++) {
+						var option = document.createElement('option');
+						option.value = brandList[i];
+						option.text = brandList[i];
+						seleElemBrand.appendChild(option);
+				}
+		//■■■■■ Brand List ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  End >
+
+		//■■■■■ Get Clicked Row and Cell Index ■■■■■■■■■■■■■■■■■■■■■■■■■■ Start>
+			var rIndex, clkRow
+			function getBrandRow(button) {
+				var row = button.parentNode.parentNode; // Get the row index
+				var rowIndex = row.rowIndex;
+				clkRow = rowIndex
+				showDD_Brand()
+			}
+		//■■■■■ Get Clicked Row and Cell Index ■■■■■■■■■■■■■■■■■■■■■■■■■■  End >
+
+		//------ Toggle Hide Div ----------------------------------------
+			let taxDDB = document.getElementById("brandMenu");
+			function showDD_Brand(){
+				taxDDB.classList.toggle("taxDD")
+			}
+		//------ Toggle Hide Div ----------------------------------------
+
+
+	</script>
+<!--==== Country, Department and Brand List ==========================// End -->
+
+
+
+
+<!--.........................................................................-->
+<!--==== Item Deatil Popup Window ====================================//Start-->
+<!--.........................................................................-->
+	<script>
+		//--==== Fetch Item Data to Select ================================= //Start-->
+			let list_B=[]; // Declare a global variable to store the data
+			
+			async function fetchPop_B(){
+				const response = await fetch(`${basInfo.IP[0]}/cCOA_List`)
+				const data = await response.json()
+				list_B = data  //when call showRecord() function data will save in finalData
+				Table_B(list_B)
+				//console.log(list_B)
+			}
+		//--==== Fetch Item Data to Select ================================= // End -->
+
+
+		//------ Render Item Table ----------------------------------------- //Start-->
+			function Table_B(dataList){
+				//console.log(dataList)
+				var table = document.getElementById('popBody_B').innerHTML=` ${dataList.map(temList).join('')}`
+				function temList (e){
+					return`<tr">
+										<td style="color:#0464d1">${e.code}</td>
+										<td>${e.head}</td>
+										<td>${e.level2}</td>
+									</tr>`
+				}
+				//-- on click select the row -------------------------
+				var cells = document.querySelectorAll(`#popBody_B td`);
+				for (var j = 0; j < cells.length; j++) {
+					var cell_A1 = cells[j];
+					cell_A1.onclick =  async function () {
+									var rowId = this.parentNode.rowIndex-1;
+									var rowSelected = document.querySelectorAll(`#popBody_B tr`)[rowId];
+									
+									iID = rowSelected.cells[0].innerHTML;
+									iName = rowSelected.cells[1].innerHTML;
+
+									// Get the table row and cell elements
+									var tableA = document.getElementById('myTable')                      
+									ccd = tableA.rows[clickRow].cells[clickCell+2].getElementsByTagName('input')[0].value = iID
+									ccd = tableA.rows[clickRow].cells[clickCell+3].getElementsByTagName('input')[0].value = iName
+						
+						hidePop_B()
+						getSum() // to get sum and hide and show save button 
+						//addRefresh('newSelection')
+						//savDisable('No')
+					}
+				}
+			}
+		//------ Render Item Table ----------------------------------------- // End -->
+
+
+		//------ Get Clicked Row and Cell Index ---------------------------- //Start-->
+			var clickRow
+			var clickCell
+			function getRowAndCellIndex(button) {
+				showPop_B()
+			
+				var row = button.parentNode.parentNode; // Get the row index
+				var rowIndex = row.rowIndex;          
+				var cell = button.parentNode; // Get the cell index
+				var cellIndex = cell.cellIndex;
+
+				clickRow = rowIndex
+				clickCell = cellIndex
+			}
+		//------ Get Clicked Row and Cell Index ---------------------------- // End -->
+
+
+		//------ Filter Records-------------------------------------------- //Start-->
+			function filter_B(input){tableInside_B()}
+			function tableInside_B(){
+				let filter = document.querySelector('#filter_B').value.toUpperCase(); //capturing input value
+
+				if (filter.length >= 3) {
+					let abc = list_B.filter(x => x.head.toLowerCase().includes(filter.toLowerCase()))
+					Table_B(abc)
+				}else if (filter == '*'){
+					Table_B(list_B)
+				}
+				else {
+					Table_B(list_B)
+				}
+			}
+
+			function remEmpAfterSave(){
+				const filteredData = list_B.filter((employee) => employee.cusCode !== cuslCode);
+				list_B = filteredData
+				Table_B(list_B)
+			}
+		//------ Filter Records --------------------------------------------// End -->
+
+
+		//-------Temporary Item Entry as General Item ------------------ //Start-->
+			function genItem(){
+				// Get the table row and cell elements
+				var tableB = document.getElementById('myTable')                      
+				ccd = tableB.rows[clickRow].cells[clickCell+2].getElementsByTagName('input')[0].value = '10000000'
+				ccd = tableB.rows[clickRow].cells[clickCell+3].getElementsByTagName('input')[0].value = 'General Item'
+				hidePop_B()
+			}
+		//-------Temporary Customer Entry as Cash Customer ------------- // End -->
+
+
+		//-------Run function On Click to "show the list Div"........... //Start-->
+			function showPop_B(){ 
+				var abbc = document.getElementById("Pop_B");
+				abbc.classList.toggle("hide"); 
+				abbc.style.display = "block";
+			}
+
+			function hidePop_B(){
+				var abbc = document.getElementById("Pop_B");
+				abbc.style.display = "none"; 
+			}
+
+			function custHide(){
+				var abbc = document.getElementById("conCol");
+				abbc.style.display = "none"; 
+			}
+		//-------Run function On Click to "show the list Div"........... // End -->
+
+
+		//-------Temporary Customer Entry as Cash Customer ------------- //Start-->
+			function cashCustomer(){
+				document.querySelector('#cusCode').value = "2310101"
+				document.querySelector('#cusName').value = "Cash Customer";
+				hidePop_B()
+				//savDisable('No')  //to active Save option
+			}
+		//-------Temporary Customer Entry as Cash Customer ------------- // End -->
+
+
+	</script>
+
+
+	<style>
+		/* Customer Search Table ------------------------------------------------- */
+			#Pop_B {
+				position:absolute;
+				margin: 0px 0 0 127px;
+				display:none;
+				width:500px; 
+				min-height:150px;
+				max-height:300px; 
+				background:#fcffff; 
+				border: 1px solid #3B5998;
+				box-shadow: 4px 6px 9px -4px rgba(0,0,0,0.4);
+				border-radius: 10px;
+				overflow-y: auto;
+				z-index:10; 
+			}
+			#Pop_B .sDiv{
+				position:sticky;
+				top:0;
+				display:flex; 
+				justify-content:start;
+				align-items: center;
+				background:#00324A;
+				min-height:30px;
+
+			}
+			.sDiv .Sear {
+				position:relative;
+				margin-left: 5px;
+				left: 2px;
+			}
+			.sDiv .Sear .Icon {
+				position:absolute; 
+				color:gray;
+			}
+			.sDiv .Sear .Icon.iA{
+				left:7px;
+				top: 4px;
+			}
+			.sDiv .Sear .Icon.iB{
+				font-size: 10px;
+				top: 2px;
+				left:25px;
+			}
+			.sDiv .Sear input{
+				border-radius: 25px;
+				min-width:250px;
+				height: 20px;
+				margin-left: 5px;
+				padding-left: 43px;
+				font-size: 13px;
+				box-shadow: 0px 0px 0px #EBEBEB;
+				border: 1px solid rgb(209, 207, 207);  
+			}
+			.sDiv .boxAA{
+				background:#ffe09e;
+				padding: 3px 10px;
+				margin: 0 5px;
+				font-size: 12px;
+				border-radius: 25px;
+				cursor:pointer;
+			}
+			.sDiv .boxAA:hover{
+				background:#ffc549;
+			}
+			.sDiv .boxAB{
+				right: 20px;
+				background:#acd3ff;
+				padding: 3px 10px;
+				font-size: 12px;
+				border-radius: 25px;
+				cursor:pointer;
+			}
+			.sDiv .boxAB:hover{
+				background:#5da8fe;
+			}
+			.sDiv .closeBtn{
+				position:absolute; 
+				right:2px; top:2px; 
+				color:red; 
+				background:lightgray; 
+				border-radius:50%; 
+				width:20px; height:20px; 
+				text-align:center;
+				cursor:pointer;"
+			}
+		/* Table ------------------------------------------------------------------*/
+			#table_B {
+				margin:0;
+				font-size: 11px;        
+				border-collapse: collapse;
+				width: 100%;
+			}
+			#table_B .tableHead {
+				background: rgb(227, 236, 255);
+				position:sticky;
+				border: 1px solid #30569c;
+				box-shadow: 0px 6px 2px -4px rgba(0,0,0,0.4);
+				top:28px;
+				z-index: 100;
+			}
+			#table_B td, th {
+				text-align: left;
+				padding: 3px 8px;
+				background: none;
+				border: 1px dotted rgb(149, 202, 243);
+				border-collapse: collapse;
+			}
+		/* Customer Search Table --------------------------------------------------*/
+	</style>
+
+<!--==== Item Deatil Popup Window ====================================// End -->
+
+
+
+
+{% endblock body %}

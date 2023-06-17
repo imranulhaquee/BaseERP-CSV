@@ -126,7 +126,7 @@
 										</div>
 								</th>
 								<th style="width:120px; text-align:right">Total</th>
-								<th style="width:50px; display:none">WAC</th>
+								<th style="width:75px; text-align:right">WAC</th>
 							</tr>
 						<!--== Table Second Heading (Hidden) for field name ===============-->
 							<tr style="display:none">
@@ -148,7 +148,7 @@
 									<td><button class="remRow" onclick="remove_tr(this)"> 🗑 </button></td>
 									<td style="text-align:center; display:flex;" >
 											<button onclick="getRowAndCellIndex(this)" style="border-radius:5px; color:orange; font-size: 15px; font-weight:bold; padding: 0px 2px 2px 2px; cursor:pointer">☰</button>
-											<input onclick="itemWAC(this)" type="checkbox" class="myCheckbox" value="10">
+											<input onclick="itemWAC(this)" type="checkbox" class="myCheckbox" id="myCheckbox" value="10">
 									</td>                     
 									<td><input type="number" id="sno" class="input" value=1 disabled=true></td>
 									<td><input  id="itmCod" type="text" disabled=true></td>
@@ -160,7 +160,7 @@
 										<button onclick="getRowAndCell(this)" style="position:absolute; left:5px; border-radius:5px; color:#527198; font-size: 15px; cursor:pointer">☰</button>
 									</td>
 									<td><input type="floatformat" step="0.01" class="input numInput" value=0 disabled=true  style="text-align:right"> </td>
-									<td><input type="number"  class="input" value=0 disabled=true  style="text-align:right; display:none" disabled> </td>
+									<td><input type="floatformat"  class="input" value=0 disabled=true  style="text-align:right; color:lightgray; display:block" disabled> </td>
 								</tr>
 							</tbody>
 					</table>
@@ -502,6 +502,7 @@
 						}
 				}
 
+				console.log(data[1])
 				if (data[1].length!=0) { //to avoid delete first row incase of empty record that cause of error
 						data[1].map(editable).join('')  //-----MAP------------------------
 						function editable(Data){
@@ -519,13 +520,14 @@
 								var Col_id = lastRow.cells[7].getElementsByTagName('input')[0].value = Data.disc.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[8].getElementsByTagName('input')[0].value = Data.vat.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 								var Col_id = lastRow.cells[9].getElementsByTagName('input')[0].value = Data.tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
-								var Col_id = lastRow.cells[10].getElementsByTagName('input')[0].value = 0 //Data.id;
+								var Col_id = lastRow.cells[10].getElementsByTagName('input')[0].value = 0; //Data.id;
 						}
 						var delRow = table.deleteRow(0)  //delete first row which is emptry
 				}
 				//■■■■■ Get Quotation next Number and Current Date■■■■■■■■■■■■■■■■■■■■■■■■
 
 				hidePop_A()
+				emptyCell()  //if "wac" is 0 save btn will unactive....
 			}
 
 
@@ -545,6 +547,7 @@
 				//console.log(tBody.lastElementChild)
 				clean_last_tr(tBody.lastElementChild);
 				resetNo ()
+				emptyCell() //to make save button active or deactive
 			}
 
 			//---- CLEAN LAST ROW ------------------------------------------------------
@@ -577,7 +580,6 @@
 
 				var number = tBody.rows[ tBody.rows.length - 2 ]
 				var Number = parseInt(number.cells[2].getElementsByTagName('input')[0].value); //get the value of the last row 1st cell
-				console.log(Number)
 
 				var sno = Number + 1 //add 1 to Last Column Value
 				var addSO = lastRow.cells[2].getElementsByTagName('input')[0].value = sno;
@@ -598,6 +600,21 @@
 					var addTot = parseInt(lastRow.cells[8].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					var addID = parseInt(lastRow.cells[9].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					var addID = parseInt(lastRow.cells[10].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
+				
+					//var checkbox = document.getElementById("myCheckbox"); // Replace "myCheckbox" with the ID of your checkbox element
+					//checkbox.checked = false;
+
+	
+					var table = document.getElementById('myTable');
+					var rowIndex = table.rows.length - 1 //index of last row
+					var row = table.rows[rowIndex];
+					if (row) {
+						var checkbox = row.querySelector('input[type="checkbox"]');  
+						if (checkbox) {
+							checkbox.checked = false; //unchecked tick
+						}
+					}
+
 				}
 			}
 
@@ -630,8 +647,33 @@
 				parseFloat(table.rows[ab].cells[9].getElementsByTagName('input')[0].value =  tot.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
 
 				getSum(abc)
+
+
+				var row = table.rows[ab];
+				if (row) {
+					var checkbox = row.querySelector('input[type="checkbox"]');  
+					if (checkbox) {
+						checkbox.checked = false; //unchecked tick
+					}
+				}
+
+				getChkBoxResult()
+
 			}
-		
+			
+			//Check all the checkbox is checked or not  ------------------		
+			function getChkBoxResult() {
+				var table = document.getElementById("myTable");
+				var columnIndex = 1; // Get the index of the specific column
+				var rows = table.tBodies[1].rows;  // Get all the rows in the table body
+				for (var i = 0; i < rows.length; i++) {  // Loop through each row
+					var checkbox = rows[i].cells[columnIndex].querySelector("input[type='checkbox']");
+					if (!checkbox.checked) { savDisable('Yes'); return "No"	} // If any checkbox is not checked,
+				}
+				savDisable('No')
+				return "Yes";  // If all checkboxes are checked,
+			}
+
 
 			//■■■■■ GET SUM OF THE TOTAL COLUMN ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 			function getSum() {
@@ -652,7 +694,36 @@
 				document.getElementById("dlTax").value = VAT.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 				document.getElementById("dlTAD").value = sumADis.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
 				document.getElementById("dlTBD").value = dlTBD.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,});
+
+				emptyCell()
 			}
+
+
+			//==== Form Validation Ensure Ledger Account is not Empty ===================
+			function emptyCell(){
+				const subBtn = document.querySelector(".addRec");
+
+				var table = document.getElementById('myTable');
+				var cells = table.querySelectorAll('td:nth-child(11)');
+				var isEmpty = false;
+				
+				cells.forEach(function(cell) {
+					var input = cell.querySelector('input');
+					if (!input || input.value.trim() == 0) {
+						isEmpty = true;
+					}
+				});
+					
+				if (isEmpty) {
+					subBtn.disabled = true;
+					subBtn.classList.remove('addColor')
+				} else {
+					subBtn.disabled = false;
+					subBtn.classList.add('addColor')
+				}
+			
+			}
+
 
 		//▒▒▒▒▒▒ GET TOTAL AND GRAND TOTAL ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
@@ -669,6 +740,7 @@
 					var rowIndex = row.rowIndex;   
 					rIndex = rowIndex       
 					showDD_A()
+					
 				}
 			//------ Get Clicked Row and Cell Index ---------------------------- // End -->
 	
@@ -844,7 +916,7 @@
 					var addid = parseInt(lastRow.cells[10].getElementsByTagName('input')[0].value = 0); //add Value to new row "Price" 
 					
 					savDisable('Yes')  //to Disable Save option..............
-			}
+			  }
 
 		//▒▒▒▒▒▒ ADD RECORD ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
@@ -1655,13 +1727,11 @@
 <!--==== GET ITEM WAC Value ==========================================//Start-->
 <!--.........................................................................-->
 	<script>
-
 		//------ Get Clicked Row and Cell Index ---------------------------- //Start-->
-
 		async function itemWAC(test) {
 			var table = document.getElementById("myTable")
-			var row = test.parentNode.parentNode; // Get the row index
-			var ab = row.rowIndex; 
+			var test = test.parentNode.parentNode; // Get the row index
+			var ab = test.rowIndex; 
 			var checkbox = table.rows[ab].cells[1].getElementsByTagName('input')[0];
 
 			if (checkbox.checked) {
@@ -1676,19 +1746,17 @@
 					var lastRecord = data[data.length - 1]; //to select last record
 					var lastWAC = lastRecord.WAC;	
 					var totalCost = lastWAC * qty					//to select last record WAC Value
-					totCost = table.rows[ab].cells[10].getElementsByTagName('input')[0].value =  totalCost
-					console.log(totalCost)
+					console.log(totalCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}))
+					totCost = table.rows[ab].cells[10].getElementsByTagName('input')[0].value = totalCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,})  // parseFloat(totalCost.toLocaleString('en', {minimumFractionDigits: 0, maximumFractionDigits: 0,}));
 					console.log(lastWAC)
 				}
 			}
 
+			emptyCell()
+			getChkBoxResult()
 			//------ Get Clicked Row and Cell Index ---------------------------- // End -->
 		}
-
 	</script>
-
-
-
 <!--==== GET ITEM WAC Value ==========================================//Start-->
 
 

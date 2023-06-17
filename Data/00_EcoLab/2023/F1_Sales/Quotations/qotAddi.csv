@@ -593,3 +593,5 @@ id,qotRef,sno,itmCod,desc,qty,price,disc,tot,vat,traDate,action
 2300271,2300271,3,10002000,Diode Laser Hair Removal Device,1,51380,7500,46074.0,2194.0,2023-6-8 16-36-15,
 2300271,2300271,4,10003000,Portable Diode Laser Hair Removal Equipment,2,47180,19000,79128.0,3768.0,2023-6-8 16-36-15,
 2300271,2300271,5,10003001,Portable Diode Laser Hair Removal Equipment - Hand Piece,10,6300,1400,61600.0,0.0,2023-6-8 16-36-15,
+2300272,2300272,1,10001000,Microneedling RF,1,31465,3510,29353,1398,2023-6-14 3-11-32,
+2300272,2300272,2,10002000,Diode Laser Hair Removal Device,2,51380,7898,99605,4743,2023-6-14 3-11-32,

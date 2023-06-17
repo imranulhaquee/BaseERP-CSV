@@ -4,92 +4,49 @@
 {% load static%}
 
 <!--════ Top Section ═══════════════════════════════════════ //Start-->
+{% comment %} 
+<h1> Country <h1>
 
-
-<canvas id="graphCanvas"></canvas>
-
-<style>
-    #graphCanvas {
-        width: 400px;
-        height: 300px;
-        border: 1px solid #ccc;
-    }
-</style>
+<select id="selCountry">
+    <option value="" selected disabled hidden style="background:#C8C8C8;color:white;">Select Country</option>
+</select>
 
 <script>
-    // Get the canvas element
-    var canvas = document.getElementById('graphCanvas');
-    var ctx = canvas.getContext('2d');
+  var countries = ['United Arab Emirates', 'Saudi Arabia', 'Oman', 'Qtar', 'Kuwait'];
+  var selectElement = document.getElementById('selCountry');
+  for (var i = 0; i < countries.length; i++) {
+    var option = document.createElement('option');
+    option.value = countries[i];
+    option.text = countries[i];
+    selectElement.appendChild(option);
+  }
+</script> 
 
-    // Graph data (example values)
-    var data = [25, 40, 30, 55, 70];
-
-    // Control value (example value)
-    var controlValue = 60;
-
-    // Function to draw the graph
-    function drawGraph() {
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Calculate the maximum value in the data array
-    var maxValue = Math.max(...data);
-
-    // Calculate the width of each bar
-    var barWidth = canvas.width / data.length;
-
-    // Loop through the data and draw the bars
-    for (var i = 0; i < data.length; i++) {
-        var barHeight = (data[i] / maxValue) * canvas.height;
-
-        // Set the bar color based on the control value
-        var barColor = data[i] >= controlValue ? 'green' : 'red';
-
-        // Draw the bar
-        ctx.fillStyle = barColor;
-        ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth, barHeight);
-    }
-    }
-
-    // Call the drawGraph function initially
-    drawGraph();
-
-    // Example of changing the control value dynamically
-    setTimeout(function() {
-    // Change the control value
-    controlValue = 35;
-
-    // Redraw the graph
-    drawGraph();
-    }, 2000);
-</script>
+{% endcomment %}
 
 
 
+<h1 id="countryHeading">Country</h1>
 
-<!--════ Top Section ═══════════════════════════════════════ //Start-->
- 
-
-<progress id="progressBar" max="100" value="0"></progress>
-<button onclick="increaseProgress()">Increase Progress</button>
-
-<style>
-    #progressBar {
-        width: 200px;
-        height: 20px;
-      }
-</style>
+<select id="selCountry">
+  <option value="" selected disabled hidden style="background:#C8C8C8;color:white;">Select Country</option>
+</select>
 
 <script>
-// Function to increase the progress bar value
-function increaseProgress() {
-    var progressBar = document.getElementById('progressBar');
-    var currentValue = progressBar.value;
-    var maxValue = progressBar.max;
-  
-    if (currentValue < maxValue) {
-      progressBar.value = currentValue + 10;
-    }
+  var countries = ['United Arab Emirates', 'Saudi Arabia', 'Oman', 'Qtar', 'Kuwait'];
+  var selectElement = document.getElementById('selCountry');
+  var countryHeading = document.getElementById('countryHeading');
+
+  selectElement.addEventListener('change', function() {
+    var selectedCountry = this.value;
+    countryHeading.textContent = selectedCountry;
+  });
+
+  for (var i = 0; i < countries.length; i++) {
+    var option = document.createElement('option');
+    option.value = countries[i];
+    option.text = countries[i];
+    selectElement.appendChild(option);
   }
 </script>
 
